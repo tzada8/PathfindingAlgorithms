@@ -29,7 +29,7 @@ public class ChooseAlgorithms extends JPanel implements ActionListener {
 	this.setBackground(null);
 
 	// Label for this frame section
-	this.add(new SectionHeader("Choose Algorithms:").getHeader());
+	this.add(new SectionHeader("Choose Algorithms:"));
 
 	breathFirstSearchCheckBox.addActionListener(this);
 	depthFirstSearchCheckBox.addActionListener(this);

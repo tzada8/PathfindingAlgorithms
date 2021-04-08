@@ -22,7 +22,7 @@ public class SizesAndLocation extends JPanel {
 	this.setBackground(null);
 
 	// Label for this frame section
-	this.add(new SectionHeader("Sizes And Location").getHeader());
+	this.add(new SectionHeader("Sizes And Location"));
 
 	this.add(widthEntry);
 	this.add(heightEntry);

@@ -27,7 +27,7 @@ public class ChooseObstacle extends JPanel implements ActionListener {
 	this.setBackground(null);
 
 	// Label for this frame section
-	this.add(new SectionHeader("Choose Type of Obstacle:").getHeader());
+	this.add(new SectionHeader("Choose Type of Obstacle:"));
 
 	ButtonGroup group = new ButtonGroup();
 	group.add(freehandButton);
