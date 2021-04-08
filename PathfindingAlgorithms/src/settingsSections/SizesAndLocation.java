@@ -2,6 +2,8 @@ package settingsSections;
 
 import javax.swing.JPanel;
 
+import customSwing.CustomLabelAndTextField;
+
 public class SizesAndLocation extends JPanel {
 
     /**
@@ -10,10 +12,10 @@ public class SizesAndLocation extends JPanel {
     private static final long serialVersionUID = 1L;
 
     // Fields
-    private SettingsTextField widthEntry = new SettingsTextField("Width");
-    private SettingsTextField heightEntry = new SettingsTextField("Height");
-    private SettingsTextField startPosEntry = new SettingsTextField("Start Point");
-    private SettingsTextField endPosEntry = new SettingsTextField("End Point");
+    private CustomLabelAndTextField widthEntry = new CustomLabelAndTextField("Width");
+    private CustomLabelAndTextField heightEntry = new CustomLabelAndTextField("Height");
+    private CustomLabelAndTextField startPosEntry = new CustomLabelAndTextField("Start Point");
+    private CustomLabelAndTextField endPosEntry = new CustomLabelAndTextField("End Point");
 
     // Panel with a section for all info regarding sizes/location of obstacles
     public SizesAndLocation() {
@@ -22,8 +24,8 @@ public class SizesAndLocation extends JPanel {
 	// Label for this frame section
 	this.add(new SectionHeader("Sizes And Location").getHeader());
 
-	this.add(heightEntry);
 	this.add(widthEntry);
+	this.add(heightEntry);
 	this.add(startPosEntry);
 	this.add(endPosEntry);
     }

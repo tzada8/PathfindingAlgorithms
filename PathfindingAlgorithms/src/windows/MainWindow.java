@@ -1,4 +1,5 @@
 package windows;
+
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -18,9 +19,11 @@ public class MainWindow extends JFrame implements ActionListener {
      * Default Serialization
      */
     private static final long serialVersionUID = 1L;
-    
+
     // Fields
+    private SettingsWindow settings;
     private JButton settingsButton = new JButton("Settings");
+    private JButton startStopButton = new JButton("Start");
 
     public MainWindow() {
 	// Main Window properties
@@ -31,11 +34,18 @@ public class MainWindow extends JFrame implements ActionListener {
 	this.setSize(500, 500); // MIGHT NEED TO ADJUST SIZE TO FIT NECESSARY ALGORITHMS
 	this.getContentPane().setBackground(PathfindingMain.BACKGROUND_COLOUR);
 	this.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-	
+
 	// All algorithms on main window
 	this.add(new AlgorithmPanel(Color.red));
 	this.add(new AlgorithmPanel(Color.blue));
 	this.add(new AlgorithmPanel(Color.green));
+
+	// Start/Stop button on main window
+	startStopButton.setBounds(100, 160, 200, 40);
+	startStopButton.setFont(new Font(PathfindingMain.GAME_FONT, Font.PLAIN, 16));
+	startStopButton.setFocusable(false);
+	startStopButton.addActionListener(this);
+	this.add(startStopButton);
 
 	// Settings button on main window
 	settingsButton.setBounds(100, 160, 200, 40);
@@ -43,7 +53,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	settingsButton.setFocusable(false);
 	settingsButton.addActionListener(this);
 	this.add(settingsButton);
-	
+
 	this.setLocationRelativeTo(null);
 	this.setVisible(true);
     }
@@ -51,9 +61,12 @@ public class MainWindow extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == settingsButton) {
-	    new SettingsWindow();
+	    settings = new SettingsWindow();
+	    System.out.println(settings.getAlgorithmHeight());
+	} else if (e.getSource() == startStopButton) {
+	    System.out.println("Start Program");
 	}
-	
+
     }
 
 }

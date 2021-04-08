@@ -5,7 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+
+import customSwing.CustomRadioButton;
 
 public class ChooseObstacle extends JPanel implements ActionListener {
 
@@ -14,11 +15,11 @@ public class ChooseObstacle extends JPanel implements ActionListener {
      */
     private static final long serialVersionUID = 1L;
 
-    private JRadioButton freehandButton = new JRadioButton("Freehand");
-    private JRadioButton preset1Button = new JRadioButton("Preset 1");
-    private JRadioButton preset2Button = new JRadioButton("Preset 2");
-    private JRadioButton preset3Button = new JRadioButton("Preset 3");
-    private JRadioButton randomButton = new JRadioButton("Random");
+    private CustomRadioButton freehandButton = new CustomRadioButton("Freehand");
+    private CustomRadioButton preset1Button = new CustomRadioButton("Preset 1");
+    private CustomRadioButton preset2Button = new CustomRadioButton("Preset 2");
+    private CustomRadioButton preset3Button = new CustomRadioButton("Preset 3");
+    private CustomRadioButton randomButton = new CustomRadioButton("Random");
     private String selectedObstacle;
 
     // Panel with a section to choose which type of obstacles will be used

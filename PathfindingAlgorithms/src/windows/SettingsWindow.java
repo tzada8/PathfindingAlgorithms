@@ -1,9 +1,11 @@
 package windows;
 
-import java.awt.FlowLayout;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -32,8 +34,9 @@ public class SettingsWindow extends JFrame implements ActionListener {
 	this.setTitle("Settings");
 	this.setIconImage(new ImageIcon("images/pathfinding_icon.png").getImage());
 	this.setResizable(false);
+	this.setPreferredSize(new Dimension(500, 500));
 	this.getContentPane().setBackground(PathfindingMain.BACKGROUND_COLOUR);
-	this.setLayout(new FlowLayout());
+	this.setLayout(new GridLayout(2, 2, 10, 10));
 
 	// Finish button to submit settings
 	finish = new JButton("Finish");
@@ -52,14 +55,54 @@ public class SettingsWindow extends JFrame implements ActionListener {
 
     }
 
+    /*********** SIZES AND LOCATIONS ***********/
+    // Instance method that returns the algorithm height
+    public String getAlgorithmHeight() {
+	return sizesAndLocation.getHeightField();
+    }
+
+    // Instance method that returns the algorithm width
+    public String getAlgorithmWidth() {
+	return sizesAndLocation.getWidthField();
+    }
+
+    // Instance method that returns the algorithm starting position
+    public String getAlgorithmStart() {
+	return sizesAndLocation.getStartPosField();
+    }
+
+    // Instance method that returns the value the user set for the END POINT field
+    public String getAlgorithmEnd() {
+	return sizesAndLocation.getEndPosField();
+    }
+
+    /*********** OBSTACLE ***********/
+    // Instance method that returns the chooseObstacle Object
+    public String getAlgorithmObstacle() {
+	return chooseObstacle.getSelectedObstacle();
+    }
+
+    /*********** ALGORITHMS ***********/
+    // Instance method that returns the chooseAlgorithms Object
+    public boolean[] getAlgorithms() {
+	return chooseAlgorithms.getSelectedAlgorithms();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == finish) {
-	    System.out.println("Hello " + sizesAndLocation.getWidthField());
-	    System.out.println("Hello " + sizesAndLocation.getHeightField());
-	    
+	    // Screen size and Start/End Points
+	    System.out.println("Width: " + sizesAndLocation.getWidthField());
+	    System.out.println("Height: " + sizesAndLocation.getHeightField());
+	    System.out.println("Start Point: " + sizesAndLocation.getStartPosField());
+	    System.out.println("End Point: " + sizesAndLocation.getEndPosField());
+
+	    // Type of Obstacle
 	    System.out.println(chooseObstacle.getSelectedObstacle());
-	    
+
+	    // Types of Algorithms to compare
+	    System.out.println(Arrays.toString(chooseAlgorithms.getSelectedAlgorithms()));
+
 	    this.dispose();
 	}
     }

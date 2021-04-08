@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
+import customSwing.CustomCheckBox;
+
 public class ChooseAlgorithms extends JPanel implements ActionListener {
 
     /**
