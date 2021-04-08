@@ -1,12 +1,12 @@
-package settingsSections;
+package settingssections;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-import customSwing.CustomCheckBox;
-import customSwing.CustomLabel;
+import customswing.CustomCheckBox;
+import customswing.CustomLabel;
 
 public class ChooseAlgorithms extends JPanel implements ActionListener {
 

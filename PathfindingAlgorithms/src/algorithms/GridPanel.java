@@ -5,7 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JPanel;
 
-public class AlgorithmPanel extends JPanel {
+public class GridPanel extends JPanel {
 
     /**
      * Default Serialization
@@ -13,7 +13,7 @@ public class AlgorithmPanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
     // Basic Panel that holds all content for a given algorithm
-    public AlgorithmPanel(Color background) {
+    public GridPanel(Color background) {
 	this.setPreferredSize(new Dimension(100, 100));
 	this.setBackground(background);
 	this.setLayout(new FlowLayout());

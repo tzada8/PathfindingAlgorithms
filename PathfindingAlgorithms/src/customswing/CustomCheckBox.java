@@ -1,4 +1,4 @@
-package customSwing;
+package customswing;
 
 import javax.swing.JCheckBox;
 

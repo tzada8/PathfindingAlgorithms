@@ -8,8 +8,8 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import algorithms.AlgorithmPanel;
-import customSwing.CustomButton;
+import algorithms.GridPanel;
+import customswing.CustomButton;
 import main.PathfindingMain;
 
 public class MainWindow extends JFrame implements ActionListener {
@@ -35,9 +35,9 @@ public class MainWindow extends JFrame implements ActionListener {
 	this.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
 	// All algorithms on main window
-	this.add(new AlgorithmPanel(Color.red));
-	this.add(new AlgorithmPanel(Color.blue));
-	this.add(new AlgorithmPanel(Color.green));
+	this.add(new GridPanel(Color.red));
+	this.add(new GridPanel(Color.blue));
+	this.add(new GridPanel(Color.green));
 
 	// Start/Stop button on main window
 	startStopButton.addActionListener(this);

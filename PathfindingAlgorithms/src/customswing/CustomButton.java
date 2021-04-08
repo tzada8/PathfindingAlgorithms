@@ -1,4 +1,4 @@
-package customSwing;
+package customswing;
 
 import java.awt.Font;
 

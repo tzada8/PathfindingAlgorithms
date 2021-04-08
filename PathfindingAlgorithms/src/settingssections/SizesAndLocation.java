@@ -1,9 +1,9 @@
-package settingsSections;
+package settingssections;
 
 import javax.swing.JPanel;
 
-import customSwing.CustomLabelAndTextField;
-import customSwing.CustomLabel;
+import customswing.CustomLabel;
+import customswing.CustomLabelAndTextField;
 
 public class SizesAndLocation extends JPanel {
 

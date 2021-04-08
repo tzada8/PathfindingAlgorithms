@@ -9,11 +9,11 @@ import java.util.Arrays;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import customSwing.CustomButton;
+import customswing.CustomButton;
 import main.PathfindingMain;
-import settingsSections.ChooseAlgorithms;
-import settingsSections.ChooseObstacle;
-import settingsSections.SizesAndLocation;
+import settingssections.ChooseAlgorithms;
+import settingssections.ChooseObstacle;
+import settingssections.SizesAndLocation;
 
 public class SettingsWindow extends JFrame implements ActionListener {
 
