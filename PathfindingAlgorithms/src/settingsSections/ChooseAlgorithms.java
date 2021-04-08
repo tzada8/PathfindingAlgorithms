@@ -2,7 +2,6 @@ package settingsSections;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 
 import javax.swing.JPanel;
 
@@ -13,8 +12,10 @@ public class ChooseAlgorithms extends JPanel implements ActionListener {
      */
     private static final long serialVersionUID = 1L;
 
+    // Constants
     private static final int NUMBER_OF_ALGORITHMS = 4;
 
+    // Fields
     private CustomCheckBox breathFirstSearchCheckBox = new CustomCheckBox("Breath First Search");
     private CustomCheckBox depthFirstSearchCheckBox = new CustomCheckBox("Depth First Search");
     private CustomCheckBox aStarCheckBox = new CustomCheckBox("A*");
