@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 
 import customSwing.CustomCheckBox;
+import customSwing.CustomLabel;
 
 public class ChooseAlgorithms extends JPanel implements ActionListener {
 
@@ -29,7 +30,7 @@ public class ChooseAlgorithms extends JPanel implements ActionListener {
 	this.setBackground(null);
 
 	// Label for this frame section
-	this.add(new SectionHeader("Choose Algorithms:"));
+	this.add(new CustomLabel("Choose Algorithms:", CustomLabel.HEADER_FONT_SIZE));
 
 	breathFirstSearchCheckBox.addActionListener(this);
 	depthFirstSearchCheckBox.addActionListener(this);

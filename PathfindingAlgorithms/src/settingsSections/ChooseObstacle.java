@@ -7,6 +7,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 
 import customSwing.CustomRadioButton;
+import customSwing.CustomLabel;
 
 public class ChooseObstacle extends JPanel implements ActionListener {
 
@@ -27,7 +28,7 @@ public class ChooseObstacle extends JPanel implements ActionListener {
 	this.setBackground(null);
 
 	// Label for this frame section
-	this.add(new SectionHeader("Choose Type of Obstacle:"));
+	this.add(new CustomLabel("Choose Type of Obstacle:", CustomLabel.HEADER_FONT_SIZE));
 
 	ButtonGroup group = new ButtonGroup();
 	group.add(freehandButton);

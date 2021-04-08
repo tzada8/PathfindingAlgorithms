@@ -3,6 +3,7 @@ package settingsSections;
 import javax.swing.JPanel;
 
 import customSwing.CustomLabelAndTextField;
+import customSwing.CustomLabel;
 
 public class SizesAndLocation extends JPanel {
 
@@ -22,7 +23,7 @@ public class SizesAndLocation extends JPanel {
 	this.setBackground(null);
 
 	// Label for this frame section
-	this.add(new SectionHeader("Sizes And Location"));
+	this.add(new CustomLabel("Sizes And Location", CustomLabel.HEADER_FONT_SIZE));
 
 	this.add(widthEntry);
 	this.add(heightEntry);
