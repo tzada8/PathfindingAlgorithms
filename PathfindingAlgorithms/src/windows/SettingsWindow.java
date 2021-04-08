@@ -1,16 +1,15 @@
 package windows;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import customSwing.CustomButton;
 import main.PathfindingMain;
 import settingsSections.ChooseAlgorithms;
 import settingsSections.ChooseObstacle;
@@ -24,7 +23,7 @@ public class SettingsWindow extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
 
     // Fields
-    private JButton finish; // submit all settings
+    private CustomButton finish; // submit all settings
     private SizesAndLocation sizesAndLocation = new SizesAndLocation(); // sizes and coordinate placements
     private ChooseObstacle chooseObstacle = new ChooseObstacle();
     private ChooseAlgorithms chooseAlgorithms = new ChooseAlgorithms();
@@ -39,8 +38,7 @@ public class SettingsWindow extends JFrame implements ActionListener {
 	this.setLayout(new GridLayout(2, 2, 10, 10));
 
 	// Finish button to submit settings
-	finish = new JButton("Finish");
-	finish.setFont(new Font(PathfindingMain.GAME_FONT, Font.PLAIN, 16));
+	finish = new CustomButton("Finish");
 	finish.addActionListener(this);
 
 	// Adding all elements

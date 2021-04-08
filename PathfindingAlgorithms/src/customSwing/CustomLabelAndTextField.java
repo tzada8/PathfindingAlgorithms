@@ -11,7 +11,7 @@ public class CustomLabelAndTextField extends JPanel {
     private static final long serialVersionUID = 1L;
 
     // Fields
-    private JLabel textFieldLabel;
+    private CustomLabel textFieldLabel;
     private CustomTextField entry;
 
     // Each TextField has a Label beside it that describes the TextField
@@ -19,7 +19,7 @@ public class CustomLabelAndTextField extends JPanel {
 	this.setBackground(null);
 
 	// Label for the text field
-	textFieldLabel = new JLabel(name + ":");
+	textFieldLabel = new CustomLabel(name + ":", CustomLabel.PARAGRAPH_FONT_SIZE);
 
 	// Properties for settings textfield
 	entry = new CustomTextField(name);

@@ -15,6 +15,7 @@ public class CustomTextField extends JTextField {
      */
     private static final long serialVersionUID = 1L;
 
+    // A JTextFieldf but with specific properties I prefer
     public CustomTextField(String name) {
 	this.setText(name);
 	this.setPreferredSize(new Dimension(100, 20));

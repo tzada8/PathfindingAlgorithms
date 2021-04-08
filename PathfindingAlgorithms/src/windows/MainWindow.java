@@ -2,15 +2,14 @@ package windows;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import algorithms.AlgorithmPanel;
+import customSwing.CustomButton;
 import main.PathfindingMain;
 
 public class MainWindow extends JFrame implements ActionListener {
@@ -22,8 +21,8 @@ public class MainWindow extends JFrame implements ActionListener {
 
     // Fields
     private SettingsWindow settings;
-    private JButton settingsButton = new JButton("Settings");
-    private JButton startStopButton = new JButton("Start");
+    private CustomButton settingsButton = new CustomButton("Settings");
+    private CustomButton startStopButton = new CustomButton("Start");
 
     public MainWindow() {
 	// Main Window properties
@@ -41,16 +40,10 @@ public class MainWindow extends JFrame implements ActionListener {
 	this.add(new AlgorithmPanel(Color.green));
 
 	// Start/Stop button on main window
-	startStopButton.setBounds(100, 160, 200, 40);
-	startStopButton.setFont(new Font(PathfindingMain.GAME_FONT, Font.PLAIN, 16));
-	startStopButton.setFocusable(false);
 	startStopButton.addActionListener(this);
 	this.add(startStopButton);
 
 	// Settings button on main window
-	settingsButton.setBounds(100, 160, 200, 40);
-	settingsButton.setFont(new Font(PathfindingMain.GAME_FONT, Font.PLAIN, 16));
-	settingsButton.setFocusable(false);
 	settingsButton.addActionListener(this);
 	this.add(settingsButton);
 
