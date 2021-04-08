@@ -10,18 +10,22 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import main.PathfindingMain;
+import settingsSections.ChooseAlgorithms;
+import settingsSections.ChooseObstacle;
 import settingsSections.SizesAndLocation;
 
 public class SettingsWindow extends JFrame implements ActionListener {
-    
+
     /**
      * Default Serialization
      */
     private static final long serialVersionUID = 1L;
-    
+
     // Fields
     private JButton finish; // submit all settings
-    private SizesAndLocation sizesAndLocation = new SizesAndLocation();
+    private SizesAndLocation sizesAndLocation = new SizesAndLocation(); // sizes and coordinate placements
+    private ChooseObstacle chooseObstacle = new ChooseObstacle();
+    private ChooseAlgorithms chooseAlgorithms = new ChooseAlgorithms();
 
     public SettingsWindow() {
 	// Settings Window properties
@@ -37,9 +41,11 @@ public class SettingsWindow extends JFrame implements ActionListener {
 	finish.addActionListener(this);
 
 	// Adding all elements
+	this.add(chooseAlgorithms);
+	this.add(chooseObstacle);
 	this.add(sizesAndLocation);
 	this.add(finish);
-	
+
 	this.pack();
 	this.setLocationRelativeTo(null);
 	this.setVisible(true);
@@ -51,6 +57,9 @@ public class SettingsWindow extends JFrame implements ActionListener {
 	if (e.getSource() == finish) {
 	    System.out.println("Hello " + sizesAndLocation.getWidthField());
 	    System.out.println("Hello " + sizesAndLocation.getHeightField());
+	    
+	    System.out.println(chooseObstacle.getSelectedObstacle());
+	    
 	    this.dispose();
 	}
     }

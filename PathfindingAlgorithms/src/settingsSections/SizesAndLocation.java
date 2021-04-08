@@ -38,14 +38,14 @@ public class SizesAndLocation extends JPanel {
 	return heightEntry.getEntryTextField();
     }
 
-    // Instance method that returns the value the user set for the WIDTH field
+    // Instance method that returns the value the user set for the START POINT field
     public String getStartPosField() {
-	return endPosEntry.getEntryTextField();
+	return startPosEntry.getEntryTextField();
     }
 
-    // Instance method that returns the value the user set for the WIDTH field
+    // Instance method that returns the value the user set for the END POINT field
     public String getEndPosField() {
-	return startPosEntry.getEntryTextField();
+	return endPosEntry.getEntryTextField();
     }
 
 }
