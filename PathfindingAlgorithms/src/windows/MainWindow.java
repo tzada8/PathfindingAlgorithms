@@ -27,7 +27,7 @@ public class MainWindow extends JFrame implements ActionListener {
     public MainWindow() {
 	// Main Window properties
 	this.setTitle("Pathfinding Algorithms");
-	this.setIconImage(new ImageIcon("images/pathfinding_icon.png").getImage());
+	this.setIconImage(PathfindingMain.ICON);
 	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	this.setResizable(false);
 	this.setSize(500, 500); // MIGHT NEED TO ADJUST SIZE TO FIT NECESSARY ALGORITHMS
@@ -35,9 +35,9 @@ public class MainWindow extends JFrame implements ActionListener {
 	this.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
 	// All algorithms on main window
-	this.add(new GridPanel(Color.red));
-	this.add(new GridPanel(Color.blue));
-	this.add(new GridPanel(Color.green));
+//	this.add(new GridPanel(Color.red));
+//	this.add(new GridPanel(Color.blue));
+//	this.add(new GridPanel(Color.green));
 
 	// Start/Stop button on main window
 	startStopButton.addActionListener(this);

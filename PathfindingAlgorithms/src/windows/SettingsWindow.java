@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import customswing.CustomButton;
@@ -31,7 +30,7 @@ public class SettingsWindow extends JFrame implements ActionListener {
     public SettingsWindow() {
 	// Settings Window properties
 	this.setTitle("Settings");
-	this.setIconImage(new ImageIcon("images/pathfinding_icon.png").getImage());
+	this.setIconImage(PathfindingMain.ICON);
 	this.setResizable(false);
 	this.setPreferredSize(new Dimension(500, 500));
 	this.getContentPane().setBackground(PathfindingMain.BACKGROUND_COLOUR);
@@ -89,6 +88,11 @@ public class SettingsWindow extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == finish) {
+	    // If "Freehand" option is chosen, open a board for user to draw on
+	    if (chooseObstacle.getSelectedObstacle().equals("freehand")) {
+		new FreehandWindow();
+	    }
+	    
 	    // Screen size and Start/End Points
 	    System.out.println("Width: " + sizesAndLocation.getWidthField());
 	    System.out.println("Height: " + sizesAndLocation.getHeightField());
