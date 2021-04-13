@@ -1,9 +1,8 @@
-package algorithms;
+package board;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
@@ -17,12 +16,12 @@ public class GridPanel extends JPanel {
     // Constants
     private static final int COLUMNS = 30;
     private static final int ROWS = 30;
-    private static final int ORIGIN_X = 0;
-    private static final int ORIGIN_Y = 0;
-    private static final int MAP_SIZE = ROWS * Node.NODE_SIZE;
+    public static final int MAP_SIZE = ROWS * Node.NODE_SIZE;
 
     // Fields
     private Node[][] map = new Node[ROWS][COLUMNS];
+    static boolean startPointPlaced = false;
+    static boolean endPointPlaced = false;
 
     // Basic Panel that holds all content for a given algorithm
     public GridPanel(Color background) {
@@ -37,9 +36,23 @@ public class GridPanel extends JPanel {
 	// Create a Node object at each row/column of grid
 	for (int r = 0; r < ROWS; r++) {
 	    for (int c = 0; c < COLUMNS; c++) {
-		map[r][c] = new Node(ORIGIN_X, ORIGIN_Y, r, c);
+		map[r][c] = new Node(r, c);
 		this.add(map[r][c]);
 	    }
 	}
+    }
+
+    // Goes through entire board and resets each Node to colour WHITE
+    public void resetBoard() {
+	for (int r = 0; r < ROWS; r++) {
+	    for (int c = 0; c < COLUMNS; c++) {
+		Node current = map[r][c];
+		if (current.getColour() != Color.WHITE) {
+		    map[r][c].makeAvailable();
+		}
+	    }
+	}
+	startPointPlaced = false;
+	endPointPlaced = false;
     }
 }

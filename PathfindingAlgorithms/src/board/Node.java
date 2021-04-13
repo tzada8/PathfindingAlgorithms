@@ -1,4 +1,4 @@
-package algorithms;
+package board;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -22,15 +22,15 @@ public class Node extends JLabel implements MouseListener {
     private int col;
     private Color colour;
 
-    public Node(int x, int y, int row, int col) {
-	this.setBounds(x + row * NODE_SIZE, y + col * NODE_SIZE, NODE_SIZE, NODE_SIZE);
-	this.setBackground(Color.WHITE);
+    // Node object with WHITE colour
+    public Node(int row, int col) {
+	this.setBounds(row * NODE_SIZE, col * NODE_SIZE, NODE_SIZE, NODE_SIZE);
 	this.setOpaque(true);
 	this.setBorder(new MatteBorder(1, 0, 0, 1, Color.BLACK));
 	this.addMouseListener(this);
 	this.row = row;
 	this.col = col;
-	this.colour = Color.WHITE;
+	this.makeAvailable();
     }
 
     // Get position of this Node
@@ -38,7 +38,7 @@ public class Node extends JLabel implements MouseListener {
 	int[] pos = { this.row, this.col };
 	return pos;
     }
-    
+
     // Get colour of Node
     public Color getColour() {
 	return colour;
@@ -50,9 +50,21 @@ public class Node extends JLabel implements MouseListener {
 	return colour == Color.WHITE;
     }
 
+    // Make Node available (WHITE)
+    public void makeAvailable() {
+	colour = Color.WHITE;
+	this.setBackground(Color.WHITE);
+    }
+
     // Colour is BLACK, meaning it's an obstacle/barrier
     public boolean isBarrier() {
 	return colour == Color.BLACK;
+    }
+
+    // Make Node an obstacle/barrier (BLACK)
+    public void makeBarrier() {
+	colour = Color.BLACK;
+	this.setBackground(Color.BLACK);
     }
 
     // Colour is ORANGE, meaning it's start point
@@ -60,60 +72,47 @@ public class Node extends JLabel implements MouseListener {
 	return colour == Color.ORANGE;
     }
 
-    // Colour is CYAN, meaning it's end point
-    public boolean isFinish() {
-	return colour == Color.CYAN;
-    }
-
-    /****** FOR PATHFINDING ******/
-    // Colour is RED, meaning it's has been checked
-    public boolean isClosed() {
-	return colour == Color.RED;
-    }
-
-    // Colour is GREEN, meaning it's available
-    public boolean isOpen() {
-	return colour == Color.GREEN;
-    }
-
-    // Make Node WHITE, meaning it's available
-    public void makeAvailable() {
-	colour = Color.WHITE;
-	this.setBackground(Color.WHITE);
-    }
-
-    // Make Node BLACK, meaning it's an obstacle/barrier
-    public void makeBarrier() {
-	colour = Color.BLACK;
-	this.setBackground(Color.BLACK);
-    }
-
-    // Make Node ORANGE, meaning it's start point
+    // Make Node start point (ORANGE)
     public void makeStart() {
 	colour = Color.ORANGE;
 	this.setBackground(Color.ORANGE);
     }
 
-    // Make Node CYAN, meaning it's end point
-    public void makeFinish() {
+    // Colour is CYAN, meaning it's end point
+    public boolean isEnd() {
+	return colour == Color.CYAN;
+    }
+
+    // Make Node end point (CYAN)
+    public void makeEnd() {
 	colour = Color.CYAN;
 	this.setBackground(Color.CYAN);
     }
 
     /****** FOR PATHFINDING ******/
-    // Make Node RED, meaning it's been checked
+    // Colour is RED, meaning it has been checked
+    public boolean isClosed() {
+	return colour == Color.RED;
+    }
+
+    // Make Node checked (RED)
     public void makeClosed() {
 	colour = Color.RED;
 	this.setBackground(Color.RED);
     }
 
-    // Make Node GREEN, meaning it's open for checking
+    // Colour is GREEN, meaning it's available to be checked
+    public boolean isOpen() {
+	return colour == Color.GREEN;
+    }
+
+    // Make Node open to be checked (GREEN)
     public void makeOpen() {
 	colour = Color.GREEN;
 	this.setBackground(Color.GREEN);
     }
 
-    // Make Node MAGENTA, meaning it's solved path
+    // Make Node MAGENTA, meaning it's the solved path
     public void makePath() {
 	colour = Color.MAGENTA;
 	this.setBackground(Color.MAGENTA);
@@ -123,43 +122,40 @@ public class Node extends JLabel implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
 	// When mouse has been pressed and released
-//	if (isAvailable()) {
-//	    makeBarrier();
-//	} else if (colour == Color.BLACK) {
-//	    makeAvailable();
-//	}
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
 	// When mouse has just been pressed
-	if (isAvailable()) {
-	    makeBarrier();
-	} else if (colour == Color.BLACK) {
-	    makeAvailable();
+	if (!GridPanel.startPointPlaced) { // Place start point FIRST
+	    this.makeStart();
+	    GridPanel.startPointPlaced = true;
+	} else if (!GridPanel.endPointPlaced) { // Place end point SECOND
+	    this.makeEnd();
+	    GridPanel.endPointPlaced = true;
+	} else { // Place all other barriers
+	    if (this.isAvailable()) {
+		this.makeBarrier();
+	    } else if (isBarrier()) {
+		this.makeAvailable();
+	    }
 	}
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
 	// When mouse has just been released
-//	makeStart();
-
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
 	// When mouse hovers over object
-//	mousePressed(e);
-//	makeOpen();
 
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
 	// When mouse leaves object
-//	makePath();
-
     }
 
 }

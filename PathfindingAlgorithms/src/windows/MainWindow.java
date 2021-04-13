@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import algorithms.GridPanel;
+import board.GridPanel;
 import customswing.CustomButton;
 import main.PathfindingMain;
 
