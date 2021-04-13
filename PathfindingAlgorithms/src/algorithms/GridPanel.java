@@ -33,9 +33,7 @@ public class GridPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-	Graphics2D g2 = (Graphics2D) g;
-	super.paintComponent(g2);
-
+	super.paintComponent(g);
 	// Create a Node object at each row/column of grid
 	for (int r = 0; r < ROWS; r++) {
 	    for (int c = 0; c < COLUMNS; c++) {

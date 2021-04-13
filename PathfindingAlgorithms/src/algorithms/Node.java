@@ -123,6 +123,16 @@ public class Node extends JLabel implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
 	// When mouse has been pressed and released
+//	if (isAvailable()) {
+//	    makeBarrier();
+//	} else if (colour == Color.BLACK) {
+//	    makeAvailable();
+//	}
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+	// When mouse has just been pressed
 	if (isAvailable()) {
 	    makeBarrier();
 	} else if (colour == Color.BLACK) {
@@ -131,25 +141,24 @@ public class Node extends JLabel implements MouseListener {
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-	// When mouse has just been pressed
-    }
-
-    @Override
     public void mouseReleased(MouseEvent e) {
-	// TODO Auto-generated method stub
+	// When mouse has just been released
+//	makeStart();
 
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-	// TODO Auto-generated method stub
+	// When mouse hovers over object
+//	mousePressed(e);
+//	makeOpen();
 
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-	// TODO Auto-generated method stub
+	// When mouse leaves object
+//	makePath();
 
     }
 
