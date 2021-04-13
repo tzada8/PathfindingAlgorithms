@@ -23,7 +23,7 @@ public class FreehandWindow extends JFrame implements ActionListener {
     private static final int FREEHAND_WINDOW_HEIGHT = GridPanel.MAP_SIZE + 105;
 
     // Fields
-    private GridPanel freehandGrid = new GridPanel(Color.orange);
+    private GridPanel freehandGrid = new GridPanel();
     private CustomButton resetButton = new CustomButton("Reset");
     private CustomButton confirmButton = new CustomButton("Confirm");
 

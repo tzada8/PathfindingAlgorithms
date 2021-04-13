@@ -24,9 +24,9 @@ public class GridPanel extends JPanel {
     static boolean endPointPlaced = false;
 
     // Basic Panel that holds all content for a given algorithm
-    public GridPanel(Color background) {
+    public GridPanel() {
 	this.setPreferredSize(new Dimension(MAP_SIZE, MAP_SIZE));
-	this.setBackground(background);
+	this.setBackground(null);
 	this.setLayout(null);
     }
 

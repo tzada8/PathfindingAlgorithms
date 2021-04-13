@@ -21,6 +21,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
     // Fields
     private SettingsWindow settings;
+    private GridPanel freehandGrid = new GridPanel();
     private CustomButton settingsButton = new CustomButton("Settings");
     private CustomButton startStopButton = new CustomButton("Start");
 
@@ -30,14 +31,12 @@ public class MainWindow extends JFrame implements ActionListener {
 	this.setIconImage(PathfindingMain.ICON);
 	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	this.setResizable(false);
-	this.setSize(500, 500); // MIGHT NEED TO ADJUST SIZE TO FIT NECESSARY ALGORITHMS
+	this.setSize(800, 600); // MIGHT NEED TO ADJUST SIZE TO FIT NECESSARY ALGORITHMS
 	this.getContentPane().setBackground(PathfindingMain.BACKGROUND_COLOUR);
 	this.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
-	// All algorithms on main window
-//	this.add(new GridPanel(Color.red));
-//	this.add(new GridPanel(Color.blue));
-//	this.add(new GridPanel(Color.green));
+	// Grid for freehand drawing
+	this.add(freehandGrid);
 
 	// Start/Stop button on main window
 	startStopButton.addActionListener(this);
