@@ -6,8 +6,6 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-import windows.MainWindow;
-
 public class PathfindingMain {
 
     /* CONSTANTS */

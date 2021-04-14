@@ -1,4 +1,4 @@
-package board;
+package sections.board;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -46,8 +46,7 @@ public class GridPanel extends JPanel {
     public void resetBoard() {
 	for (int r = 0; r < ROWS; r++) {
 	    for (int c = 0; c < COLUMNS; c++) {
-		Node current = map[r][c];
-		if (current.getColour() != Color.WHITE) {
+		if (map[r][c].getColour() != Color.WHITE) {
 		    map[r][c].makeAvailable();
 		}
 	    }

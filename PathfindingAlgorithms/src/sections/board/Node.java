@@ -1,4 +1,4 @@
-package board;
+package sections.board;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -130,7 +130,7 @@ public class Node extends JLabel implements MouseListener {
 	if (!GridPanel.startPointPlaced) { // Place start point FIRST
 	    this.makeStart();
 	    GridPanel.startPointPlaced = true;
-	} else if (!GridPanel.endPointPlaced) { // Place end point SECOND
+	} else if (!GridPanel.endPointPlaced && this.colour != Color.ORANGE) { // Place end point SECOND
 	    this.makeEnd();
 	    GridPanel.endPointPlaced = true;
 	} else { // Place all other barriers
