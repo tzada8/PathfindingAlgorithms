@@ -34,7 +34,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
     private CustomButton resetButton = new CustomButton("Reset");
     private CustomButton startStopButton = new CustomButton("Start");
     private CustomCheckBox showStepsCheckBox = new CustomCheckBox("Show Steps");
-    private JSlider speedOfSolutionSlider = new JSlider();
+    private JSlider solutionSpeedSlider = new JSlider();
 
     public SettingsPanel(GridPanel freehandGrid) {
 	this.setPreferredSize(new Dimension(200, 200));
@@ -55,7 +55,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	this.add(showStepsCheckBox);
 	
 	// Adding a Slider where the user can choose what speed solution occurs at
-	this.add(speedOfSolutionSlider);
+	this.add(solutionSpeedSlider);
 
 	// Adding ComboBox to choose between Algorithms
 	algorithmsComboBox = new JComboBox<String>(ALGORITHMS);
