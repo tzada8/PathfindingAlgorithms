@@ -1,15 +1,13 @@
 package main;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import customswing.CustomButton;
 import sections.board.GridPanel;
+import sections.legend.ColourLegend;
 import sections.settings.SettingsPanel;
 
 public class MainWindow extends JFrame implements ActionListener {
@@ -22,6 +20,7 @@ public class MainWindow extends JFrame implements ActionListener {
     // Fields
     private GridPanel freehandGrid = new GridPanel();
     private SettingsPanel settings = new SettingsPanel(freehandGrid);
+    private ColourLegend colLegend = new ColourLegend();
 
     public MainWindow() {
 	// Main Window properties
@@ -33,10 +32,15 @@ public class MainWindow extends JFrame implements ActionListener {
 	this.getContentPane().setBackground(PathfindingMain.BACKGROUND_COLOUR);
 	this.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
+	// Settings to change settings of grid/algorithms
 	this.add(settings);
 
-	// Grid for freehand drawing
+	// Legend of what colours represent
+	this.add(colLegend);
+
+	// Grid for obstacle placement
 	this.add(freehandGrid);
+	
 
 	this.setLocationRelativeTo(null);
 	this.setVisible(true);

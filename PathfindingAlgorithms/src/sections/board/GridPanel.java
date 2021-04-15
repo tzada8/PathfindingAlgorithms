@@ -54,4 +54,8 @@ public class GridPanel extends JPanel {
 	startPointPlaced = false;
 	endPointPlaced = false;
     }
+
+    // Goes through entire board and solves it depending on specific algorithm
+    public void solveBoard(/* ALGORITHM PARAMETER */) {
+    }
 }

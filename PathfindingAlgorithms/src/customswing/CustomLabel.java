@@ -18,7 +18,7 @@ public class CustomLabel extends JLabel {
 
     // A JLabel but with specific properties I prefer
     public CustomLabel(String title, int fontSize) {
-	this.setForeground(new Color(0xFF00FF));
+	this.setForeground(Color.BLACK);
 	this.setText(title);
 	this.setFont(new Font("Helvetica", Font.PLAIN, fontSize));
     }

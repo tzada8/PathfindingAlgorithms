@@ -8,6 +8,11 @@ import javax.swing.JLabel;
 import javax.swing.border.MatteBorder;
 
 public class Node extends JLabel implements MouseListener {
+    /*
+     * Nodes can either be open (WHITE), an obstacle (BLACK), a start point
+     * (ORANGE), an end point (CYAN), a closed path (RED), an open path (GREEN), or
+     * the solution (MAGENTA)
+     */
 
     /**
      * Default Serialization
@@ -26,8 +31,8 @@ public class Node extends JLabel implements MouseListener {
     public Node(int row, int col) {
 	this.setBounds(row * NODE_SIZE, col * NODE_SIZE, NODE_SIZE, NODE_SIZE);
 	this.setOpaque(true);
-	this.setBorder(new MatteBorder(1, 0, 0, 1, Color.BLACK));
 	this.addMouseListener(this);
+	this.setBorder(new MatteBorder(1, 0, 0, 1, Color.BLACK));
 	this.row = row;
 	this.col = col;
 	this.makeAvailable();

@@ -12,6 +12,7 @@ import javax.swing.JSlider;
 
 import customswing.CustomButton;
 import customswing.CustomCheckBox;
+import main.PathfindingMain;
 import sections.board.GridPanel;
 
 public class SettingsPanel extends JPanel implements ActionListener {
@@ -38,7 +39,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
 
     public SettingsPanel(GridPanel freehandGrid) {
 	this.setPreferredSize(new Dimension(200, 200));
-	this.setBackground(Color.ORANGE);
+	this.setBackground(PathfindingMain.COMPONENT_COLOUR);
 	this.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 	this.freehandGrid = freehandGrid;
 
@@ -77,6 +78,20 @@ public class SettingsPanel extends JPanel implements ActionListener {
     public String getObstacle() {
 	return (String) obstaclesComboBox.getSelectedItem();
     }
+    
+//  private CustomButton resetButton = new CustomButton("Reset");
+//  private CustomButton startStopButton = new CustomButton("Start");
+    // Gets 
+    
+    // Gets a true or false if the show steps checkbox is chosen
+    public boolean shouldShowSteps() {
+	return showStepsCheckBox.isSelected();
+    }
+    
+    // Gets current value of slider
+    public int getSliderValue() {
+	return solutionSpeedSlider.getValue();
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -96,8 +111,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	}
 
 	if (e.getSource() == startStopButton) {
-	    String currentText = startStopButton.getText();
-	    if (currentText.equals("Start")) {
+	    if (startStopButton.getText().equals("Start")) {
 		System.out.println("Start Program");
 		startStopButton.setText("Stop");
 	    } else {
@@ -107,7 +121,12 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	}
 	
 	if (e.getSource() == showStepsCheckBox) {
-	    System.out.println("Show the steps");
+	    System.out.println(shouldShowSteps());		
+	    if (shouldShowSteps()) {
+		System.out.println("Show the steps");		
+	    } else {
+		System.out.println("Don't show");
+	    }
 	}
     }
 }
