@@ -1,6 +1,5 @@
 package sections.settings;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -54,7 +53,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	// Adding a CheckBox where the user can choose to see steps or not
 	showStepsCheckBox.addActionListener(this);
 	this.add(showStepsCheckBox);
-	
+
 	// Adding a Slider where the user can choose what speed solution occurs at
 	this.add(solutionSpeedSlider);
 
@@ -78,16 +77,16 @@ public class SettingsPanel extends JPanel implements ActionListener {
     public String getObstacle() {
 	return (String) obstaclesComboBox.getSelectedItem();
     }
-    
+
 //  private CustomButton resetButton = new CustomButton("Reset");
 //  private CustomButton startStopButton = new CustomButton("Start");
-    // Gets 
-    
+    // Gets
+
     // Gets a true or false if the show steps checkbox is chosen
     public boolean shouldShowSteps() {
 	return showStepsCheckBox.isSelected();
     }
-    
+
     // Gets current value of slider
     public int getSliderValue() {
 	return solutionSpeedSlider.getValue();
@@ -101,13 +100,39 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	}
 
 	if (e.getSource() == algorithmsComboBox) {
-	    System.out.println(getAlgorithm());
-	    System.out.println(algorithmsComboBox.getSelectedIndex());
+	    String currentAlgorithm = this.getAlgorithm();
+	    if (currentAlgorithm == "Breath First Search") {
+		System.out.println("Solve using BFS");
+	    } else if (currentAlgorithm == "Depth First Search") {
+		System.out.println("Solve using DFS");
+	    } else if (currentAlgorithm == "A*") {
+		System.out.println("Solve using A*");
+	    } else if (currentAlgorithm == "Dijkstra") {
+		System.out.println("Solve using Dijkstra");
+	    }
 	}
 
 	if (e.getSource() == obstaclesComboBox) {
-	    System.out.println(getObstacle());
-	    System.out.println(obstaclesComboBox.getSelectedIndex());
+	    String currentObstacle = this.getObstacle();
+	    if (currentObstacle == "Freehand") {
+		freehandGrid.resetBoard();
+	    } else if (currentObstacle == "Preset 1") {
+		freehandGrid.resetBoard();
+		System.out.println("Make board unclickable");
+		System.out.println("Loading Preset 1 board...");
+	    } else if (currentObstacle == "Preset 2") {
+		freehandGrid.resetBoard();
+		System.out.println("Make board unclickable");
+		System.out.println("Loading Preset 2 board...");
+	    } else if (currentObstacle == "Preset 3") {
+		freehandGrid.resetBoard();
+		System.out.println("Make board unclickable");
+		System.out.println("Loading Preset 3 board...");
+	    } else if (currentObstacle == "Random") {
+		freehandGrid.resetBoard();
+		System.out.println("Make board unclickable");
+		System.out.println("Loading Random board from API...");
+	    }
 	}
 
 	if (e.getSource() == startStopButton) {
@@ -119,11 +144,11 @@ public class SettingsPanel extends JPanel implements ActionListener {
 		startStopButton.setText("Start");
 	    }
 	}
-	
+
 	if (e.getSource() == showStepsCheckBox) {
-	    System.out.println(shouldShowSteps());		
+	    System.out.println(shouldShowSteps());
 	    if (shouldShowSteps()) {
-		System.out.println("Show the steps");		
+		System.out.println("Show the steps");
 	    } else {
 		System.out.println("Don't show");
 	    }
