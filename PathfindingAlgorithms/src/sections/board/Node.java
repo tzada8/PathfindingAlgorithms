@@ -29,7 +29,7 @@ public class Node extends JLabel implements MouseListener {
 
     // Node object with WHITE colour
     public Node(int row, int col) {
-	this.setBounds(row * NODE_SIZE, col * NODE_SIZE, NODE_SIZE, NODE_SIZE);
+	this.setBounds(col * NODE_SIZE, row * NODE_SIZE, NODE_SIZE, NODE_SIZE);
 	this.setOpaque(true);
 	this.addMouseListener(this);
 	this.setBorder(new MatteBorder(1, 0, 0, 1, Color.BLACK));
@@ -69,6 +69,7 @@ public class Node extends JLabel implements MouseListener {
     // Make Node an obstacle/barrier (BLACK)
     public void makeBarrier() {
 	colour = Color.BLACK;
+	System.out.println("node " + row + ", " + col + " is " + colour);
 	this.setBackground(Color.BLACK);
     }
 
@@ -80,6 +81,7 @@ public class Node extends JLabel implements MouseListener {
     // Make Node start point (ORANGE)
     public void makeStart() {
 	colour = Color.ORANGE;
+	System.out.println("node " + row + ", " + col + " is " + colour);
 	this.setBackground(Color.ORANGE);
     }
 
@@ -91,6 +93,7 @@ public class Node extends JLabel implements MouseListener {
     // Make Node end point (CYAN)
     public void makeEnd() {
 	colour = Color.CYAN;
+	System.out.println("node " + row + ", " + col + " is " + colour);
 	this.setBackground(Color.CYAN);
     }
 
@@ -132,18 +135,21 @@ public class Node extends JLabel implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
 	// When mouse has just been pressed
-	if (!GridPanel.startPointPlaced) { // Place start point FIRST
-	    this.makeStart();
-	    GridPanel.startPointPlaced = true;
-	} else if (!GridPanel.endPointPlaced && this.colour != Color.ORANGE) { // Place end point SECOND
-	    this.makeEnd();
-	    GridPanel.endPointPlaced = true;
-	} else { // Place all other barriers
-	    if (this.isAvailable()) {
-		this.makeBarrier();
-	    } else if (isBarrier()) {
-		this.makeAvailable();
+	if (GridPanel.clickable) {
+	    if (!GridPanel.startPointPlaced) { // Place start point FIRST
+		this.makeStart();
+		GridPanel.startPointPlaced = true;
+	    } else if (!GridPanel.endPointPlaced && !this.isStart()) { // Place end point SECOND
+		this.makeEnd();
+		GridPanel.endPointPlaced = true;
+	    } else { // Place all other barriers
+		if (this.isAvailable()) {
+		    this.makeBarrier();
+		} else if (isBarrier()) {
+		    this.makeAvailable();
+		}
 	    }
+
 	}
     }
 

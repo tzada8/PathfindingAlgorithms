@@ -96,7 +96,9 @@ public class SettingsPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 	// Reset board to all WHITE
 	if (e.getSource() == resetButton) {
+	    System.out.println("Resetting board...");
 	    freehandGrid.resetBoard();
+	    System.out.println("Done resetting.");
 	}
 
 	if (e.getSource() == algorithmsComboBox) {
@@ -116,21 +118,24 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	    String currentObstacle = this.getObstacle();
 	    if (currentObstacle == "Freehand") {
 		freehandGrid.resetBoard();
+		freehandGrid.makeClickable();
+		freehandGrid.makeFreehand();
 	    } else if (currentObstacle == "Preset 1") {
 		freehandGrid.resetBoard();
-		System.out.println("Make board unclickable");
+		freehandGrid.makeUnclickable();
+		freehandGrid.makePreset1();
 		System.out.println("Loading Preset 1 board...");
 	    } else if (currentObstacle == "Preset 2") {
 		freehandGrid.resetBoard();
-		System.out.println("Make board unclickable");
+		freehandGrid.makeUnclickable();
 		System.out.println("Loading Preset 2 board...");
 	    } else if (currentObstacle == "Preset 3") {
 		freehandGrid.resetBoard();
-		System.out.println("Make board unclickable");
+		freehandGrid.makeUnclickable();
 		System.out.println("Loading Preset 3 board...");
 	    } else if (currentObstacle == "Random") {
 		freehandGrid.resetBoard();
-		System.out.println("Make board unclickable");
+		freehandGrid.makeUnclickable();
 		System.out.println("Loading Random board from API...");
 	    }
 	}
@@ -146,8 +151,8 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	}
 
 	if (e.getSource() == showStepsCheckBox) {
-	    System.out.println(shouldShowSteps());
-	    if (shouldShowSteps()) {
+	    System.out.println(this.shouldShowSteps());
+	    if (this.shouldShowSteps()) {
 		System.out.println("Show the steps");
 	    } else {
 		System.out.println("Don't show");

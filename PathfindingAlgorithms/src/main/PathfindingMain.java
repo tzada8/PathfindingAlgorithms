@@ -19,7 +19,7 @@ public class PathfindingMain {
     public static final Font MAIN_TEXT = new Font(GAME_FONT, Font.PLAIN, 16);
 
     public static void main(String[] args) {
-	MainWindow home = new MainWindow();
+	new MainWindow();
     }
 
 }

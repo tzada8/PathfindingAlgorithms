@@ -1,10 +1,11 @@
 package sections.board;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
+
+import sections.board.presets.MakePreset1;
 
 public class GridPanel extends JPanel {
 
@@ -14,14 +15,15 @@ public class GridPanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
     // Constants
-    private static final int COLUMNS = 30;
-    private static final int ROWS = 30;
+    private static final int COLUMNS = 31;
+    private static final int ROWS = 31;
     public static final int MAP_SIZE = ROWS * Node.NODE_SIZE;
 
     // Fields
     private Node[][] map = new Node[ROWS][COLUMNS];
     static boolean startPointPlaced = false;
     static boolean endPointPlaced = false;
+    static boolean clickable = true;
 
     // Basic Panel that holds all content for a given algorithm
     public GridPanel() {
@@ -46,13 +48,42 @@ public class GridPanel extends JPanel {
     public void resetBoard() {
 	for (int r = 0; r < ROWS; r++) {
 	    for (int c = 0; c < COLUMNS; c++) {
-		if (map[r][c].getColour() != Color.WHITE) {
+//		System.out.println(r + ", " + c + " = " + map[r][c].getColour());
+		if (!map[r][c].isAvailable()) {
+		    System.out.println(map[r][c].getColour());
 		    map[r][c].makeAvailable();
+		    System.out.println(map[r][c].getColour());
+
 		}
 	    }
 	}
 	startPointPlaced = false;
 	endPointPlaced = false;
+    }
+
+    // Makes all Node's on the board unclickable
+    public void makeUnclickable() {
+	clickable = false;
+    }
+
+    // Makes all Node's on the board clickable
+    public void makeClickable() {
+	clickable = true;
+    }
+
+    public void makeFreehand() {
+	for (int r = 0; r < ROWS; r++) {
+	    for (int c = 0; c < COLUMNS; c++) {
+		map[r][c].makeAvailable();
+	    }
+	}
+    }
+
+    // MAKECLICKABLE / MAKEUNCLICKABLE / RESETBOARD CAN ALL BE PRIVATE FIELDS AND
+    // THEN CALLED IN MAKEFREEHAND, MAKEPRESET1, ..., RANDOM
+
+    public void makePreset1() {
+	new MakePreset1(map);
     }
 
     // Goes through entire board and solves it depending on specific algorithm
