@@ -131,7 +131,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
 		freehandGrid.makePreset2();
 		System.out.println("Loading Preset 2 board...");
 	    } else if (currentObstacle == "Preset 3") {
-		freehandGrid.makePreset2();
+		freehandGrid.makePreset3();
 		System.out.println("Loading Preset 3 board...");
 	    } else if (currentObstacle == "Random") {
 		System.out.println("Loading Random board from API...");

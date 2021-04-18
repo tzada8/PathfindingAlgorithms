@@ -90,7 +90,6 @@ public class Node extends JLabel implements MouseListener {
     // Make Node an obstacle/barrier (BLACK)
     public void makeBarrier() {
 	colour = Color.BLACK;
-	System.out.println("node " + row + ", " + col + " is " + colour);
 	this.setBackground(Color.BLACK);
     }
 
@@ -102,7 +101,6 @@ public class Node extends JLabel implements MouseListener {
     // Make Node start point (ORANGE)
     public void makeStart() {
 	colour = Color.ORANGE;
-	System.out.println("node " + row + ", " + col + " is " + colour);
 	this.setBackground(Color.ORANGE);
     }
 
@@ -114,7 +112,6 @@ public class Node extends JLabel implements MouseListener {
     // Make Node end point (CYAN)
     public void makeEnd() {
 	colour = Color.CYAN;
-	System.out.println("node " + row + ", " + col + " is " + colour);
 	this.setBackground(Color.CYAN);
     }
 
@@ -169,6 +166,9 @@ public class Node extends JLabel implements MouseListener {
 		} else if (isBarrier()) {
 		    this.makeAvailable();
 		}
+	    }
+	    if (e.getButton() == MouseEvent.BUTTON1) {
+		// if left click pressed
 	    }
 
 	}

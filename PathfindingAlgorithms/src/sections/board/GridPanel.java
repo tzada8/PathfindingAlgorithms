@@ -50,11 +50,8 @@ public class GridPanel extends JPanel {
     private void resetBoard() {
 	for (int r = 0; r < ROWS; r++) {
 	    for (int c = 0; c < COLUMNS; c++) {
-//		System.out.println(r + ", " + c + " = " + map[r][c].getColour());
 		if (!map[r][c].isAvailable()) {
-		    System.out.println(map[r][c].getColour());
 		    map[r][c].makeAvailable();
-		    System.out.println(map[r][c].getColour());
 
 		}
 	    }
