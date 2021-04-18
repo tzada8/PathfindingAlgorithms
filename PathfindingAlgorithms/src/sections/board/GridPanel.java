@@ -15,8 +15,8 @@ public class GridPanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
     // Constants
-    private static final int COLUMNS = 31;
-    private static final int ROWS = 31;
+    public static final int COLUMNS = 31;
+    public static final int ROWS = 31;
     public static final int MAP_SIZE = ROWS * Node.NODE_SIZE;
 
     // Fields

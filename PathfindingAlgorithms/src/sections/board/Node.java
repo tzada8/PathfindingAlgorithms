@@ -32,7 +32,28 @@ public class Node extends JLabel implements MouseListener {
 	this.setBounds(col * NODE_SIZE, row * NODE_SIZE, NODE_SIZE, NODE_SIZE);
 	this.setOpaque(true);
 	this.addMouseListener(this);
-	this.setBorder(new MatteBorder(1, 0, 0, 1, Color.BLACK));
+
+	// Add border to Nodes --> (TOP, LEFT, BOTTOM, RIGHT, COLOUR)
+	if (row == 0 && col == 0) { // Top-left corner
+	    this.setBorder(new MatteBorder(2, 2, 0, 1, Color.BLACK));
+	} else if (row == 0 && col == GridPanel.COLUMNS - 1) { // Top-right corner
+	    this.setBorder(new MatteBorder(2, 0, 0, 2, Color.BLACK));
+	} else if (row == GridPanel.ROWS - 1 && col == 0) { // Bottom-left corner
+	    this.setBorder(new MatteBorder(1, 2, 2, 1, Color.BLACK));
+	} else if (row == GridPanel.ROWS - 1 && col == GridPanel.COLUMNS - 1) { // Bottom-right corner
+	    this.setBorder(new MatteBorder(1, 0, 2, 2, Color.BLACK));
+	} else if (col == 0) { // Left-most side
+	    this.setBorder(new MatteBorder(1, 2, 0, 1, Color.BLACK));
+	} else if (col == GridPanel.COLUMNS - 1) { // Right-most side
+	    this.setBorder(new MatteBorder(1, 0, 0, 2, Color.BLACK));
+	} else if (row == 0) { // Top-most side
+	    this.setBorder(new MatteBorder(2, 0, 0, 1, Color.BLACK));
+	} else if (row == GridPanel.ROWS - 1) { // Bottom-most side
+	    this.setBorder(new MatteBorder(1, 0, 2, 1, Color.BLACK));
+	} else {
+	    this.setBorder(new MatteBorder(1, 0, 0, 1, Color.BLACK));
+	}
+	
 	this.row = row;
 	this.col = col;
 	this.makeAvailable();

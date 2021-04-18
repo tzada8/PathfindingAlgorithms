@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 
@@ -158,5 +159,6 @@ public class SettingsPanel extends JPanel implements ActionListener {
 		System.out.println("Don't show");
 	    }
 	}
+//	this.getParent().repaint();
     }
 }

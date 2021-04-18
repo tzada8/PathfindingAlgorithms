@@ -17,7 +17,7 @@ public class MainWindow extends JFrame {
 	this.setResizable(false);
 	this.getContentPane().setBackground(PathfindingMain.BACKGROUND_COLOUR);
 
-	// Frame with all main content (grid, settings, and legend)
+	// Panel with all main content (grid, settings, and legend)
 	this.add(new MainFrame());
 
 	this.pack();

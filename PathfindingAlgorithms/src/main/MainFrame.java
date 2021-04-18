@@ -26,8 +26,10 @@ public class MainFrame extends JPanel {
 	this.setPreferredSize(new Dimension(850, 600));
 	this.setBackground(Color.CYAN);
 	this.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+//	this.setLayout(null);
 
 	// Settings to change settings of grid/algorithms
+//	settings.setBounds(100, 100, 100, 100);
 	this.add(settings);
 
 	// Legend of what colours represent
