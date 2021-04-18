@@ -53,7 +53,7 @@ public class Node extends JLabel implements MouseListener {
 	} else {
 	    this.setBorder(new MatteBorder(1, 0, 0, 1, Color.BLACK));
 	}
-	
+
 	this.row = row;
 	this.col = col;
 	this.makeAvailable();

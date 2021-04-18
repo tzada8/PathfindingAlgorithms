@@ -97,8 +97,13 @@ public class SettingsPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 	// Reset board to all WHITE
 	if (e.getSource() == resetButton) {
+
+	    // GIVE RESET BUTTON 2 DIFFERENT FUNCTIONALITIES:
+	    // - IF ON "FREEHAND", THEN "RESET" WILL RESET BOARD ENTIRELY
+	    // - IF ON "ANYTHING ELSE", THEN "RESET" WILL RESET RED/GREEN/PURPLES
+
 	    System.out.println("Resetting board...");
-	    freehandGrid.resetBoard();
+	    freehandGrid.makeFreehand();
 	    System.out.println("Done resetting.");
 	}
 
@@ -118,25 +123,17 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	if (e.getSource() == obstaclesComboBox) {
 	    String currentObstacle = this.getObstacle();
 	    if (currentObstacle == "Freehand") {
-		freehandGrid.resetBoard();
-		freehandGrid.makeClickable();
 		freehandGrid.makeFreehand();
 	    } else if (currentObstacle == "Preset 1") {
-		freehandGrid.resetBoard();
-		freehandGrid.makeUnclickable();
 		freehandGrid.makePreset1();
 		System.out.println("Loading Preset 1 board...");
 	    } else if (currentObstacle == "Preset 2") {
-		freehandGrid.resetBoard();
-		freehandGrid.makeUnclickable();
+		freehandGrid.makePreset2();
 		System.out.println("Loading Preset 2 board...");
 	    } else if (currentObstacle == "Preset 3") {
-		freehandGrid.resetBoard();
-		freehandGrid.makeUnclickable();
+		freehandGrid.makePreset2();
 		System.out.println("Loading Preset 3 board...");
 	    } else if (currentObstacle == "Random") {
-		freehandGrid.resetBoard();
-		freehandGrid.makeUnclickable();
 		System.out.println("Loading Random board from API...");
 	    }
 	}
