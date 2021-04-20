@@ -69,6 +69,11 @@ public class Node extends JLabel implements MouseListener {
 	return colour;
     }
 
+    // Checks if 2 Nodes are equal, meaning same position and colour
+    public boolean equals(Node other) {
+	return this.row == other.row && this.col == other.col && this.colour.equals(other.colour);
+    }
+
     /****** FOR CREATING MAP ******/
     // Colour is WHITE, meaning it's available
     public boolean isAvailable() {

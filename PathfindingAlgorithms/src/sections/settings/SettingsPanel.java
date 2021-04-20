@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import algorithms.AStar;
+import algorithms.BreathFirstSearch;
 import algorithms.Dijkstra;
 import customswing.CustomButton;
 import customswing.CustomCheckBox;
@@ -142,11 +143,11 @@ public class SettingsPanel extends JPanel implements ActionListener {
 		    String currentAlgorithm = this.getAlgorithm();
 		    boolean showSteps = this.shouldShowSteps();
 		    if (currentAlgorithm == ALGORITHMS[0]) {
-//			    BreathFirstSearch bfsTree = new BreathFirstSearch();
+			BreathFirstSearch bfsTree = new BreathFirstSearch(mainGrid, mainGrid.getStartNode());
 		    } else if (currentAlgorithm == ALGORITHMS[1]) {
 			System.out.println("Solve using DFS");
 		    } else if (currentAlgorithm == ALGORITHMS[2]) {
-			mainGrid.solveBoard(new AStar(), showSteps);
+			mainGrid.solveBoard(new AStar(mainGrid, mainGrid.getStartNode()), showSteps);
 		    } else if (currentAlgorithm == ALGORITHMS[3]) {
 			mainGrid.solveBoard(new Dijkstra(), showSteps);
 		    }

@@ -1,6 +1,8 @@
 package sections.board;
 
 import java.awt.Dimension;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JPanel;
 
@@ -42,13 +44,86 @@ public class GridPanel extends JPanel {
 	}
     }
 
+    // Gets Node from specified parameters
+    public Node getNode(int row, int col) {
+	return map[row][col];
+    }
+
+    // Gets Start Node from map
+    public Node getStartNode() {
+	for (int r = 0; r < ROWS; r++) {
+	    for (int c = 0; c < COLUMNS; c++) {
+		if (map[r][c].isStart()) {
+		    return map[r][c];
+		}
+	    }
+	}
+	return null;
+    }
+
+    // Gets End Node from map
+    public Node getEndNode() {
+	for (int r = 0; r < ROWS; r++) {
+	    for (int c = 0; c < COLUMNS; c++) {
+		if (map[r][c].isEnd()) {
+		    return map[r][c];
+		}
+	    }
+	}
+	return null;
+    }
+
+    /*
+     * Returns all the adjacent Nodes to Node v that are available (WHITE Nodes).
+     */
+    public Set<Node> getAdjacencyNodes(Node v) {
+	// FOR NOW JUST DOING 4 ADJACENT NODES --> FUTURE MIGHT DO CORNERS OF NODE v TOO
+
+	Set<Node> adjacentNodes = new HashSet<Node>();
+	int currentRow = v.getPosition()[0];
+	int currentCol = v.getPosition()[1];
+
+	// Go through top and bottom Nodes
+	int startLoop = determineBoundaries(currentRow - 1, GridPanel.ROWS);
+	int endLoop = determineBoundaries(currentRow + 1, GridPanel.ROWS);
+	for (int r = startLoop; r <= endLoop; r++) {
+	    // If spot is available or end, and it's not itself
+	    if ((map[r][currentCol].isAvailable() || map[r][currentCol].isEnd()) && !map[r][currentCol].equals(v)) {
+		adjacentNodes.add(map[r][currentCol]);
+	    }
+	}
+
+	// Go through left and right Nodes
+	startLoop = determineBoundaries(currentCol - 1, GridPanel.COLUMNS);
+	endLoop = determineBoundaries(currentCol + 1, GridPanel.COLUMNS);
+	for (int c = startLoop; c <= endLoop; c++) {
+	    // If spot is available or end, and it's not itself
+	    if ((map[currentRow][c].isAvailable() || map[currentRow][c].isEnd()) && !map[currentRow][c].equals(v)) {
+		adjacentNodes.add(map[currentRow][c]);
+	    }
+	}
+
+	return adjacentNodes;
+    }
+
+    // General method to determine if a Node outside the board is trying to be
+    // accessed
+    private int determineBoundaries(int testVal, int upperLimitingFactor) {
+	// If outside lower or upper boundaries, adjust value to keep it inside
+	if (testVal < 0) {
+	    testVal = 0;
+	} else if (testVal > upperLimitingFactor - 1) {
+	    testVal = upperLimitingFactor - 1;
+	}
+	return testVal;
+    }
+
     // Goes through entire board and resets each Node to colour WHITE
     private void resetBoard() {
 	for (int r = 0; r < ROWS; r++) {
 	    for (int c = 0; c < COLUMNS; c++) {
 		if (!map[r][c].isAvailable()) {
 		    map[r][c].makeAvailable();
-
 		}
 	    }
 	}
