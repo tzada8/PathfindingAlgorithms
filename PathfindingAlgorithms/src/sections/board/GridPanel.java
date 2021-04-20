@@ -68,6 +68,19 @@ public class GridPanel extends JPanel {
 	}
     }
 
+    // Goes through board and verifies if there is both a START and END point
+    public boolean hasStartAndEndPoint() {
+	int counter = 0;
+	for (int r = 0; r < ROWS; r++) {
+	    for (int c = 0; c < COLUMNS; c++) {
+		if (map[r][c].isStart() || map[r][c].isEnd()) {
+		    counter++;
+		}
+	    }
+	}
+	return counter == 2;
+    }
+
     // Makes all Node's on the board unclickable
     public void makeUnclickable() {
 	clickable = false;

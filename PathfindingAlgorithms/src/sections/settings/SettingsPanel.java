@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import algorithms.AStar;
@@ -102,7 +103,6 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	// for resetButton
 	if (e.getSource() == obstaclesComboBox) {
 	    String currentObstacle = this.getObstacle();
-	    System.out.println(currentObstacle);
 	    // Update button text depending on current obstacle
 	    if (currentObstacle == OBSTACLES[0]) {
 		resetButton.setText(RESET_BUTTON_TEXT[0]);
@@ -126,44 +126,57 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	}
 
 	if (e.getSource() == startStopButton) {
-	    // If solving, then solve using last chosen algorithm and CheckBox value
+	    // If solving, then solve use last chosen algorithm and CheckBox value
 	    if (startStopButton.getText().equals(START_STOP_BUTTON_TEXT[0])) {
-		// Disable all options while board is being solved except this button
-		enableOrDisableOptions(false);
-		mainGrid.makeUnclickable();
-		startStopButton.setText(START_STOP_BUTTON_TEXT[1]);
+		// If grid doesn't have both a start and end point, then give error message box
+		if (!mainGrid.hasStartAndEndPoint()) {
+		    JOptionPane.showMessageDialog(null, "Missing both a Start and End point.",
+			    "Error in Board Creation", JOptionPane.ERROR_MESSAGE);
+		} else { // Else all is good and can continue solving board
+		    // Disable all options while board is being solved except this button
+		    enableOrDisableOptions(false);
 
-		String currentAlgorithm = this.getAlgorithm();
-		boolean showSteps = this.shouldShowSteps();
-		if (currentAlgorithm == ALGORITHMS[0]) {
-//		    BreathFirstSearch bfsTree = new BreathFirstSearch();
-		} else if (currentAlgorithm == ALGORITHMS[1]) {
-		    System.out.println("Solve using DFS");
-		} else if (currentAlgorithm == ALGORITHMS[2]) {
-		    mainGrid.solveBoard(new AStar(), showSteps);
-		} else if (currentAlgorithm == ALGORITHMS[3]) {
-		    mainGrid.solveBoard(new Dijkstra(), showSteps);
+		    String currentAlgorithm = this.getAlgorithm();
+		    boolean showSteps = this.shouldShowSteps();
+		    if (currentAlgorithm == ALGORITHMS[0]) {
+//			    BreathFirstSearch bfsTree = new BreathFirstSearch();
+		    } else if (currentAlgorithm == ALGORITHMS[1]) {
+			System.out.println("Solve using DFS");
+		    } else if (currentAlgorithm == ALGORITHMS[2]) {
+			mainGrid.solveBoard(new AStar(), showSteps);
+		    } else if (currentAlgorithm == ALGORITHMS[3]) {
+			mainGrid.solveBoard(new Dijkstra(), showSteps);
+		    }
 		}
-
-		System.out.println("Solving with " + this.getAlgorithm());
-		System.out.println("Should we show steps? " + this.shouldShowSteps());
 	    } else { // Else stopping, so immediately stop solving
 		// Enables all options again since board stops being solved
 		enableOrDisableOptions(true);
-		if (this.getObstacle() == OBSTACLES[0]) {
-		    mainGrid.makeClickable();
-		}
-		startStopButton.setText(START_STOP_BUTTON_TEXT[0]);
 
 		System.out.println("Stop Program");
 	    }
 	}
     }
 
+    // Make all options unclickable/clickable depending on START / STOP
     private void enableOrDisableOptions(boolean type) {
+	// Unclickable / Clickable options
 	algorithmsComboBox.setEnabled(type);
 	obstaclesComboBox.setEnabled(type);
 	resetButton.setEnabled(type);
 	showStepsCheckBox.setEnabled(type);
+
+	// Make board unclickable / clickable depending on current obstacle
+	if (this.getObstacle() == OBSTACLES[0] && type) {
+	    mainGrid.makeClickable();
+	} else {
+	    mainGrid.makeUnclickable();
+	}
+
+	// Readjust button text depending on what was just pressed
+	if (type) {
+	    startStopButton.setText(START_STOP_BUTTON_TEXT[0]);
+	} else {
+	    startStopButton.setText(START_STOP_BUTTON_TEXT[1]);
+	}
     }
 }
