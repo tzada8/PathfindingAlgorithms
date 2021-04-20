@@ -1,10 +1,10 @@
 package sections.board;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import algorithms.Algorithm;
 import sections.board.presets.MakePreset1;
 import sections.board.presets.MakePreset2;
 import sections.board.presets.MakePreset3;
@@ -32,12 +32,8 @@ public class GridPanel extends JPanel {
 	this.setPreferredSize(new Dimension(MAP_SIZE, MAP_SIZE));
 	this.setBackground(null);
 	this.setLayout(null);
-    }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-	super.paintComponent(g);
-	// Create a Node object at each row/column of grid
+	// Create a Node object at each (row, column) of grid
 	for (int r = 0; r < ROWS; r++) {
 	    for (int c = 0; c < COLUMNS; c++) {
 		map[r][c] = new Node(r, c);
@@ -60,6 +56,18 @@ public class GridPanel extends JPanel {
 	endPointPlaced = false;
     }
 
+    // Goes through entire board and resets pathfinding Nodes to WHITE
+    // --> RED, GREEN, and MAGENTA
+    public void resetPathfinding() {
+	for (int r = 0; r < ROWS; r++) {
+	    for (int c = 0; c < COLUMNS; c++) {
+		if (map[r][c].isClosed() || map[r][c].isOpen() || map[r][c].isPath()) {
+		    map[r][c].makeAvailable();
+		}
+	    }
+	}
+    }
+
     // Makes all Node's on the board unclickable
     private void makeUnclickable() {
 	clickable = false;
@@ -76,10 +84,15 @@ public class GridPanel extends JPanel {
 	this.makeUnclickable();
     }
 
-    // Creates the Freehand board
-    public void makeFreehand() {
+    // Makes board both clickable and clears all Nodes to WHITE
+    private void clickableAndEmptyBoard() {
 	this.resetBoard();
 	this.makeClickable();
+    }
+
+    // Creates the Freehand board
+    public void makeFreehand() {
+	this.clickableAndEmptyBoard();
     }
 
     // Creates the Preset1 board
@@ -106,6 +119,7 @@ public class GridPanel extends JPanel {
     }
 
     // Goes through entire board and solves it depending on specific algorithm
-    public void solveBoard(/* ALGORITHM PARAMETER */) {
+    public void solveBoard(Algorithm algorithm, boolean showSteps) {
+	System.out.println(algorithm + " and " + showSteps);
     }
 }

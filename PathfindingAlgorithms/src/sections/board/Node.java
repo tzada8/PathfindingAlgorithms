@@ -53,7 +53,6 @@ public class Node extends JLabel implements MouseListener {
 	} else {
 	    this.setBorder(new MatteBorder(1, 0, 0, 1, Color.BLACK));
 	}
-
 	this.row = row;
 	this.col = col;
 	this.makeAvailable();
@@ -136,6 +135,11 @@ public class Node extends JLabel implements MouseListener {
     public void makeOpen() {
 	colour = Color.GREEN;
 	this.setBackground(Color.GREEN);
+    }
+
+    // Colour is MAGENTA, meaning it's part of solved path
+    public boolean isPath() {
+	return colour == Color.MAGENTA;
     }
 
     // Make Node MAGENTA, meaning it's the solved path

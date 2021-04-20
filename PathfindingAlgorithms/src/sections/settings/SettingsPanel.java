@@ -6,10 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
 
+import algorithms.AStar;
+import algorithms.Dijkstra;
 import customswing.CustomButton;
 import customswing.CustomCheckBox;
 import main.PathfindingMain;
@@ -25,23 +25,23 @@ public class SettingsPanel extends JPanel implements ActionListener {
     // Constants
     private static final String[] ALGORITHMS = { "Breath First Search", "Depth First Search", "A*", "Dijkstra" };
     private static final String[] OBSTACLES = { "Freehand", "Preset 1", "Preset 2", "Preset 3", "Random" };
-
-    // TEMP VAR
-    private GridPanel freehandGrid;
+    private static final String[] RESET_BUTTON_TEXT = { "Clear Board", "Reset Pathfinding" };
+    private static final String[] START_STOP_BUTTON_TEXT = { "Start", "Stop" };
 
     // Fields
     private JComboBox<String> algorithmsComboBox;
     private JComboBox<String> obstaclesComboBox;
-    private CustomButton resetButton = new CustomButton("Reset");
-    private CustomButton startStopButton = new CustomButton("Start");
+    private CustomButton resetButton = new CustomButton(RESET_BUTTON_TEXT[0]);
+    private CustomButton startStopButton = new CustomButton(START_STOP_BUTTON_TEXT[0]);
     private CustomCheckBox showStepsCheckBox = new CustomCheckBox("Show Steps");
-    private JSlider solutionSpeedSlider = new JSlider();
+    private GridPanel mainGrid;
 
-    public SettingsPanel(GridPanel freehandGrid) {
+    // Creates panel for all settings/form options and applies them to the board
+    public SettingsPanel(GridPanel mainGrid) {
 	this.setPreferredSize(new Dimension(200, 200));
 	this.setBackground(PathfindingMain.COMPONENT_COLOUR);
 	this.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-	this.freehandGrid = freehandGrid;
+	this.mainGrid = mainGrid;
 
 	// Adding button to reset entire board
 	resetButton.addActionListener(this);
@@ -54,9 +54,6 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	// Adding a CheckBox where the user can choose to see steps or not
 	showStepsCheckBox.addActionListener(this);
 	this.add(showStepsCheckBox);
-
-	// Adding a Slider where the user can choose what speed solution occurs at
-	this.add(solutionSpeedSlider);
 
 	// Adding ComboBox to choose between Algorithms
 	algorithmsComboBox = new JComboBox<String>(ALGORITHMS);
@@ -88,74 +85,71 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	return showStepsCheckBox.isSelected();
     }
 
-    // Gets current value of slider
-    public int getSliderValue() {
-	return solutionSpeedSlider.getValue();
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
-	// Reset board to all WHITE
+
+	// If reset button is clicked, then reset board accordingly
 	if (e.getSource() == resetButton) {
-
-	    // GIVE RESET BUTTON 2 DIFFERENT FUNCTIONALITIES:
-	    // - IF ON "FREEHAND", THEN "RESET" WILL RESET BOARD ENTIRELY
-	    // - IF ON "ANYTHING ELSE", THEN "RESET" WILL RESET RED/GREEN/PURPLES
-
-	    System.out.println("Resetting board...");
-	    freehandGrid.makeFreehand();
-	    System.out.println("Done resetting.");
-	}
-
-	if (e.getSource() == algorithmsComboBox) {
-	    String currentAlgorithm = this.getAlgorithm();
-	    if (currentAlgorithm == "Breath First Search") {
-		System.out.println("Solve using BFS");
-	    } else if (currentAlgorithm == "Depth First Search") {
-		System.out.println("Solve using DFS");
-	    } else if (currentAlgorithm == "A*") {
-		System.out.println("Solve using A*");
-	    } else if (currentAlgorithm == "Dijkstra") {
-		System.out.println("Solve using Dijkstra");
+	    // If on "Freehand", then button will clear board entirely
+	    if (this.getObstacle() == "Freehand") {
+		mainGrid.makeFreehand();
+	    } else { // If on anything else, then button will reset pathfinding
+		mainGrid.resetPathfinding();
 	    }
 	}
 
+	// If new obstacle in chosen from ComboBox, then update grid and text
+	// for resetButton
 	if (e.getSource() == obstaclesComboBox) {
 	    String currentObstacle = this.getObstacle();
-	    if (currentObstacle == "Freehand") {
-		freehandGrid.makeFreehand();
-	    } else if (currentObstacle == "Preset 1") {
-		freehandGrid.makePreset1();
-		System.out.println("Loading Preset 1 board...");
-	    } else if (currentObstacle == "Preset 2") {
-		freehandGrid.makePreset2();
-		System.out.println("Loading Preset 2 board...");
-	    } else if (currentObstacle == "Preset 3") {
-		freehandGrid.makePreset3();
-		System.out.println("Loading Preset 3 board...");
-	    } else if (currentObstacle == "Random") {
+	    System.out.println(currentObstacle);
+	    // Update button text depending on current obstacle
+	    if (currentObstacle == OBSTACLES[0]) {
+		resetButton.setText(RESET_BUTTON_TEXT[0]);
+	    } else {
+		resetButton.setText(RESET_BUTTON_TEXT[1]);
+	    }
+
+	    // Update board depending on current obstacle
+	    if (currentObstacle == OBSTACLES[0]) {
+		mainGrid.makeFreehand();
+	    } else if (currentObstacle == OBSTACLES[1]) {
+		mainGrid.makePreset1();
+	    } else if (currentObstacle == OBSTACLES[2]) {
+		mainGrid.makePreset2();
+	    } else if (currentObstacle == OBSTACLES[3]) {
+		mainGrid.makePreset3();
+	    } else if (currentObstacle == OBSTACLES[4]) {
+		mainGrid.makeRandom();
 		System.out.println("Loading Random board from API...");
 	    }
 	}
 
 	if (e.getSource() == startStopButton) {
-	    if (startStopButton.getText().equals("Start")) {
+	    if (startStopButton.getText().equals(START_STOP_BUTTON_TEXT[0])) {
 		System.out.println("Start Program");
-		startStopButton.setText("Stop");
+		// Once user chooses to start program, get the algorithm they last chose
+		// and solve board with that algorithm
+		String currentAlgorithm = this.getAlgorithm();
+		boolean showSteps = this.shouldShowSteps();
+		if (currentAlgorithm == ALGORITHMS[0]) {
+//		    BreathFirstSearch bfsTree = new BreathFirstSearch();
+		} else if (currentAlgorithm == ALGORITHMS[1]) {
+		    System.out.println("Solve using DFS");
+		} else if (currentAlgorithm == ALGORITHMS[2]) {
+		    mainGrid.solveBoard(new AStar(), showSteps);
+		} else if (currentAlgorithm == ALGORITHMS[3]) {
+		    mainGrid.solveBoard(new Dijkstra(), showSteps);
+		}
+
+		System.out.println("Solving with " + this.getAlgorithm());
+		System.out.println("Should we show steps? " + this.shouldShowSteps());
+
+		startStopButton.setText(START_STOP_BUTTON_TEXT[1]);
 	    } else {
 		System.out.println("Stop Program");
-		startStopButton.setText("Start");
+		startStopButton.setText(START_STOP_BUTTON_TEXT[0]);
 	    }
 	}
-
-	if (e.getSource() == showStepsCheckBox) {
-	    System.out.println(this.shouldShowSteps());
-	    if (this.shouldShowSteps()) {
-		System.out.println("Show the steps");
-	    } else {
-		System.out.println("Don't show");
-	    }
-	}
-//	this.getParent().repaint();
     }
 }

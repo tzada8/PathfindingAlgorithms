@@ -20,7 +20,7 @@ public class MainWindow extends JFrame {
 	this.getContentPane().setBackground(PathfindingMain.BACKGROUND_COLOUR);
 
 	// Panel with all main content (grid, settings, and legend)
-	this.add(new MainFrame());
+	this.add(new MainPanel());
 
 	this.pack();
 	this.setLocationRelativeTo(null);
