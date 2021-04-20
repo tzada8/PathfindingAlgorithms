@@ -69,12 +69,12 @@ public class GridPanel extends JPanel {
     }
 
     // Makes all Node's on the board unclickable
-    private void makeUnclickable() {
+    public void makeUnclickable() {
 	clickable = false;
     }
 
     // Makes all Node's on the board clickable
-    private void makeClickable() {
+    public void makeClickable() {
 	clickable = true;
     }
 

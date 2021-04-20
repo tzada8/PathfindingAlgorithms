@@ -126,10 +126,13 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	}
 
 	if (e.getSource() == startStopButton) {
+	    // If solving, then solve using last chosen algorithm and CheckBox value
 	    if (startStopButton.getText().equals(START_STOP_BUTTON_TEXT[0])) {
-		System.out.println("Start Program");
-		// Once user chooses to start program, get the algorithm they last chose
-		// and solve board with that algorithm
+		// Disable all options while board is being solved except this button
+		enableOrDisableOptions(false);
+		mainGrid.makeUnclickable();
+		startStopButton.setText(START_STOP_BUTTON_TEXT[1]);
+
 		String currentAlgorithm = this.getAlgorithm();
 		boolean showSteps = this.shouldShowSteps();
 		if (currentAlgorithm == ALGORITHMS[0]) {
@@ -144,12 +147,23 @@ public class SettingsPanel extends JPanel implements ActionListener {
 
 		System.out.println("Solving with " + this.getAlgorithm());
 		System.out.println("Should we show steps? " + this.shouldShowSteps());
-
-		startStopButton.setText(START_STOP_BUTTON_TEXT[1]);
-	    } else {
-		System.out.println("Stop Program");
+	    } else { // Else stopping, so immediately stop solving
+		// Enables all options again since board stops being solved
+		enableOrDisableOptions(true);
+		if (this.getObstacle() == OBSTACLES[0]) {
+		    mainGrid.makeClickable();
+		}
 		startStopButton.setText(START_STOP_BUTTON_TEXT[0]);
+
+		System.out.println("Stop Program");
 	    }
 	}
+    }
+
+    private void enableOrDisableOptions(boolean type) {
+	algorithmsComboBox.setEnabled(type);
+	obstaclesComboBox.setEnabled(type);
+	resetButton.setEnabled(type);
+	showStepsCheckBox.setEnabled(type);
     }
 }
