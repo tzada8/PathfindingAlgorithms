@@ -110,6 +110,9 @@ public class SettingsPanel extends JPanel implements ActionListener {
 		resetButton.setText(RESET_BUTTON_TEXT[1]);
 	    }
 
+	    // MAYBE BETTER TO JUST MAKE THIS INTO 2 DIFFERENT BUTTONS
+	    // AND THEN HAVE "Reset Pathfinding" BUTTON APPEAR ONLY WHEN NECESSARY
+
 	    // Update board depending on current obstacle
 	    if (currentObstacle == OBSTACLES[0]) {
 		mainGrid.makeFreehand();
