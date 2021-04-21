@@ -27,13 +27,13 @@ public class SettingsPanel extends JPanel implements ActionListener {
     // Constants
     private static final String[] ALGORITHMS = { "Breath First Search", "Depth First Search", "A*", "Dijkstra" };
     private static final String[] OBSTACLES = { "Freehand", "Preset 1", "Preset 2", "Preset 3", "Random" };
-    private static final String[] RESET_BUTTON_TEXT = { "Clear Board", "Reset Pathfinding" };
     private static final String[] START_STOP_BUTTON_TEXT = { "Start", "Stop" };
 
     // Fields
     private JComboBox<String> algorithmsComboBox;
     private JComboBox<String> obstaclesComboBox;
-    private CustomButton resetButton = new CustomButton(RESET_BUTTON_TEXT[0]);
+    private CustomButton clearBoardButton = new CustomButton("Clear Board");
+    private CustomButton resetPathfindingButton = new CustomButton("Reset Pathfinding");
     private CustomButton startStopButton = new CustomButton(START_STOP_BUTTON_TEXT[0]);
     private CustomCheckBox showStepsCheckBox = new CustomCheckBox("Show Steps");
     private GridPanel mainGrid;
@@ -45,9 +45,13 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	this.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 	this.mainGrid = mainGrid;
 
-	// Adding button to reset entire board
-	resetButton.addActionListener(this);
-	this.add(resetButton);
+	// Adding button to clear entire board
+	clearBoardButton.addActionListener(this);
+	this.add(clearBoardButton);
+
+	// Adding button to reset pathfinding (REDs, GREENs, and MAGENTAs)
+	resetPathfindingButton.addActionListener(this);
+	this.add(resetPathfindingButton);
 
 	// Adding Start/Stop button to keep running /stop running solution
 	startStopButton.addActionListener(this);
@@ -90,29 +94,25 @@ public class SettingsPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-	// If reset button is clicked, then reset board accordingly
-	if (e.getSource() == resetButton) {
-	    // If on "Freehand", then button will clear board entirely
-	    if (this.getObstacle() == "Freehand") {
-		mainGrid.makeFreehand();
-	    } else { // If on anything else, then button will reset pathfinding
-		mainGrid.resetPathfinding();
-	    }
+	// If reset button is clicked, then clear board entirely (only works on
+	// "Freehand")
+	if (e.getSource() == clearBoardButton) {
+	    mainGrid.makeFreehand();
 	}
 
-	// If new obstacle in chosen from ComboBox, then update grid and text
-	// for resetButton
+	if (e.getSource() == resetPathfindingButton) {
+	    mainGrid.resetPathfinding();
+	}
+
+	// If new obstacle in chosen from ComboBox, then update grid
 	if (e.getSource() == obstaclesComboBox) {
 	    String currentObstacle = this.getObstacle();
-	    // Update button text depending on current obstacle
+	    // Let Clear Board button be clickable only for freehand option
 	    if (currentObstacle == OBSTACLES[0]) {
-		resetButton.setText(RESET_BUTTON_TEXT[0]);
+		clearBoardButton.setEnabled(true);
 	    } else {
-		resetButton.setText(RESET_BUTTON_TEXT[1]);
+		clearBoardButton.setEnabled(false);
 	    }
-
-	    // MAYBE BETTER TO JUST MAKE THIS INTO 2 DIFFERENT BUTTONS
-	    // AND THEN HAVE "Reset Pathfinding" BUTTON APPEAR ONLY WHEN NECESSARY
 
 	    // Update board depending on current obstacle
 	    if (currentObstacle == OBSTACLES[0]) {
@@ -163,10 +163,13 @@ public class SettingsPanel extends JPanel implements ActionListener {
 
     // Make all options unclickable/clickable depending on START / STOP
     private void enableOrDisableOptions(boolean type) {
-	// Unclickable / Clickable options
+	// Make options unclickable / clickable while solution being solved
 	algorithmsComboBox.setEnabled(type);
 	obstaclesComboBox.setEnabled(type);
-	resetButton.setEnabled(type);
+	if (this.getObstacle() == OBSTACLES[0]) {
+	    clearBoardButton.setEnabled(type);
+	}
+	resetPathfindingButton.setEnabled(type);
 	showStepsCheckBox.setEnabled(type);
 
 	// Make board unclickable / clickable depending on current obstacle

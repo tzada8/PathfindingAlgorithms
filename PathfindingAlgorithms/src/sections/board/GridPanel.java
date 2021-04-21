@@ -44,7 +44,7 @@ public class GridPanel extends JPanel {
 	}
     }
 
-    // Gets Node from specified parameters
+    // Gets Node at specified parameters
     public Node getNode(int row, int col) {
 	return map[row][col];
     }

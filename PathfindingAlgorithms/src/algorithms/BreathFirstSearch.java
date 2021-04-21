@@ -40,86 +40,58 @@ public class BreathFirstSearch extends Algorithm {
 		parents.put(mainGrid.getNode(r, c), null);
 	    }
 	}
+	Node end = mainGrid.getEndNode();
 
-	try {
-	    // Keep track of "visited" vertices
-	    Queue<Node> q = new LinkedList<>();
-	    distances.put(start, 0);
-	    q.add(start);
+	// Keep track of "visited" vertices
+	Queue<Node> q = new LinkedList<>();
+	distances.put(start, 0);
+	q.add(start);
 
-	    // Solution will be found in 2 ways depending if user wants to see solution
-	    // 1. Using a timer that renders the Node every 0.01s until the END node is
-	    // reached
-	    // 2. Using a while loop that doesn't render anything except the solution path
-	    if (showSteps) {
-		Timer timer = new Timer(10, new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-			Node u = q.remove();
-			if (!u.isStart() && showSteps) {
-			    u.makeClosed();
-			}
+	// Solution will be found in 2 ways depending if user wants to see solution
+	// 1. Using a timer that renders the Node every 0.01s until the END node is
+	// reached
+	// 2. Using a while loop that doesn't render anything except the solution path
+	if (showSteps) {
+	    Timer timer = new Timer(10, new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    try {
+			solveUsingBFS(q, showSteps);
 
-			// For every node adjacent to u
-			for (Node v : mainGrid.getAdjacencyNodes(u)) {
-			    // If v is not yet visited, then change its distance and parent accordingly
-			    if (distances.get(v) == -1) {
-				if (!v.isEnd() && showSteps) {
-				    v.makeOpen();
-				}
-				distances.put(v, distances.get(u) + 1);
-				parents.put(v, u);
-				q.add(v);
-
-				System.out.println("(" + v.getPosition()[0] + ", " + v.getPosition()[1] + ") = "
-					+ distances.get(mainGrid.getNode(v.getPosition()[0], v.getPosition()[1])));
-			    }
-			}
-
-			if (distances.get(mainGrid.getEndNode()) != -1) {
+			// If END Node's distance is not -1, then that means it has been reached so stop
+			// timer
+			if (distances.get(end) != -1 || q.isEmpty()) {
 			    ((Timer) e.getSource()).stop();
 			}
 
-			if (!((Timer) e.getSource()).isRunning()) {
-			    // Change all Nodes part of solution accordingly
-			    Node currentNode = parents.get(mainGrid.getEndNode());
-			    while (currentNode != start) {
-				currentNode.makePath();
-				currentNode = parents.get(currentNode);
-			    }
+			// If timer has stopped running and a solution exists, then draw the path
+			if (!((Timer) e.getSource()).isRunning() && distances.get(end) != -1) {
+			    drawPath(end);
+			} else if (!((Timer) e.getSource()).isRunning() && distances.get(end) == -1) {
+			    // Else throw exception to go into catch block
+			    throw new NoSuchElementException("Force catch block");
 			}
+		    } catch (NoSuchElementException e1) {
+			JOptionPane.showMessageDialog(null, "The board has no solution.", "No Solutions",
+				JOptionPane.INFORMATION_MESSAGE);
 		    }
-		});
-		timer.start();
-	    } else {
+		}
+	    });
+	    timer.start();
+	} else {
+	    // Try solving board, but if it has no solutions, then catch as error
+	    try {
 		// While we haven't reached the END node yet
-		while (distances.get(mainGrid.getEndNode()) == -1) {
-		    Node u = q.remove();
-
-		    // For every node adjacent to u
-		    for (Node v : mainGrid.getAdjacencyNodes(u)) {
-			// If v is not yet visited, then change its distance and parent accordingly
-			if (distances.get(v) == -1) {
-			    distances.put(v, distances.get(u) + 1);
-			    parents.put(v, u);
-			    q.add(v);
-
-			    System.out.println("(" + v.getPosition()[0] + ", " + v.getPosition()[1] + ") = "
-				    + distances.get(mainGrid.getNode(v.getPosition()[0], v.getPosition()[1])));
-			}
-		    }
+		while (distances.get(end) == -1) {
+		    solveUsingBFS(q, showSteps);
 		}
-		// Change all Nodes part of solution accordingly
-		Node currentNode = parents.get(mainGrid.getEndNode());
-		while (currentNode != start) {
-		    currentNode.makePath();
-		    currentNode = parents.get(currentNode);
-		}
+		drawPath(end);
+	    } catch (NoSuchElementException e) { // Dialog box if no solution exists
+		JOptionPane.showMessageDialog(null, "The board has no solution.", "No Solutions",
+			JOptionPane.INFORMATION_MESSAGE);
 	    }
-	} catch (NoSuchElementException e) { // Dialog box if no solution exists
-	    JOptionPane.showMessageDialog(null, "The board has no solution.", "No Solutions",
-		    JOptionPane.INFORMATION_MESSAGE);
 	}
+
     }
 
     /**
@@ -147,18 +119,14 @@ public class BreathFirstSearch extends Algorithm {
 			+ distances.get(mainGrid.getNode(v.getPosition()[0], v.getPosition()[1])));
 	    }
 	}
+    }
 
-	if (distances.get(mainGrid.getEndNode()) != -1) {
-	    ((Timer) e.getSource()).stop();
-	}
-
-	if (!((Timer) e.getSource()).isRunning()) {
-	    // Change all Nodes part of solution accordingly
-	    Node currentNode = parents.get(mainGrid.getEndNode());
-	    while (currentNode != start) {
-		currentNode.makePath();
-		currentNode = parents.get(currentNode);
-	    }
+    private void drawPath(Node end) {
+	// Change all Nodes part of solution accordingly
+	Node currentNode = parents.get(end);
+	while (currentNode != start) {
+	    currentNode.makePath();
+	    currentNode = parents.get(currentNode);
 	}
     }
 
