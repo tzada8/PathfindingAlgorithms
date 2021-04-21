@@ -1,12 +1,11 @@
 package sections.board;
 
 import java.awt.Dimension;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.swing.JPanel;
 
-import algorithms.Algorithm;
 import sections.board.presets.MakePreset1;
 import sections.board.presets.MakePreset2;
 import sections.board.presets.MakePreset3;
@@ -79,10 +78,26 @@ public class GridPanel extends JPanel {
     public Set<Node> getAdjacencyNodes(Node v) {
 	// FOR NOW JUST DOING 4 ADJACENT NODES --> FUTURE MIGHT DO CORNERS OF NODE v TOO
 
-	Set<Node> adjacentNodes = new HashSet<Node>();
+	Set<Node> adjacentNodes = new LinkedHashSet<Node>();
 	int currentRow = v.getPosition()[0];
 	int currentCol = v.getPosition()[1];
 
+	// DIAGONALS BUT NO ORDER OF IMPORTANCE
+	// Go through Nodes surrounding parameter Node (3x3 grid, excluding itself)
+//	int rowStart = determineBoundaries(currentRow - 1, GridPanel.ROWS);
+//	int rowEnd = determineBoundaries(currentRow + 1, GridPanel.ROWS);
+//	int colStart = determineBoundaries(currentCol - 1, GridPanel.COLUMNS);
+//	int colEnd = determineBoundaries(currentCol + 1, GridPanel.COLUMNS);
+//	for (int r = rowStart; r <= rowEnd; r++) {
+//	    for (int c = colStart; c <= colEnd; c++) {
+//		// If current Node is available or END Node, and is not itself, then add to Set
+//		if ((map[r][c].isAvailable() || map[r][c].isEnd()) && !map[r][c].equals(v)) {
+//		    adjacentNodes.add(map[r][c]);
+//		}
+//	    }
+//	}
+
+	// NO DIAGONALS
 	// Go through top and bottom Nodes
 	int startLoop = determineBoundaries(currentRow - 1, GridPanel.ROWS);
 	int endLoop = determineBoundaries(currentRow + 1, GridPanel.ROWS);

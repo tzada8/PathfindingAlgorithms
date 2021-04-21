@@ -11,11 +11,13 @@ import javax.swing.JPanel;
 
 import algorithms.AStar;
 import algorithms.BreathFirstSearch;
+import algorithms.DepthFirstSearch;
 import algorithms.Dijkstra;
 import customswing.CustomButton;
 import customswing.CustomCheckBox;
 import main.PathfindingMain;
 import sections.board.GridPanel;
+import sections.board.Node;
 
 public class SettingsPanel extends JPanel implements ActionListener {
 
@@ -141,13 +143,14 @@ public class SettingsPanel extends JPanel implements ActionListener {
 		    enableOrDisableOptions(false);
 
 		    String currentAlgorithm = this.getAlgorithm();
+		    Node startNode = mainGrid.getStartNode();
 		    boolean showSteps = this.shouldShowSteps();
 		    if (currentAlgorithm == ALGORITHMS[0]) {
-			new BreathFirstSearch(mainGrid, mainGrid.getStartNode(), showSteps);
+			new BreathFirstSearch(mainGrid, startNode, showSteps);
 		    } else if (currentAlgorithm == ALGORITHMS[1]) {
-			System.out.println("Solve using DFS");
+			new DepthFirstSearch(mainGrid, startNode, showSteps);
 		    } else if (currentAlgorithm == ALGORITHMS[2]) {
-			new AStar(mainGrid, mainGrid.getStartNode(), showSteps);
+			new AStar(mainGrid, startNode, showSteps);
 		    } else if (currentAlgorithm == ALGORITHMS[3]) {
 			new Dijkstra(showSteps);
 		    }
