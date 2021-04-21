@@ -143,13 +143,13 @@ public class SettingsPanel extends JPanel implements ActionListener {
 		    String currentAlgorithm = this.getAlgorithm();
 		    boolean showSteps = this.shouldShowSteps();
 		    if (currentAlgorithm == ALGORITHMS[0]) {
-			BreathFirstSearch bfsTree = new BreathFirstSearch(mainGrid, mainGrid.getStartNode());
+			new BreathFirstSearch(mainGrid, mainGrid.getStartNode(), showSteps);
 		    } else if (currentAlgorithm == ALGORITHMS[1]) {
 			System.out.println("Solve using DFS");
 		    } else if (currentAlgorithm == ALGORITHMS[2]) {
-			mainGrid.solveBoard(new AStar(mainGrid, mainGrid.getStartNode()), showSteps);
+			new AStar(mainGrid, mainGrid.getStartNode(), showSteps);
 		    } else if (currentAlgorithm == ALGORITHMS[3]) {
-			mainGrid.solveBoard(new Dijkstra(), showSteps);
+			new Dijkstra(showSteps);
 		    }
 		}
 	    } else { // Else stopping, so immediately stop solving

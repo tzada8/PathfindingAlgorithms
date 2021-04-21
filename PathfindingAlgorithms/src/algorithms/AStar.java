@@ -7,7 +7,7 @@ import sections.board.Node;
 
 public class AStar extends Algorithm {
 
-    public AStar(GridPanel mainGrid, Node start) {
+    public AStar(GridPanel mainGrid, Node start, boolean showSteps) {
 	System.out.println("In A* Class");
 
 	Set<Node> test = mainGrid.getAdjacencyNodes(start);

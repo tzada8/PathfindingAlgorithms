@@ -205,9 +205,4 @@ public class GridPanel extends JPanel {
     public void makeRandom() {
 	this.unclickableAndEmptyBoard();
     }
-
-    // Goes through entire board and solves it depending on specific algorithm
-    public void solveBoard(Algorithm algorithm, boolean showSteps) {
-	System.out.println(algorithm + " and " + showSteps);
-    }
 }

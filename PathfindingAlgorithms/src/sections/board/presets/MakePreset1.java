@@ -27,7 +27,7 @@ public class MakePreset1 {
 
 	// All other hard-coded barriers of maze
 	for (int r = 4; r <= 5; r++) {
-	    for (int c = 3; c <= 21; c++) {
+	    for (int c = 2; c <= 21; c++) {
 		map[r][c].makeBarrier();
 	    }
 	}
