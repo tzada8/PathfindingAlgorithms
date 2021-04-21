@@ -1,8 +1,11 @@
 package main;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class MainWindow extends JFrame {
 
@@ -12,18 +15,32 @@ public class MainWindow extends JFrame {
     private static final long serialVersionUID = 1L;
 
     public MainWindow() {
-	// Main Window properties
-	this.setTitle("Pathfinding Algorithms");
-	this.setIconImage(PathfindingMain.ICON);
-	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	this.setResizable(false);
-	this.getContentPane().setBackground(PathfindingMain.BACKGROUND_COLOUR);
+	EventQueue.invokeLater(new Runnable() {
+	    @Override
+	    public void run() {
+		try {
+		    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException ex) {
+		} catch (InstantiationException ex) {
+		} catch (IllegalAccessException ex) {
+		} catch (UnsupportedLookAndFeelException ex) {
+		}
 
-	// Panel with all main content (grid, settings, and legend)
-	this.add(new MainPanel());
+		// Main Window properties
+		JFrame frame = new JFrame();
+		frame.setTitle("Pathfinding Algorithms");
+		frame.setIconImage(PathfindingMain.ICON);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.getContentPane().setBackground(PathfindingMain.BACKGROUND_COLOUR);
 
-	this.pack();
-	this.setLocationRelativeTo(null);
-	this.setVisible(true);
+		// Panel with all main content (grid, settings, and legend)
+		frame.add(new MainPanel());
+
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+	    }
+	});
     }
 }
