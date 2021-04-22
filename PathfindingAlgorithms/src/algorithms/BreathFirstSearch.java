@@ -28,8 +28,8 @@ public class BreathFirstSearch extends Algorithm {
      */
     public BreathFirstSearch(GridPanel mainGrid, Node start, boolean showSteps) {
 	// Initializing all fields
-	this.start = start;
 	this.mainGrid = mainGrid;
+	this.start = start;
 	this.distances = new HashMap<>();
 	this.parents = new HashMap<>();
 

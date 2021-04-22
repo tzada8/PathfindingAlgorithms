@@ -152,7 +152,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
 		    } else if (currentAlgorithm == ALGORITHMS[2]) {
 			new AStar(mainGrid, startNode, showSteps);
 		    } else if (currentAlgorithm == ALGORITHMS[3]) {
-			new Dijkstra(showSteps);
+			new Dijkstra(mainGrid, startNode, showSteps);
 		    }
 		}
 	    } else { // Else stopping, so immediately stop solving
