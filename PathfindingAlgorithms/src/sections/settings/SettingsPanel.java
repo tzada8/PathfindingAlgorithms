@@ -29,14 +29,13 @@ public class SettingsPanel extends JPanel implements ActionListener {
     // Constants
     private static final String[] ALGORITHMS = { "Breath First Search", "Depth First Search", "A*", "Dijkstra" };
     private static final String[] OBSTACLES = { "Freehand", "Preset 1", "Preset 2", "Preset 3", "Random" };
-    private static final String[] START_STOP_BUTTON_TEXT = { "Start", "Stop" };
 
     // Fields
     private JComboBox<String> algorithmsComboBox;
     private JComboBox<String> obstaclesComboBox;
     private CustomButton clearBoardButton = new CustomButton("Clear Board");
     private CustomButton resetPathfindingButton = new CustomButton("Reset Pathfinding");
-    private CustomButton startStopButton = new CustomButton(START_STOP_BUTTON_TEXT[0]);
+    private CustomButton startButton = new CustomButton("Start");
     private CustomCheckBox showStepsCheckBox = new CustomCheckBox("Show Steps");
     private GridPanel mainGrid;
 
@@ -56,8 +55,8 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	this.add(resetPathfindingButton);
 
 	// Adding Start/Stop button to keep running /stop running solution
-	startStopButton.addActionListener(this);
-	this.add(startStopButton);
+	startButton.addActionListener(this);
+	this.add(startButton);
 
 	// Adding a CheckBox where the user can choose to see steps or not
 	showStepsCheckBox.addActionListener(this);
@@ -131,40 +130,52 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	    }
 	}
 
-	if (e.getSource() == startStopButton) {
-	    // If solving, then solve use last chosen algorithm and CheckBox value
-	    if (startStopButton.getText().equals(START_STOP_BUTTON_TEXT[0])) {
-		// If grid doesn't have both a start and end point, then give error message box
-		if (!mainGrid.hasStartAndEndPoint()) {
-		    JOptionPane.showMessageDialog(null, "Missing both a Start and End point.",
-			    "Error in Board Creation", JOptionPane.ERROR_MESSAGE);
-		} else { // Else all is good and can continue solving board
-		    // Disable all options while board is being solved except this button
-		    enableOrDisableOptions(false);
-
-		    String currentAlgorithm = this.getAlgorithm();
-		    Node startNode = mainGrid.getStartNode();
-		    boolean showSteps = this.shouldShowSteps();
-		    if (currentAlgorithm == ALGORITHMS[0]) {
-			new BreathFirstSearch(mainGrid, startNode, showSteps);
-		    } else if (currentAlgorithm == ALGORITHMS[1]) {
-			new DepthFirstSearch(mainGrid, startNode, showSteps);
-		    } else if (currentAlgorithm == ALGORITHMS[2]) {
-			new AStar(mainGrid, startNode, showSteps);
-		    } else if (currentAlgorithm == ALGORITHMS[3]) {
-			new Dijkstra(mainGrid, startNode, showSteps);
-		    }
-		}
-	    } else { // Else stopping, so immediately stop solving
-		// Enables all options again since board stops being solved
-		enableOrDisableOptions(true);
-
-		System.out.println("Stop Program");
+	// If switching algorithms, than reset any pathfinding
+	if (e.getSource() == algorithmsComboBox) {
+	    String currentAlgorithm = this.getAlgorithm();
+	    if (currentAlgorithm == ALGORITHMS[0]) {
+		mainGrid.resetPathfinding();
+	    } else if (currentAlgorithm == ALGORITHMS[1]) {
+		mainGrid.resetPathfinding();
+	    } else if (currentAlgorithm == ALGORITHMS[2]) {
+		mainGrid.resetPathfinding();
+	    } else if (currentAlgorithm == ALGORITHMS[3]) {
+		mainGrid.resetPathfinding();
 	    }
+	}
+
+	// When start button is clicked, solve current board depending on what algorithm
+	// was chosen, and if user wants to see steps or not
+	if (e.getSource() == startButton) {
+	    // If grid doesn't have both a start and end point, then give error message box
+	    if (!mainGrid.hasStartAndEndPoint()) {
+		JOptionPane.showMessageDialog(null, "Missing both a Start and End point.", "Error in Board Creation",
+			JOptionPane.ERROR_MESSAGE);
+	    } else { // Else all is good and can solving board
+		// Disable all options while board is being solved
+		enableOrDisableOptions(false);
+		mainGrid.resetPathfinding();
+
+		String currentAlgorithm = this.getAlgorithm();
+		Node startNode = mainGrid.getStartNode();
+		boolean showSteps = this.shouldShowSteps();
+		if (currentAlgorithm == ALGORITHMS[0]) {
+		    new BreathFirstSearch(mainGrid, startNode, showSteps);
+		} else if (currentAlgorithm == ALGORITHMS[1]) {
+		    new DepthFirstSearch(mainGrid, startNode, showSteps);
+		} else if (currentAlgorithm == ALGORITHMS[2]) {
+		    new AStar(mainGrid, startNode, showSteps);
+		} else if (currentAlgorithm == ALGORITHMS[3]) {
+		    new Dijkstra(mainGrid, startNode, showSteps);
+		}
+		// Enable all options since board is done being solved
+
+	    }
+	    enableOrDisableOptions(true);
 	}
     }
 
-    // Make all options unclickable/clickable depending on START / STOP
+    // Make all options unclickable/clickable for when algorithm is running/finished
     private void enableOrDisableOptions(boolean type) {
 	// Make options unclickable / clickable while solution being solved
 	algorithmsComboBox.setEnabled(type);
@@ -173,6 +184,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	    clearBoardButton.setEnabled(type);
 	}
 	resetPathfindingButton.setEnabled(type);
+	startButton.setEnabled(type);
 	showStepsCheckBox.setEnabled(type);
 
 	// Make board unclickable / clickable depending on current obstacle
@@ -180,13 +192,6 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	    mainGrid.makeClickable();
 	} else {
 	    mainGrid.makeUnclickable();
-	}
-
-	// Readjust button text depending on what was just pressed
-	if (type) {
-	    startStopButton.setText(START_STOP_BUTTON_TEXT[0]);
-	} else {
-	    startStopButton.setText(START_STOP_BUTTON_TEXT[1]);
 	}
     }
 }
