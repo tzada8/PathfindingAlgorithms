@@ -34,32 +34,32 @@ public class DepthFirstSearch {
 
 	Node end = mainGrid.getEndNode();
 
-	// Initialize empty stack listing all vertices that need to be visited
-	Stack<Node> verticesToVisit = new Stack<Node>();
-	verticesToVisit.push(start);
+	// Initialize empty Stack listing all Nodes that need to be visited
+	Stack<Node> nodesToVisit = new Stack<Node>();
+	nodesToVisit.push(start);
 	visited.add(start);
 
+	// Solution will be found in 2 ways depending if user wants to see solution
+	// 1. Using a timer that renders the Node every 0.01s until the END node is
+	// reached
+	// 2. Using a while loop that doesn't render anything except the solution path
 	if (showSteps) {
 	    Timer timer = new Timer(10, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 		    try {
-			dfsVisit(verticesToVisit, visited, showSteps);
+			solveUsingDFS(nodesToVisit, visited, showSteps); // Solve grid using DFS
 
-			// If END Node has been visited, then that means it has been reached so stop
-			// timer
-			if (visited.contains(end) || verticesToVisit.isEmpty()) {
+			if (nodesToVisit.isEmpty()) {
+			    // If Stack is empty, then we ran out of options, so no solution found
 			    ((Timer) e.getSource()).stop();
-			}
-
-			// If timer has stopped running and a solution exists, then draw the path
-			if (!((Timer) e.getSource()).isRunning() && visited.contains(end)) {
+			    throw new EmptyStackException();
+			} else if (visited.contains(end)) {
+			    // If END Node has been visited, then we reached it, so draw solution
+			    ((Timer) e.getSource()).stop();
 			    drawPath(end);
-			} else if (!((Timer) e.getSource()).isRunning() && !visited.contains(end)) {
-			    // Else throw exception to go into catch block
-			    throw new NoSuchElementException("Force catch block");
 			}
-		    } catch (NoSuchElementException | EmptyStackException e1) {
+		    } catch (EmptyStackException e1) { // Dialog box if no solution exists
 			JOptionPane.showMessageDialog(null, "The board has no solution.", "No Solutions",
 				JOptionPane.INFORMATION_MESSAGE);
 		    }
@@ -71,32 +71,26 @@ public class DepthFirstSearch {
 		// For every vertex that hasn't been visited yet (it's not in visited set yet),
 		// conduct DFS
 		while (!visited.contains(end)) {
-		    dfsVisit(verticesToVisit, visited, showSteps);
+		    solveUsingDFS(nodesToVisit, visited, showSteps);
 		}
 		drawPath(end);
-	    } catch (NoSuchElementException e) {
+	    } catch (EmptyStackException e) { // Dialog box if no solution exists
 		JOptionPane.showMessageDialog(null, "The board has no solution.", "No Solutions",
 			JOptionPane.INFORMATION_MESSAGE);
 	    }
 	}
-
-//	for (int v : this.graph.getVertices()) {
-//	    if (!visited.contains(v)) {
-//		dfsVisit(v, visited);
-//	    }
-//	}
     }
 
     /**
      * This private helper method is called in the DFSTree constructor, and is the
      * main code that determines the connected components of the graph.
      */
-    private void dfsVisit(Stack<Node> s, Set<Node> visited, boolean showSteps) {
+    private void solveUsingDFS(Stack<Node> s, Set<Node> visited, boolean showSteps) {
 	Node u = s.pop();
 	if (!u.isStart() && showSteps) {
 	    u.makeClosed();
 	}
-	
+
 	// For every Node adjacent to u
 	for (Node w : mainGrid.getAdjacencyNodes(u)) {
 	    System.out.println("Current Node " + w.getPosition()[0] + ", " + w.getPosition()[1]);

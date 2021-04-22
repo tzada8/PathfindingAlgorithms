@@ -20,8 +20,6 @@ public class BreathFirstSearch extends Algorithm {
     private Map<Node, Integer> distances; // Node to integers
     private Map<Node, Node> parents; // Node to Node
 
-//    Timer timer;
-
     /**
      * This constructor takes a board and source vertex as parameters and conducts a
      * breath-first search (BFS) on the graph.
@@ -56,22 +54,19 @@ public class BreathFirstSearch extends Algorithm {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 		    try {
-			solveUsingBFS(q, showSteps);
+			solveUsingBFS(q, showSteps); // Solve grid using BFS
 
-			// If END Node's distance is not -1, then that means it has been reached so stop
-			// timer
-			if (distances.get(end) != -1 || q.isEmpty()) {
+			if (q.isEmpty()) {
+			    // If Queue is empty, then we ran out of options, so no solution found
 			    ((Timer) e.getSource()).stop();
-			}
-
-			// If timer has stopped running and a solution exists, then draw the path
-			if (!((Timer) e.getSource()).isRunning() && distances.get(end) != -1) {
-			    drawPath(end);
-			} else if (!((Timer) e.getSource()).isRunning() && distances.get(end) == -1) {
-			    // Else throw exception to go into catch block
 			    throw new NoSuchElementException("Force catch block");
+			} else if (distances.get(end) != -1) {
+			    // If END Node's distance is not default -1, then we reached it, so draw
+			    // solution
+			    ((Timer) e.getSource()).stop();
+			    drawPath(end);
 			}
-		    } catch (NoSuchElementException e1) {
+		    } catch (NoSuchElementException e1) { // Dialog box if no solution exists
 			JOptionPane.showMessageDialog(null, "The board has no solution.", "No Solutions",
 				JOptionPane.INFORMATION_MESSAGE);
 		    }
