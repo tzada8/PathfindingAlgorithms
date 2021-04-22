@@ -31,11 +31,13 @@ public class BreathFirstSearch extends Algorithm {
 	this.distances = new HashMap<>();
 	this.parents = new HashMap<>();
 
-	// For every Node, initialize default distance and parent
+	// For every Node that isn't a barrier, initialize a default distance and parent
 	for (int r = 0; r < GridPanel.ROWS; r++) {
 	    for (int c = 0; c < GridPanel.COLUMNS; c++) {
-		distances.put(mainGrid.getNode(r, c), -1);
-		parents.put(mainGrid.getNode(r, c), null);
+		if (!mainGrid.getNode(r, c).isBarrier()) {
+		    distances.put(mainGrid.getNode(r, c), -1);
+		    parents.put(mainGrid.getNode(r, c), null);
+		}
 	    }
 	}
 	Node end = mainGrid.getEndNode();
@@ -119,7 +121,7 @@ public class BreathFirstSearch extends Algorithm {
     private void drawPath(Node end) {
 	// Change all Nodes part of solution accordingly
 	Node currentNode = parents.get(end);
-	while (currentNode != start) {
+	while (!currentNode.equals(start)) {
 	    currentNode.makePath();
 	    currentNode = parents.get(currentNode);
 	}
