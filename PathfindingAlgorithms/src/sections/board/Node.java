@@ -26,6 +26,7 @@ public class Node extends JLabel implements MouseListener {
     private int row;
     private int col;
     private Color colour;
+    private int gCost, hCost, fCost = Integer.MAX_VALUE;
 
     // Node object with WHITE colour
     public Node(int row, int col) {
@@ -151,6 +152,38 @@ public class Node extends JLabel implements MouseListener {
     public void makePath() {
 	colour = Color.MAGENTA;
 	this.setBackground(Color.MAGENTA);
+    }
+
+    /****** FOR A* ALGORITHM TO UPDATE G, H, AND F COSTS ******/
+    // Resets all costs
+    public void resetCosts() {
+	gCost = Integer.MAX_VALUE;
+	hCost = Integer.MAX_VALUE;
+	fCost = Integer.MAX_VALUE;
+    }
+
+    public int getGCost() {
+	return gCost;
+    }
+
+    public int getHCost() {
+	return hCost;
+    }
+
+    public int getFCost() {
+	return fCost;
+    }
+
+    public void setGCost(int g) {
+	gCost = g;
+    }
+
+    public void setHCost(int h) {
+	hCost = h;
+    }
+
+    public void setFCost(int f) {
+	fCost = f;
     }
 
     /****** CHANGE COLOUR OF NODE ON SPECIFIC MOUSE CLICKS ******/

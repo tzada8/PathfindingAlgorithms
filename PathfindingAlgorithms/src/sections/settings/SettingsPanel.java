@@ -153,7 +153,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
 			JOptionPane.ERROR_MESSAGE);
 	    } else { // Else all is good and can solving board
 		// Disable all options while board is being solved
-		enableOrDisableOptions(false);
+//		enableOrDisableOptions(false);
 		mainGrid.resetPathfinding();
 
 		String currentAlgorithm = this.getAlgorithm();

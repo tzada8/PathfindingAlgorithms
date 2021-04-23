@@ -133,6 +133,14 @@ public class GridPanel extends JPanel {
 	return testVal;
     }
 
+    public void resetAllCosts() {
+	for (int r = 0; r < GridPanel.ROWS; r++) {
+	    for (int c = 0; c < GridPanel.COLUMNS; c++) {
+		map[r][c].resetCosts();
+	    }
+	}
+    }
+
     // Goes through entire board and resets each Node to colour WHITE
     private void resetBoard() {
 	for (int r = 0; r < ROWS; r++) {
