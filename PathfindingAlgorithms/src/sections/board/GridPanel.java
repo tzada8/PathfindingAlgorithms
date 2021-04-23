@@ -76,47 +76,37 @@ public class GridPanel extends JPanel {
      * Returns all the adjacent Nodes to Node v that are available (WHITE Nodes).
      */
     public Set<Node> getAdjacencyNodes(Node v) {
-	// FOR NOW JUST DOING 4 ADJACENT NODES --> FUTURE MIGHT DO CORNERS OF NODE v TOO
 
 	Set<Node> adjacentNodes = new LinkedHashSet<Node>();
 	int currentRow = v.getPosition()[0];
 	int currentCol = v.getPosition()[1];
 
-	// DIAGONALS BUT NO ORDER OF IMPORTANCE
-	// Go through Nodes surrounding parameter Node (3x3 grid, excluding itself)
-//	int rowStart = determineBoundaries(currentRow - 1, GridPanel.ROWS);
-//	int rowEnd = determineBoundaries(currentRow + 1, GridPanel.ROWS);
-//	int colStart = determineBoundaries(currentCol - 1, GridPanel.COLUMNS);
-//	int colEnd = determineBoundaries(currentCol + 1, GridPanel.COLUMNS);
-//	for (int r = rowStart; r <= rowEnd; r++) {
-//	    for (int c = colStart; c <= colEnd; c++) {
-//		// If current Node is available or END Node, and is not itself, then add to Set
-//		if ((map[r][c].isAvailable() || map[r][c].isEnd()) && !map[r][c].equals(v)) {
-//		    adjacentNodes.add(map[r][c]);
-//		}
-//	    }
-//	}
+	// Order of Insertion:
+	// TOP, RIGHT, BOTTOM, LEFT, TOP-LEFT, TOP-RIGHT, BOTTOM-RIGHT, BOTTOM-LEFT
 
-	// NO DIAGONALS
-	// Go through top and bottom Nodes
-	int startLoop = determineBoundaries(currentRow - 1, GridPanel.ROWS);
-	int endLoop = determineBoundaries(currentRow + 1, GridPanel.ROWS);
-	for (int r = startLoop; r <= endLoop; r++) {
-	    // If spot is available or end, and it's not itself
-	    if ((map[r][currentCol].isAvailable() || map[r][currentCol].isEnd()) && !map[r][currentCol].equals(v)) {
-		adjacentNodes.add(map[r][currentCol]);
-	    }
-	}
+	// Boundairies for top, right, bottom, and left
+	int topR = determineBoundaries(currentRow - 1, GridPanel.ROWS);
+	int rightC = determineBoundaries(currentCol + 1, GridPanel.COLUMNS);
+	int bottomR = determineBoundaries(currentRow + 1, GridPanel.ROWS);
+	int leftC = determineBoundaries(currentCol - 1, GridPanel.COLUMNS);
 
-	// Go through left and right Nodes
-	startLoop = determineBoundaries(currentCol - 1, GridPanel.COLUMNS);
-	endLoop = determineBoundaries(currentCol + 1, GridPanel.COLUMNS);
-	for (int c = startLoop; c <= endLoop; c++) {
-	    // If spot is available or end, and it's not itself
-	    if ((map[currentRow][c].isAvailable() || map[currentRow][c].isEnd()) && !map[currentRow][c].equals(v)) {
-		adjacentNodes.add(map[currentRow][c]);
-	    }
-	}
+	// TOP
+	addAdjacentNodes(adjacentNodes, v, topR, currentCol);
+	// RIGHT
+	addAdjacentNodes(adjacentNodes, v, currentRow, rightC);
+	// BOTTOM
+	addAdjacentNodes(adjacentNodes, v, bottomR, currentCol);
+	// LEFT
+
+	addAdjacentNodes(adjacentNodes, v, currentRow, leftC);
+	// TOP-LEFT
+	addAdjacentNodes(adjacentNodes, v, topR, leftC);
+	// TOP-RIGHT
+	addAdjacentNodes(adjacentNodes, v, topR, rightC);
+	// BOTTOM-RIGHT
+	addAdjacentNodes(adjacentNodes, v, bottomR, rightC);
+	// BOTTOM-LEFT
+	addAdjacentNodes(adjacentNodes, v, bottomR, leftC);
 
 	return adjacentNodes;
     }
@@ -131,6 +121,14 @@ public class GridPanel extends JPanel {
 	    testVal = upperLimitingFactor - 1;
 	}
 	return testVal;
+    }
+
+    // Helper method to determine if given point should be added to adjacency list
+    private void addAdjacentNodes(Set<Node> adjacency, Node current, int rowLoc, int colLoc) {
+	if ((map[rowLoc][colLoc].isAvailable() || map[rowLoc][colLoc].isEnd())
+		&& !map[rowLoc][colLoc].equals(current)) {
+	    adjacency.add(map[rowLoc][colLoc]);
+	}
     }
 
     public void resetAllCosts() {

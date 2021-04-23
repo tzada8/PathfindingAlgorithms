@@ -120,11 +120,14 @@ public class BreathFirstSearch extends Algorithm {
 
     private void drawPath(Node end) {
 	// Change all Nodes part of solution accordingly
+	int totalBlocks = 0;
 	Node currentNode = parents.get(end);
 	while (!currentNode.equals(start)) {
 	    currentNode.makePath();
 	    currentNode = parents.get(currentNode);
+	    totalBlocks++;
 	}
+	System.out.println(totalBlocks);
     }
 
     /**

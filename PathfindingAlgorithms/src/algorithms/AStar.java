@@ -17,8 +17,7 @@ public class AStar extends Algorithm {
     private GridPanel mainGrid;
     private Node start;
     private Map<Node, Node> parents; // Node to Node
-//    private HashMap<Node, Integer> openList; // Open Nodes to F value
-    private ArrayList<Node> openTest;
+    private ArrayList<Node> openList;
     private ArrayList<Node> closedList; // Closed Nodes
 
     public AStar(GridPanel mainGrid, Node start, boolean showSteps) {
@@ -26,8 +25,7 @@ public class AStar extends Algorithm {
 	this.mainGrid = mainGrid;
 	this.start = start;
 	this.parents = new HashMap<>();
-//	this.openList = new HashMap<>();
-	this.openTest = new ArrayList<>();
+	this.openList = new ArrayList<>();
 	this.closedList = new ArrayList<>();
 
 	Node current = start;
@@ -36,12 +34,9 @@ public class AStar extends Algorithm {
 	// Calculates g, h, and f for start point (g = 0)
 	current.setGCost(0);
 	current.setHCost(calcHDistance(current, end));
-	int startH = calcHDistance(current, end);
-	current.setFCost(calcFValue(0, startH));
-	int startF = calcFValue(current.getGCost(), startH);
+	current.setFCost(calcFValue(current.getGCost(), current.getHCost()));
 
-	openTest.add(current);
-//	openList.put(current, startF);
+	openList.add(current);
 	parents.put(start, null);
 
 	// Solution will be found in 2 ways depending if user wants to see solution
@@ -49,63 +44,15 @@ public class AStar extends Algorithm {
 	// reached
 	// 2. Using a while loop that doesn't render anything except the solution path
 	if (showSteps) {
-	    Timer timer = new Timer(1000, new ActionListener() {
+	    Timer timer = new Timer(10, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 		    try {
 			// Remove Node with lowest F value from open List and make it current
 			Node current = getLowestF(end);
-			if (!current.isStart() && !current.isEnd() && showSteps) {
-			    current.makeClosed();
-			}
+			solveUsingAStar(current, end, showSteps);
 
-			// For every node adjacent to u
-			for (Node v : mainGrid.getAdjacencyNodes(current)) {
-			    // If Node not in open or closed Lists, then add to open
-			    if (/* !openList.containsKey(v) */ !openTest.contains(v) && !closedList.contains(v)) {
-				openTest.add(v);
-//				    openList.put(v, Integer.MAX_VALUE);
-				if (!v.isEnd() && showSteps) {
-				    v.makeOpen();
-				}
-			    }
-			    // Do g, h, and f calculations for Node v
-			    int currentG = calcGDistance(v, current); // G
-			    int currentH = calcHDistance(v, end); // H
-			    v.setHCost(currentH);
-			    int currentF = calcFValue(currentG, currentH); // F
-
-			    // If new F value is less than the Node's existing F value, then update existing
-			    // f and parent
-			    System.out.println("currentF = " + currentF);
-			    System.out.println("v.getFCost() = " + v.getFCost());
-			    if (currentF < v.getFCost()) {
-				v.setGCost(currentG);
-				v.setFCost(currentF);
-				parents.put(v, current);
-				System.out.println();
-				System.out.println(v.getPosition()[0] + ", " + v.getPosition()[1]);
-				System.out.println(current.getPosition()[0] + ", " + current.getPosition()[1]);
-			    }
-
-			    System.out.println("(" + v.getPosition()[0] + ", " + v.getPosition()[1] + ") = " + startF);
-
-			}
-			// Add current Node to closed List and remove from open
-			closedList.add(current);
-			openTest.remove(current);
-//			    openList.remove(current);
-
-//			    for (Node s : openList.keySet()) {
-//				System.out.println("(" + s.getPosition()[0] + ", " + s.getPosition()[1] + ") = " + openList.get(s)
-//					+ " (in openList)");
-//			    }
-
-			System.out.println(current.getPosition()[0] + ", " + current.getPosition()[1]);
-
-			System.out.println(current.getPosition()[0] + ", " + current.getPosition()[1]);
-
-			if (openTest.isEmpty()) {
+			if (openList.isEmpty()) {
 			    // If Queue is empty, then we ran out of options, so no solution found
 			    ((Timer) e.getSource()).stop();
 			    throw new NoSuchElementException("Force catch block");
@@ -128,94 +75,79 @@ public class AStar extends Algorithm {
 	    try {
 		// While we haven't reached the END node yet
 		while (!current.equals(end)) {
-		    if (!current.isStart() && showSteps) {
-			current.makeClosed();
-		    }
-
-		    // For every node adjacent to u
-		    for (Node v : mainGrid.getAdjacencyNodes(current)) {
-			// If Node not in open or closed Lists, then add to open
-			if (/* !openList.containsKey(v) */ !openTest.contains(v) && !closedList.contains(v)) {
-			    openTest.add(v);
-//			    openList.put(v, Integer.MAX_VALUE);
-			    if (!v.isEnd() && showSteps) {
-				v.makeOpen();
-			    }
-			}
-			// Do g, h, and f calculations for Node v
-			int currentG = calcGDistance(v, current); // G
-			int currentH = calcHDistance(v, end); // H
-			v.setHCost(currentH);
-			int currentF = calcFValue(currentG, currentH); // F
-
-			// If new F value is less than the Node's existing F value, then update existing
-			// f and parent
-			System.out.println("currentF = " + currentF);
-			System.out.println("v.getFCost() = " + v.getFCost());
-			if (currentF < v.getFCost()) {
-			    v.setGCost(currentG);
-			    v.setFCost(currentF);
-			    parents.put(v, current);
-			    System.out.println();
-			    System.out.println(v.getPosition()[0] + ", " + v.getPosition()[1]);
-			    System.out.println(current.getPosition()[0] + ", " + current.getPosition()[1]);
-			}
-
-			System.out.println("(" + v.getPosition()[0] + ", " + v.getPosition()[1] + ") = " + startF);
-
-		    }
-		    // Add current Node to closed List and remove from open
-		    closedList.add(current);
-		    openTest.remove(current);
-//		    openList.remove(current);
-
-//		    for (Node s : openList.keySet()) {
-//			System.out.println("(" + s.getPosition()[0] + ", " + s.getPosition()[1] + ") = " + openList.get(s)
-//				+ " (in openList)");
-//		    }
-
-		    System.out.println(current.getPosition()[0] + ", " + current.getPosition()[1]);
-
+		    solveUsingAStar(current, end, showSteps);
 		    // Remove Node with lowest F value from open List and make it current
 		    current = getLowestF(end);
-
-		    System.out.println(current.getPosition()[0] + ", " + current.getPosition()[1]);
-
 		}
 		drawPath(end);
 		mainGrid.resetAllCosts();
-	    } catch (NoSuchElementException e) { // Dialog box if no solution exists
+	    } catch (NullPointerException e) { // Dialog box if no solution exists
 		JOptionPane.showMessageDialog(null, "The board has no solution.", "No Solutions",
 			JOptionPane.INFORMATION_MESSAGE);
 	    }
 	}
     }
 
+    private void solveUsingAStar(Node current, Node end, boolean showSteps) {
+	if (!current.isStart() && !current.isEnd() && showSteps) {
+	    current.makeClosed();
+	}
+
+	// For every node adjacent to u
+	for (Node v : mainGrid.getAdjacencyNodes(current)) {
+	    // If Node not in open or closed Lists, then add to open
+	    if (!openList.contains(v) && !closedList.contains(v)) {
+		openList.add(v);
+		if (!v.isEnd() && showSteps) {
+		    v.makeOpen();
+		}
+	    }
+	    // Do g, h, and f calculations for Node v
+	    double currentG = calcGDistance(v, current); // G
+	    v.setHCost(calcHDistance(v, end));
+	    double currentF = calcFValue(currentG, v.getHCost()); // F
+
+	    // If new F value is less than the Node's existing F value, then update existing
+	    // f and parent
+	    if (currentF < v.getFCost()) {
+		v.setGCost(currentG);
+		v.setFCost(currentF);
+		parents.put(v, current);
+		System.out.println(
+			current.getPosition()[0] + ", " + current.getPosition()[1] + " = " + current.getFCost());
+	    }
+
+	}
+	// Add current Node to closed List and remove from open
+	closedList.add(current);
+	openList.remove(current);
+    }
+
     // Calculates actual distance from start, g (finds distance between current Node
     // and start Node including all present obstacles)
-    private int calcGDistance(Node current, Node previous) {
-	int tempG = previous.getGCost();
-	int dx = Math.abs(current.getPosition()[1] - previous.getPosition()[1]);
-	int dy = Math.abs(current.getPosition()[0] - previous.getPosition()[0]);
-	return tempG + dx + dy;
+    private double calcGDistance(Node current, Node previous) {
+	return previous.getGCost() + calculateActualDistance(current, previous);
     }
 
     // Calculates heuristic distance, h (finds distance between current Node
     // and end Node assuming that no obstacles exist)
-    private int calcHDistance(Node current, Node end) {
-	// Determine number of columns between current Node and the start
-	int dx = Math.abs(current.getPosition()[1] - end.getPosition()[1]);
-	// Determine number of rows between current Node and the start
-	int dy = Math.abs(current.getPosition()[0] - end.getPosition()[0]);
-	// Actual calculated ditance (pythagorean theorem --> a^2 + b^2 = c^2)
-//	double dt = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+    private double calcHDistance(Node current, Node end) {
+	return calculateActualDistance(current, end);
+    }
 
-	return dx + dy;
+    // Helper method to calculate g and h Costs
+    private double calculateActualDistance(Node current, Node other) {
+	// X difference between Nodes
+	double dx = Math.abs(current.getPosition()[1] - other.getPosition()[1]);
+	// Y difference between Nodes
+	double dy = Math.abs(current.getPosition()[0] - other.getPosition()[0]);
+	// Return actual distance from pythagorean's theorem --> a^2 + b^2 = c^2
+	return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
     }
 
     // Calculates heuristic distance, h (finds distance between current Node
     // and end Node assuming that no obstacles exist)
-    private int calcFValue(int g, int h) {
+    private double calcFValue(double g, double h) {
 	return g + h;
     }
 
@@ -223,9 +155,9 @@ public class AStar extends Algorithm {
     private Node getLowestF(Node end) {
 	// Default lowestNodeF to be end Node
 	Node lowestNodeF = end;
-	int lowestFVal = Integer.MAX_VALUE;
+	double lowestFVal = end.getFCost();
 	// Go through all Nodes
-	for (Node n : openTest) {
+	for (Node n : openList) {
 	    if (n.getFCost() < lowestFVal) {
 		lowestNodeF = n;
 		lowestFVal = n.getFCost();
@@ -236,15 +168,14 @@ public class AStar extends Algorithm {
 
     private void drawPath(Node end) {
 	// Change all Nodes part of solution accordingly
+	int totalBlocks = 0;
 	Node currentNode = parents.get(end);
-	System.out.println();
-	System.out.println(end.getPosition()[0] + ", " + end.getPosition()[1]);
-	System.out.println(currentNode.getPosition()[0] + ", " + currentNode.getPosition()[1]);
 	while (!currentNode.equals(start)) {
-	    System.out.println(currentNode.getPosition()[0] + ", " + currentNode.getPosition()[1]);
 	    currentNode.makePath();
 	    currentNode = parents.get(currentNode);
+	    totalBlocks++;
 	}
+	System.out.println(totalBlocks);
     }
 
 }

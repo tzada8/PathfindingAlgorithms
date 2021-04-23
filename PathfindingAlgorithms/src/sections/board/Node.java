@@ -26,7 +26,7 @@ public class Node extends JLabel implements MouseListener {
     private int row;
     private int col;
     private Color colour;
-    private int gCost, hCost, fCost = Integer.MAX_VALUE;
+    private double gCost, hCost, fCost = Double.MAX_VALUE;
 
     // Node object with WHITE colour
     public Node(int row, int col) {
@@ -157,32 +157,32 @@ public class Node extends JLabel implements MouseListener {
     /****** FOR A* ALGORITHM TO UPDATE G, H, AND F COSTS ******/
     // Resets all costs
     public void resetCosts() {
-	gCost = Integer.MAX_VALUE;
-	hCost = Integer.MAX_VALUE;
-	fCost = Integer.MAX_VALUE;
+	gCost = Double.MAX_VALUE;
+	hCost = Double.MAX_VALUE;
+	fCost = Double.MAX_VALUE;
     }
 
-    public int getGCost() {
+    public double getGCost() {
 	return gCost;
     }
 
-    public int getHCost() {
+    public double getHCost() {
 	return hCost;
     }
 
-    public int getFCost() {
+    public double getFCost() {
 	return fCost;
     }
 
-    public void setGCost(int g) {
+    public void setGCost(double g) {
 	gCost = g;
     }
 
-    public void setHCost(int h) {
+    public void setHCost(double h) {
 	hCost = h;
     }
 
-    public void setFCost(int f) {
+    public void setFCost(double f) {
 	fCost = f;
     }
 
