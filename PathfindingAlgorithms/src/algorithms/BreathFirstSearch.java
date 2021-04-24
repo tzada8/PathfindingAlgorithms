@@ -14,14 +14,24 @@ import javax.swing.Timer;
 import sections.board.GridPanel;
 import sections.board.Node;
 
+/**
+ * The following BreathFirstSearch class conducts the Breath-First Search (BFS)
+ * pathfinding algorithm on a given grid, displaying the shortest path from a
+ * start point to an end point.
+ * 
+ * @author Troy Zada
+ *
+ */
+
 public class BreathFirstSearch extends Algorithm {
 
-    private Map<Node, Double> distances; // Node to integers
+    // Each Node maps to a Double value, being the distance from start
+    private Map<Node, Double> distances;
 
     /**
      * This constructor conducts a Breath-First Search (BFS) on the provided grid,
-     * where the solution can either be viewed as processed or just the final answer
-     * will be displayed.
+     * where the solution can either be viewed as it unfolds or just the final
+     * answer will be displayed.
      * 
      * @param mainGrid  - The board that will have BFS conducted on it.
      * @param start     - The source Node where BFS will begin.

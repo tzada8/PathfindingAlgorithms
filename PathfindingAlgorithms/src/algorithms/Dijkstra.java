@@ -14,50 +14,62 @@ import javax.swing.Timer;
 import sections.board.GridPanel;
 import sections.board.Node;
 
+/**
+ * The following Dijkstra class conducts the Dijkstra pathfinding algorithm on a
+ * given grid, displaying the shortest path from a start point to an end point.
+ * 
+ * @author Troy Zada
+ *
+ */
+
 public class Dijkstra extends Algorithm {
 
-    // Fields
-    private Map<Node, Double> distances; // Node to doubles
+    // Each Node maps to a Double value, being the distance from start
+    private Map<Node, Double> distances;
 
+    /**
+     * This constructor conducts a Dijkstra Search on the provided grid, where the
+     * solution can either be viewed as it unfolds or just the final answer will be
+     * displayed.
+     * 
+     * @param mainGrid  - The board that will have BFS conducted on it.
+     * @param start     - The source Node where BFS will begin.
+     * @param showSteps - Whether the solution can be seen or just final answer.
+     */
     public Dijkstra(GridPanel mainGrid, Node start, boolean showSteps) {
-	// Initialize all values
 	this.mainGrid = mainGrid;
 	this.start = start;
 	this.end = mainGrid.getEndNode();
-	this.distances = new HashMap<>();
 	this.parents = new HashMap<>();
+	this.distances = new HashMap<>();
 
 	// For every Node that isn't a barrier, initialize a default distance and parent
 	fillDefaultValues(distances, DEFAULT_VALUE);
 
-	// Keep track of "visited" vertices and their current distance
-	HashMap<Node, Double> testDist = new HashMap<>();
-	testDist.put(start, 0.0);
-	// Distance from source to itself is always 0
+	// Keep track of visited Nodes and their current distance
+	HashMap<Node, Double> visited = new HashMap<>();
+	visited.put(start, 0.0);
 	distances.put(start, 0.0);
 
-	// Solution will be found in 2 ways depending if user wants to see solution
-	// 1. Using a timer that renders the Node every 0.01s until the END node is
-	// reached
-	// 2. Using a while loop that doesn't render anything except the solution path
-	if (showSteps) {
+	// Display solution in 1 of 2 ways, depending on showSteps boolean
+	if (showSteps) { // Using a timer that renders a Node every 0.01s until End Node is reached
 	    Timer timer = new Timer(10, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		    solveUsingDijkstra(testDist, showSteps, end);
+		    solveUsingDijkstra(visited, showSteps, end);
 
 		    // Displays specific solution (either MAGENTA path or "no solution" dialog box)
-		    showSolutionOutputWithSteps(testDist.isEmpty(), e, distances.get(end) != DEFAULT_VALUE);
+		    showSolutionOutputWithSteps(visited.isEmpty(), e, distances.get(end) != DEFAULT_VALUE);
 		}
 	    });
 	    timer.start();
-	} else {
-	    // While we haven't reached the END node yet
-	    while (distances.get(end) == DEFAULT_VALUE && !testDist.isEmpty()) {
-		solveUsingDijkstra(testDist, showSteps, end);
+	} else { // Using a while loop that doesn't render anything except the solution path
+	    // While End Node hasn't been reached yet and there's still Nodes to view
+	    while (distances.get(end) == DEFAULT_VALUE && !visited.isEmpty()) {
+		solveUsingDijkstra(visited, showSteps, end);
 	    }
 	    // Displays specific solution (either MAGENTA path or "no solution" dialog box)
-	    showSolutionOutputWithoutSteps(testDist.isEmpty());
+	    showSolutionOutputWithoutSteps(visited.isEmpty());
 	}
     }
 
@@ -65,19 +77,19 @@ public class Dijkstra extends Algorithm {
      * Helper method to do main algorithm; will be called both if user wants to see
      * steps or does not want to see steps
      */
-    private void solveUsingDijkstra(Map<Node, Double> testDist, boolean showSteps, Node end) {
+    private void solveUsingDijkstra(Map<Node, Double> visited, boolean showSteps, Node end) {
 	// Find Node with smallest distance from 'testDist' map, save it as var then
 	// remove it
 	Node lowestNodeD = end;
 	double lowestDist = DEFAULT_VALUE;
 	// Go through all Nodes
-	for (Node n : testDist.keySet()) {
-	    if (testDist.get(n) < lowestDist) {
-		lowestDist = testDist.get(n);
+	for (Node n : visited.keySet()) {
+	    if (visited.get(n) < lowestDist) {
+		lowestDist = visited.get(n);
 		lowestNodeD = n;
 	    }
 	}
-	testDist.remove(lowestNodeD);
+	visited.remove(lowestNodeD);
 
 	visuallyCloseNode(lowestNodeD, showSteps);
 
@@ -95,7 +107,7 @@ public class Dijkstra extends Algorithm {
 		    distances.put(v, currentDistToStart);
 		    parents.put(v, lowestNodeD);
 		}
-		testDist.put(v, currentDistToStart);
+		visited.put(v, currentDistToStart);
 	    }
 	}
     }

@@ -13,12 +13,29 @@ import javax.swing.Timer;
 import sections.board.GridPanel;
 import sections.board.Node;
 
+/**
+ * The following AStar class conducts the A* pathfinding algorithm on a given
+ * grid, displaying the shortest path from a start point to an end point.
+ * 
+ * @author Troy Zada
+ *
+ */
+
 public class AStar extends Algorithm {
+
     private ArrayList<Node> openList; // Open Nodes
     private ArrayList<Node> closedList; // Closed Nodes
 
+    /**
+     * This constructor conducts an A* Search on the provided grid, where the
+     * solution can either be viewed as it unfolds or just the final answer will be
+     * displayed.
+     * 
+     * @param mainGrid  - The board that will have BFS conducted on it.
+     * @param start     - The source Node where BFS will begin.
+     * @param showSteps - Whether the solution can be seen or just final answer.
+     */
     public AStar(GridPanel mainGrid, Node start, boolean showSteps) {
-	// Initialize all values
 	this.mainGrid = mainGrid;
 	this.start = start;
 	this.end = mainGrid.getEndNode();
@@ -26,24 +43,19 @@ public class AStar extends Algorithm {
 	this.openList = new ArrayList<>();
 	this.closedList = new ArrayList<>();
 
+	// Calculates g, h, and f for start point (where g = 0) and adds Node to open
 	Node current = this.start;
-	// Calculates g, h, and f for start point (g = 0)
 	current.setGCost(0);
 	current.setHCost(calcHDistance(current, end));
 	current.setFCost(calcFValue(current.getGCost(), current.getHCost()));
-
 	openList.add(current);
 
-	// Solution will be found in 2 ways depending if user wants to see solution
-	// 1. Using a timer that renders the Node every 0.01s until the END node is
-	// reached
-	// 2. Using a while loop that doesn't render anything except the solution path
-	if (showSteps) {
+	// Display solution in 1 of 2 ways, depending on showSteps boolean
+	if (showSteps) { // Using a timer that renders a Node every 0.01s until End Node is reached
 	    Timer timer = new Timer(10, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		    // Remove Node with lowest F value from open List and make it current
-		    Node current = getLowestF(end);
+		    Node current = getLowestF(end); // Make current the Node with lowest F value
 		    solveUsingAStar(current, end, showSteps);
 
 		    // Displays specific solution (either MAGENTA path or "no solution" dialog box)
@@ -51,11 +63,10 @@ public class AStar extends Algorithm {
 		}
 	    });
 	    timer.start();
-	} else {
-	    // While we haven't reached the End node yet, and there are still Nodes to view
+	} else { // Using a while loop that doesn't render anything except the solution path
+	    // While End Node hasn't been reached yet and there's still Nodes to view
 	    while (!current.equals(end) && !openList.isEmpty()) {
-		// Remove Node with lowest F value from open List and make it current
-		current = getLowestF(end);
+		current = getLowestF(end); // Make current the Node with lowest F value
 		solveUsingAStar(current, end, showSteps);
 	    }
 	    // Displays specific solution (either MAGENTA path or "no solution" dialog box)

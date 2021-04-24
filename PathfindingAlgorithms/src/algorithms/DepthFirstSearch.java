@@ -16,30 +16,41 @@ import javax.swing.Timer;
 import sections.board.GridPanel;
 import sections.board.Node;
 
+/**
+ * The following DepthFirstSearch class conducts the Depth-First Search (DFS)
+ * pathfinding algorithm on a given grid, going depth-first when solving; not
+ * beneficial for pathfinding, but useful for determining number of connected
+ * components.
+ * 
+ * @author Troy Zada
+ *
+ */
+
 public class DepthFirstSearch extends Algorithm {
 
     /**
-     * This constructor takes a graph and source vertex as parameters and conducts a
-     * depth-first search (DFS) on the graph.
+     * This constructor conducts a Depth-First Search (DFS) on the provided grid,
+     * where the solution can either be viewed as it unfolds or just the final
+     * answer will be displayed.
+     * 
+     * @param mainGrid  - The board that will have BFS conducted on it.
+     * @param start     - The source Node where BFS will begin.
+     * @param showSteps - Whether the solution can be seen or just final answer.
      */
     public DepthFirstSearch(GridPanel mainGrid, Node start, boolean showSteps) {
-	// Initializing all fields
 	this.mainGrid = mainGrid;
 	this.start = start;
 	this.end = mainGrid.getEndNode();
 	this.parents = new HashMap<>();
-	Set<Node> visited = new HashSet<>(); // For visited Nodes
+	Set<Node> visited = new HashSet<>(); // Set of all visited Nodes
 
-	// Initialize empty Stack listing all Nodes that need to be visited
+	// Initialize empty Stack listing all Nodes that will be visited
 	Stack<Node> nodesToVisit = new Stack<Node>();
 	nodesToVisit.push(start);
 	visited.add(start);
 
-	// Solution will be found in 2 ways depending if user wants to see solution
-	// 1. Using a timer that renders the Node every 0.01s until the END node is
-	// reached
-	// 2. Using a while loop that doesn't render anything except the solution path
-	if (showSteps) {
+	// Display solution in 1 of 2 ways, depending on showSteps boolean
+	if (showSteps) { // Using a timer that renders a Node every 0.01s until End Node is reached
 	    Timer timer = new Timer(10, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -50,9 +61,8 @@ public class DepthFirstSearch extends Algorithm {
 		}
 	    });
 	    timer.start();
-	} else {
-	    // For every vertex that hasn't been visited yet (it's not in visited set yet),
-	    // conduct DFS
+	} else { // Using a while loop that doesn't render anything except the solution path
+	    // While End Node hasn't been reached yet and there's still Nodes to view
 	    while (!visited.contains(end) && !nodesToVisit.isEmpty()) {
 		solveUsingDFS(nodesToVisit, visited, showSteps);
 	    }
