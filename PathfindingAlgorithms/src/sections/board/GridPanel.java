@@ -20,7 +20,8 @@ public class GridPanel extends JPanel {
     // Constants
     public static final int COLUMNS = 31;
     public static final int ROWS = 31;
-    public static final int MAP_SIZE = ROWS * Node.NODE_SIZE;
+    public static final int MAP_SIZE_WIDTH = COLUMNS * Node.NODE_SIZE;
+    public static final int MAP_SIZE_HEIGHT = ROWS * Node.NODE_SIZE;
 
     // Fields
     private Node[][] map = new Node[ROWS][COLUMNS];
@@ -30,7 +31,7 @@ public class GridPanel extends JPanel {
 
     // Basic Panel that holds all content for a given algorithm
     public GridPanel() {
-	this.setPreferredSize(new Dimension(MAP_SIZE, MAP_SIZE));
+	this.setPreferredSize(new Dimension(MAP_SIZE_WIDTH, MAP_SIZE_HEIGHT));
 	this.setBackground(null);
 	this.setLayout(null);
 

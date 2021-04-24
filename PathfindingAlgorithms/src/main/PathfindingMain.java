@@ -6,6 +6,16 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
+/**
+ * 
+ * The following PathfindingMain class includes the main method to render all
+ * content as well as constants for visual updates (e.g. colour, font sizes,
+ * etc.).
+ * 
+ * @author Troy Zada
+ *
+ */
+
 public class PathfindingMain {
 
     /* CONSTANTS */

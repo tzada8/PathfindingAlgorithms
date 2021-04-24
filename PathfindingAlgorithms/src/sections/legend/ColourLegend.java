@@ -28,12 +28,16 @@ public class ColourLegend extends JPanel {
      */
     private static final long serialVersionUID = 1L;
 
+    // Constants
+    public static final int WIDTH = 140;
+    public static final int HEIGHT = 205;
+
     /**
      * This constructor creates a ColourLegend object which is a panel of colours
      * dictating what each colour represents.
      */
     public ColourLegend() {
-	this.setPreferredSize(new Dimension(140, 205));
+	this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 	this.setBackground(PathfindingMain.COMPONENT_COLOUR);
 	this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 	this.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 0));

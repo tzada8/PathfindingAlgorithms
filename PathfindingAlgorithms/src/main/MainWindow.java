@@ -2,6 +2,15 @@ package main;
 
 import javax.swing.JFrame;
 
+/**
+ * 
+ * The following MainWindow class extends JFrame and creates the actual window
+ * which can be viewed.
+ * 
+ * @author Troy Zada
+ *
+ */
+
 public class MainWindow extends JFrame {
 
     /**
@@ -9,6 +18,10 @@ public class MainWindow extends JFrame {
      */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * This constructor adds the MainPanel onto the frame such that all the context
+     * the main panel has will be displayed in the frame.
+     */
     public MainWindow() {
 	// Main Window properties
 	this.setTitle("Pathfinding Algorithms");

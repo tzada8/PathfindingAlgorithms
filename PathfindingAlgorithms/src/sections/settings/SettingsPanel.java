@@ -38,6 +38,8 @@ public class SettingsPanel extends JPanel implements ActionListener {
     private static final long serialVersionUID = 1L;
 
     // Constants
+    public static final int WIDTH = 200;
+    public static final int HEIGHT = 200;
     private static final String[] ALGORITHMS = { "Breath First Search", "Depth First Search", "A*", "Dijkstra" };
     private static final String[] OBSTACLES = { "Freehand", "Preset 1", "Preset 2", "Preset 3", "Random" };
 
@@ -57,7 +59,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
      * @param mainGrid - All setting options are applied to change the grid.
      */
     public SettingsPanel(GridPanel mainGrid) {
-	this.setPreferredSize(new Dimension(200, 200));
+	this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 	this.setBackground(PathfindingMain.COMPONENT_COLOUR);
 	this.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 	this.mainGrid = mainGrid;
