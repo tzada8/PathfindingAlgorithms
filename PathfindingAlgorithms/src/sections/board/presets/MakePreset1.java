@@ -2,8 +2,22 @@ package sections.board.presets;
 
 import sections.board.Node;
 
+/**
+ * The following MakePreset1 class goes through the entire grid and makes a
+ * barrier (BLACK) at each of the specific locations.
+ * 
+ * @author Troy Zada
+ *
+ */
+
 public class MakePreset1 {
 
+    /**
+     * This constructor creates the first preset option of the board. This involves
+     * turning all the specific locations into barriers from an available tile.
+     * 
+     * @param map - The grid that will be turned into Preset1.
+     */
     public MakePreset1(Node[][] map) {
 	// Make start and end points
 	map[0][7].makeStart();

@@ -10,6 +10,15 @@ import javax.swing.JPanel;
 import customswing.CustomBox;
 import customswing.CustomLabel;
 
+/**
+ * 
+ * The following CustomColourWithName class extends JPanel and acts as an
+ * individual label for one entry of the legend.
+ * 
+ * @author Troy Zada
+ *
+ */
+
 public class CustomColourWithName extends JPanel {
 
     /**
@@ -20,7 +29,15 @@ public class CustomColourWithName extends JPanel {
     // Constants
     private static final int BOX_SIZE = 15;
 
-    // Creates desciption stating what colour represents
+    /**
+     * Used for one entry of This constructor creates a CustomColourWithName object
+     * which is used for one entry of the legend, consisting of a colour and a label
+     * describing what the colour represents.
+     * 
+     * @param colour   - The colour of the box.
+     * @param name     - The label to describe what the colour represents.
+     * @param fontSize - The font size for the label.
+     */
     public CustomColourWithName(Color colour, String name, int fontSize) {
 	this.setBackground(null);
 	this.setLayout(new GridBagLayout());
