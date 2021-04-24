@@ -1,8 +1,12 @@
 package algorithms;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 import sections.board.GridPanel;
 import sections.board.Node;
@@ -10,6 +14,10 @@ import sections.board.Node;
 // Generic algorithm with features that all specific algorithms have in common
 // All specific algorithms extends from this class
 public class Algorithm {
+
+    // Constants
+    protected static final double DEFAULT_VALUE = Double.MAX_VALUE;
+    public static final String[] ALGORITHM_NAMES = { "Breath First Search", "Depth First Search", "A*", "Dijkstra" };
 
     // Fields
     protected GridPanel mainGrid;
@@ -44,6 +52,25 @@ public class Algorithm {
 	}
     }
 
+//    protected void showSolutionUnfold(String type) {
+//	Timer timer = new Timer(10, new ActionListener() {
+//	    @Override
+//	    public void actionPerformed(ActionEvent e) {
+//		try {
+//		    // Solve grid using BFS
+//		    solveUsingBFS(q, showSteps);
+//
+//		    // Displays specific solution (either MAGENTA path or "no solution" dialog box)
+//		    showSolutionOutput(q.isEmpty(), e, distances.get(end) != DEFAULT_VALUE);
+//		} catch (NoSuchElementException e1) {
+//		    // Display dialog box since no solution exists
+//		    noSolutionsDialogBox();
+//		}
+//	    }
+//	});
+//	timer.start();
+//    }
+
     // Helper method to calculate the direct distance between 2 Nodes
     protected double calculateActualDistance(Node current, Node other) {
 	// X difference between Nodes
@@ -70,6 +97,41 @@ public class Algorithm {
 	}
     }
 
+    // If user wants to see steps, then check if no solution or if solution exists
+    protected void showSolutionOutputWithSteps(boolean noSolution, ActionEvent e, boolean solutionFound) {
+	if (noSolution) {
+	    // If there is no solution, then stop timer and throw exception
+	    ((Timer) e.getSource()).stop();
+	    mainGrid.resetAllCosts();
+	    noSolutionsDialogBox();
+	} else if (solutionFound) {
+	    // If End Node has been found, then solution exists, so stop timer and draw
+	    // solution
+	    ((Timer) e.getSource()).stop();
+	    mainGrid.resetAllCosts();
+	    drawPath(end);
+	}
+    }
+
+    // If user does not want to see steps, then check if no solution or if solution
+    // exists
+    protected void showSolutionOutputWithoutSteps(boolean noSolution) {
+	if (noSolution) {
+	    // Display dialog box since no solution exists
+	    noSolutionsDialogBox();
+	} else {
+	    // Draw path since solution exists
+	    drawPath(end);
+	}
+	mainGrid.resetAllCosts();
+    }
+
+    // No solutions Dialog Box
+    protected void noSolutionsDialogBox() {
+	JOptionPane.showMessageDialog(null, "The board has no solution.", "No Solutions",
+		JOptionPane.INFORMATION_MESSAGE);
+    }
+
     // Method to visually draw solution on board (turn MAGENTA)
     protected void drawPath(Node end) {
 	// Change all Nodes part of solution accordingly
@@ -80,13 +142,7 @@ public class Algorithm {
 	    currentNode = parents.get(currentNode);
 	    totalBlocks++;
 	}
-	System.out.println(totalBlocks);
-    }
-
-    // No solutions Dialog Box
-    protected void noSolutionsDialogBox() {
-	JOptionPane.showMessageDialog(null, "The board has no solution.", "No Solutions",
-		JOptionPane.INFORMATION_MESSAGE);
+	System.out.println("Total Blocks = " + totalBlocks);
     }
 
 }

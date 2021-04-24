@@ -43,37 +43,21 @@ public class DepthFirstSearch extends Algorithm {
 	    Timer timer = new Timer(10, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		    try {
-			solveUsingDFS(nodesToVisit, visited, showSteps); // Solve grid using DFS
+		    solveUsingDFS(nodesToVisit, visited, showSteps);
 
-			if (nodesToVisit.isEmpty()) {
-			    // If Stack is empty, then we ran out of options, so no solution found
-			    ((Timer) e.getSource()).stop();
-			    throw new EmptyStackException();
-			} else if (visited.contains(end)) {
-			    // If END Node has been visited, then we reached it, so draw solution
-			    ((Timer) e.getSource()).stop();
-			    drawPath(end);
-			}
-		    } catch (EmptyStackException e1) { // Dialog box if no solution exists
-			JOptionPane.showMessageDialog(null, "The board has no solution.", "No Solutions",
-				JOptionPane.INFORMATION_MESSAGE);
-		    }
+		    // Displays specific solution (either MAGENTA path or "no solution" dialog box)
+		    showSolutionOutputWithSteps(nodesToVisit.isEmpty(), e, visited.contains(end));
 		}
 	    });
 	    timer.start();
 	} else {
-	    try {
-		// For every vertex that hasn't been visited yet (it's not in visited set yet),
-		// conduct DFS
-		while (!visited.contains(end)) {
-		    solveUsingDFS(nodesToVisit, visited, showSteps);
-		}
-		drawPath(end);
-	    } catch (EmptyStackException e) { // Dialog box if no solution exists
-		JOptionPane.showMessageDialog(null, "The board has no solution.", "No Solutions",
-			JOptionPane.INFORMATION_MESSAGE);
+	    // For every vertex that hasn't been visited yet (it's not in visited set yet),
+	    // conduct DFS
+	    while (!visited.contains(end) && !nodesToVisit.isEmpty()) {
+		solveUsingDFS(nodesToVisit, visited, showSteps);
 	    }
+	    // Displays specific solution (either MAGENTA path or "no solution" dialog box)
+	    showSolutionOutputWithoutSteps(nodesToVisit.isEmpty());
 	}
     }
 

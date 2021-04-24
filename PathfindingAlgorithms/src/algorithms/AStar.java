@@ -42,44 +42,24 @@ public class AStar extends Algorithm {
 	    Timer timer = new Timer(10, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		    try {
-			// Remove Node with lowest F value from open List and make it current
-			Node current = getLowestF(end);
-			solveUsingAStar(current, end, showSteps);
+		    // Remove Node with lowest F value from open List and make it current
+		    Node current = getLowestF(end);
+		    solveUsingAStar(current, end, showSteps);
 
-			if (openList.isEmpty()) {
-			    // If Queue is empty, then we ran out of options, so no solution found
-			    ((Timer) e.getSource()).stop();
-			    throw new NoSuchElementException("Force catch block");
-			} else if (current.equals(end)) {
-			    // If END Node's distance is not default -1, then we reached it, so draw
-			    // solution
-			    ((Timer) e.getSource()).stop();
-			    drawPath(end);
-			    mainGrid.resetAllCosts();
-			}
-		    } catch (NoSuchElementException e1) { // Dialog box if no solution exists
-			JOptionPane.showMessageDialog(null, "The board has no solution.", "No Solutions",
-				JOptionPane.INFORMATION_MESSAGE);
-		    }
+		    // Displays specific solution (either MAGENTA path or "no solution" dialog box)
+		    showSolutionOutputWithSteps(openList.isEmpty(), e, current.equals(end));
 		}
 	    });
 	    timer.start();
 	} else {
-	    // Try solving board, but if it has no solutions, then catch as error
-	    try {
-		// While we haven't reached the END node yet
-		while (!current.equals(end)) {
-		    solveUsingAStar(current, end, showSteps);
-		    // Remove Node with lowest F value from open List and make it current
-		    current = getLowestF(end);
-		}
-		drawPath(end);
-		mainGrid.resetAllCosts();
-	    } catch (NullPointerException e) { // Dialog box if no solution exists
-		JOptionPane.showMessageDialog(null, "The board has no solution.", "No Solutions",
-			JOptionPane.INFORMATION_MESSAGE);
+	    // While we haven't reached the End node yet, and there are still Nodes to view
+	    while (!current.equals(end) && !openList.isEmpty()) {
+		// Remove Node with lowest F value from open List and make it current
+		current = getLowestF(end);
+		solveUsingAStar(current, end, showSteps);
 	    }
+	    // Displays specific solution (either MAGENTA path or "no solution" dialog box)
+	    showSolutionOutputWithoutSteps(openList.isEmpty());
 	}
     }
 
@@ -104,8 +84,6 @@ public class AStar extends Algorithm {
 		v.setGCost(currentG);
 		v.setFCost(currentF);
 		parents.put(v, current);
-		System.out.println(
-			current.getPosition()[0] + ", " + current.getPosition()[1] + " = " + current.getFCost());
 	    }
 
 	}

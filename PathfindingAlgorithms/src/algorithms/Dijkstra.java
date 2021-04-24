@@ -16,9 +16,6 @@ import sections.board.Node;
 
 public class Dijkstra extends Algorithm {
 
-    // Constants
-    private static final double DEFAULT_VALUE = Double.MAX_VALUE;
-
     // Fields
     private Map<Node, Double> distances; // Node to doubles
 
@@ -47,42 +44,20 @@ public class Dijkstra extends Algorithm {
 	    Timer timer = new Timer(10, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		    try {
-			solveUsingDijkstra(testDist, showSteps, end); // Solve grid using BFS
+		    solveUsingDijkstra(testDist, showSteps, end);
 
-			if (testDist.isEmpty()) {
-			    // If Queue is empty, then we ran out of options, so no solution found
-			    ((Timer) e.getSource()).stop();
-			    throw new NoSuchElementException("Force catch block");
-			} else if (distances.get(end) != DEFAULT_VALUE) {
-			    // If END Node's distance is not default MAX_VALUE, then we reached it, so draw
-			    // solution
-			    ((Timer) e.getSource()).stop();
-			    drawPath(end);
-			}
-		    } catch (NoSuchElementException e1) { // Dialog box if no solution exists
-			JOptionPane.showMessageDialog(null, "The board has no solution.", "No Solutions",
-				JOptionPane.INFORMATION_MESSAGE);
-		    }
+		    // Displays specific solution (either MAGENTA path or "no solution" dialog box)
+		    showSolutionOutputWithSteps(testDist.isEmpty(), e, distances.get(end) != DEFAULT_VALUE);
 		}
 	    });
 	    timer.start();
 	} else {
-	    // Try solving board, but if it has no solutions, then catch as error
-	    try {
-		// While we haven't reached the END node yet
-		while (distances.get(end) == DEFAULT_VALUE && !testDist.isEmpty()) {
-		    solveUsingDijkstra(testDist, showSteps, end);
-		}
-		if (testDist.isEmpty()) {
-		    throw new NoSuchElementException();
-		} else {
-		    drawPath(end);
-		}
-	    } catch (NoSuchElementException e) { // Dialog box if no solution exists
-		JOptionPane.showMessageDialog(null, "The board has no solution.", "No Solutions",
-			JOptionPane.INFORMATION_MESSAGE);
+	    // While we haven't reached the END node yet
+	    while (distances.get(end) == DEFAULT_VALUE && !testDist.isEmpty()) {
+		solveUsingDijkstra(testDist, showSteps, end);
 	    }
+	    // Displays specific solution (either MAGENTA path or "no solution" dialog box)
+	    showSolutionOutputWithoutSteps(testDist.isEmpty());
 	}
     }
 
@@ -91,12 +66,12 @@ public class Dijkstra extends Algorithm {
      * steps or does not want to see steps
      */
     private void solveUsingDijkstra(Map<Node, Double> testDist, boolean showSteps, Node end) {
-	// Find Node with smallest distance from known distances
+	// Find Node with smallest distance from 'testDist' map, save it as var then
+	// remove it
 	Node lowestNodeD = end;
 	double lowestDist = DEFAULT_VALUE;
 	// Go through all Nodes
 	for (Node n : testDist.keySet()) {
-	    System.out.println(n.getPosition()[0] + ", " + n.getPosition()[1] + " = " + testDist.get(n));
 	    if (testDist.get(n) < lowestDist) {
 		lowestDist = testDist.get(n);
 		lowestNodeD = n;
@@ -121,15 +96,12 @@ public class Dijkstra extends Algorithm {
 		    parents.put(v, lowestNodeD);
 		}
 		testDist.put(v, currentDistToStart);
-
-		System.out.println("(" + v.getPosition()[0] + ", " + v.getPosition()[1] + ") = "
-			+ distances.get(mainGrid.getNode(v.getPosition()[0], v.getPosition()[1])));
 	    }
 	}
     }
 
     // Calculate the distance between the current Node and the start Node.
-    // Distance will be whatever parent's distance is, plus difference between
+    // Distance will be whatever parent's distance is, plus distance between
     // 2 Nodes
     private double calculateDistFromStart(Node current, Node parent) {
 	return distances.get(parent) + calculateActualDistance(current, parent);
