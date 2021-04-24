@@ -2,15 +2,11 @@ package algorithms;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.Stack;
 
-import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import sections.board.GridPanel;
@@ -72,35 +68,30 @@ public class DepthFirstSearch extends Algorithm {
     }
 
     /**
-     * This private helper method is called in the DFSTree constructor, and is the
-     * main code that determines the connected components of the graph.
+     * Private helper method that performs DFS algorithm. This method will be called
+     * both if the user wants to see the steps unfold or if they just want to see
+     * the solution.
+     * 
+     * @param s         - Contains all the Nodes that still need to be visited.
+     * @param visited   - Contains all the Nodes that have been visited so far.
+     * @param showSteps - Whether the solution can be seen or just final answer.
      */
     private void solveUsingDFS(Stack<Node> s, Set<Node> visited, boolean showSteps) {
-	Node u = s.pop();
-	visuallyCloseNode(u, showSteps);
+	Node current = s.pop();
+	visuallyCloseNode(current, showSteps);
 
-	// For every Node adjacent to u
-	for (Node w : mainGrid.getAdjacencyNodes(u)) {
-	    System.out.println("Current Node " + w.getPosition()[0] + ", " + w.getPosition()[1]);
-	    // If vertex "w" hasn't been visited yet, then add "u" back to
-	    // stack, with "w" on top, and say that "w" has been visited
-	    if (!visited.contains(w)) {
-		this.parents.put(w, u);
-		s.push(u);
-		s.push(w);
-		visited.add(w);
-		visuallyOpenNode(w, showSteps);
+	// For every Node adjacent to the current Node
+	for (Node v : mainGrid.getAdjacencyNodes(current)) {
+	    // If Node v has not been visited, then put back current Node into Stack with
+	    // Node v on top, saying v has been visited
+	    if (!visited.contains(v)) {
+		visuallyOpenNode(v, showSteps);
+		this.parents.put(v, current);
+		s.push(current);
+		s.push(v);
+		visited.add(v);
 		break;
 	    }
-
-	    // 6 LINES OF CODE BELOW CAN BE DELETED; JUST USED FOR PRINTLN
-	    // STATEMENTS/TESTING
-	    int curR = w.getPosition()[0];
-	    int curC = w.getPosition()[1];
-	    Node parentSpot = parents.get(mainGrid.getNode(curR, curC));
-	    int parR = parentSpot.getPosition()[0];
-	    int parC = parentSpot.getPosition()[1];
-	    System.out.println("(" + curR + ", " + curC + ") = parent @ (" + parR + ", " + parC + ")");
 	}
     }
 

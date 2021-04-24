@@ -3,12 +3,8 @@ package algorithms;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Queue;
 
-import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import sections.board.GridPanel;
@@ -47,8 +43,8 @@ public class Dijkstra extends Algorithm {
 	fillDefaultValues(distances, DEFAULT_VALUE);
 
 	// Keep track of visited Nodes and their current distance
-	HashMap<Node, Double> visited = new HashMap<>();
-	visited.put(start, 0.0);
+	HashMap<Node, Double> nodesToVisit = new HashMap<>();
+	nodesToVisit.put(start, 0.0);
 	distances.put(start, 0.0);
 
 	// Display solution in 1 of 2 ways, depending on showSteps boolean
@@ -56,66 +52,87 @@ public class Dijkstra extends Algorithm {
 	    Timer timer = new Timer(10, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		    solveUsingDijkstra(visited, showSteps, end);
+		    solveUsingDijkstra(nodesToVisit, showSteps);
 
 		    // Displays specific solution (either MAGENTA path or "no solution" dialog box)
-		    showSolutionOutputWithSteps(visited.isEmpty(), e, distances.get(end) != DEFAULT_VALUE);
+		    showSolutionOutputWithSteps(nodesToVisit.isEmpty(), e, distances.get(end) != DEFAULT_VALUE);
 		}
 	    });
 	    timer.start();
 	} else { // Using a while loop that doesn't render anything except the solution path
 	    // While End Node hasn't been reached yet and there's still Nodes to view
-	    while (distances.get(end) == DEFAULT_VALUE && !visited.isEmpty()) {
-		solveUsingDijkstra(visited, showSteps, end);
+	    while (distances.get(end) == DEFAULT_VALUE && !nodesToVisit.isEmpty()) {
+		solveUsingDijkstra(nodesToVisit, showSteps);
 	    }
 	    // Displays specific solution (either MAGENTA path or "no solution" dialog box)
-	    showSolutionOutputWithoutSteps(visited.isEmpty());
+	    showSolutionOutputWithoutSteps(nodesToVisit.isEmpty());
 	}
     }
 
     /**
-     * Helper method to do main algorithm; will be called both if user wants to see
-     * steps or does not want to see steps
+     * Private helper method that performs Dijkstra algorithm. This method will be
+     * called both if the user wants to see the steps unfold or if they just want to
+     * see the solution.
+     * 
+     * @param visited   - Contains all the Nodes that still need to be visited.
+     * @param showSteps - Whether the solution can be seen or just final answer.
      */
-    private void solveUsingDijkstra(Map<Node, Double> visited, boolean showSteps, Node end) {
-	// Find Node with smallest distance from 'testDist' map, save it as var then
-	// remove it
-	Node lowestNodeD = end;
-	double lowestDist = DEFAULT_VALUE;
-	// Go through all Nodes
-	for (Node n : visited.keySet()) {
-	    if (visited.get(n) < lowestDist) {
-		lowestDist = visited.get(n);
-		lowestNodeD = n;
-	    }
-	}
-	visited.remove(lowestNodeD);
+    private void solveUsingDijkstra(Map<Node, Double> nodesToVisit, boolean showSteps) {
+	Node current = getSmallestDist(nodesToVisit);
+	visuallyCloseNode(current, showSteps);
 
-	visuallyCloseNode(lowestNodeD, showSteps);
-
-	// For every node adjacent to u
-	for (Node v : mainGrid.getAdjacencyNodes(lowestNodeD)) {
-	    // If v is not yet visited, then change its distance and parent accordingly
+	// For every Node adjacent to the current Node
+	for (Node v : mainGrid.getAdjacencyNodes(current)) {
+	    // If Node v has not been visited, then visit it and calculate its distance
 	    if (distances.get(v) == DEFAULT_VALUE) {
 		visuallyOpenNode(v, showSteps);
-
-		// Calc dist from start for each unvisited Node
-		double currentDistToStart = calculateDistFromStart(v, lowestNodeD);
-		// If newly calculated distance is less than its previous know distance,
-		// then update its distance and parent
-		if (currentDistToStart < distances.get(v)) {
-		    distances.put(v, currentDistToStart);
-		    parents.put(v, lowestNodeD);
+		double updatedDistToStart = calculateDistFromStart(v, current);
+		// If updated distance is less than its previous know distance, then update
+		// Node's distance and parent
+		if (updatedDistToStart < distances.get(v)) {
+		    distances.put(v, updatedDistToStart);
+		    parents.put(v, current);
 		}
-		visited.put(v, currentDistToStart);
+		nodesToVisit.put(v, updatedDistToStart);
 	    }
 	}
     }
 
-    // Calculate the distance between the current Node and the start Node.
-    // Distance will be whatever parent's distance is, plus distance between
-    // 2 Nodes
-    private double calculateDistFromStart(Node current, Node parent) {
-	return distances.get(parent) + calculateActualDistance(current, parent);
+    /**
+     * Goes through all the Nodes in the Map, finding the Node with the smallest
+     * distance, removing it from the Map, and returning it.
+     * 
+     * @param nodesToVisit - Map of all Nodes to be visited pointing to their
+     *                     current distance.
+     * @return - The Node with the lowest distance.
+     */
+    private Node getSmallestDist(Map<Node, Double> nodesToVisit) {
+	Node lowestDistNode = end;
+	double lowestDist = distances.get(lowestDistNode);
+	// Go through all Nodes checking if the next Node has a smaller distance than
+	// the previous one
+	for (Node n : nodesToVisit.keySet()) {
+	    if (nodesToVisit.get(n) < lowestDist) {
+		lowestDist = nodesToVisit.get(n);
+		lowestDistNode = n;
+	    }
+	}
+	// Remove and return Node with lowest distance
+	nodesToVisit.remove(lowestDistNode);
+	return lowestDistNode;
     }
+
+    /**
+     * Calculates the distance between the current Node and the start Node. The
+     * distance will be whatever the parent's distance is, plus the distance between
+     * the 2 Nodes.
+     * 
+     * @param current  - The Node that we are calculating the distance of.
+     * @param previous - The Node that comes before the current Node.
+     * @return - The total distance between the current and the start Node.
+     */
+    private double calculateDistFromStart(Node current, Node previous) {
+	return distances.get(previous) + calculateDistanceBetweenNodes(current, previous);
+    }
+
 }

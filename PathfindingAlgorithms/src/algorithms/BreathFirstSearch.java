@@ -5,10 +5,8 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Queue;
 
-import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import sections.board.GridPanel;
@@ -87,10 +85,9 @@ public class BreathFirstSearch extends Algorithm {
 	Node current = q.remove();
 	visuallyCloseNode(current, showSteps);
 
-	// For every node adjacent to the current Node
+	// For every Node adjacent to the current Node
 	for (Node v : mainGrid.getAdjacencyNodes(current)) {
-	    // If Node v has not been visited, then visit it and adjust its distance and
-	    // parent
+	    // If Node v has not been visited, then visit it and adjust distance and parent
 	    if (distances.get(v) == DEFAULT_VALUE) {
 		visuallyOpenNode(v, showSteps);
 		distances.put(v, distances.get(current) + 1);

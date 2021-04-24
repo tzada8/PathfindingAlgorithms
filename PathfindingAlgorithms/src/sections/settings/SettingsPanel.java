@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import algorithms.AStar;
-import algorithms.Algorithm;
 import algorithms.BreathFirstSearch;
 import algorithms.DepthFirstSearch;
 import algorithms.Dijkstra;
@@ -28,7 +27,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
     private static final long serialVersionUID = 1L;
 
     // Constants
-
+    private static final String[] ALGORITHMS = { "Breath First Search", "Depth First Search", "A*", "Dijkstra" };
     private static final String[] OBSTACLES = { "Freehand", "Preset 1", "Preset 2", "Preset 3", "Random" };
 
     // Fields
@@ -64,7 +63,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	this.add(showStepsCheckBox);
 
 	// Adding ComboBox to choose between Algorithms
-	algorithmsComboBox = new JComboBox<String>(Algorithm.ALGORITHM_NAMES);
+	algorithmsComboBox = new JComboBox<String>(ALGORITHMS);
 	algorithmsComboBox.addActionListener(this);
 	this.add(algorithmsComboBox);
 
@@ -134,13 +133,13 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	// If switching algorithms, than reset any pathfinding
 	if (e.getSource() == algorithmsComboBox) {
 	    String currentAlgorithm = this.getAlgorithm();
-	    if (currentAlgorithm == Algorithm.ALGORITHM_NAMES[0]) {
+	    if (currentAlgorithm == ALGORITHMS[0]) {
 		mainGrid.resetPathfinding();
-	    } else if (currentAlgorithm == Algorithm.ALGORITHM_NAMES[1]) {
+	    } else if (currentAlgorithm == ALGORITHMS[1]) {
 		mainGrid.resetPathfinding();
-	    } else if (currentAlgorithm == Algorithm.ALGORITHM_NAMES[2]) {
+	    } else if (currentAlgorithm == ALGORITHMS[2]) {
 		mainGrid.resetPathfinding();
-	    } else if (currentAlgorithm == Algorithm.ALGORITHM_NAMES[3]) {
+	    } else if (currentAlgorithm == ALGORITHMS[3]) {
 		mainGrid.resetPathfinding();
 	    }
 	}
@@ -160,13 +159,13 @@ public class SettingsPanel extends JPanel implements ActionListener {
 		String currentAlgorithm = this.getAlgorithm();
 		Node startNode = mainGrid.getStartNode();
 		boolean showSteps = this.shouldShowSteps();
-		if (currentAlgorithm == Algorithm.ALGORITHM_NAMES[0]) {
+		if (currentAlgorithm == ALGORITHMS[0]) {
 		    new BreathFirstSearch(mainGrid, startNode, showSteps);
-		} else if (currentAlgorithm == Algorithm.ALGORITHM_NAMES[1]) {
+		} else if (currentAlgorithm == ALGORITHMS[1]) {
 		    new DepthFirstSearch(mainGrid, startNode, showSteps);
-		} else if (currentAlgorithm == Algorithm.ALGORITHM_NAMES[2]) {
+		} else if (currentAlgorithm == ALGORITHMS[2]) {
 		    new AStar(mainGrid, startNode, showSteps);
-		} else if (currentAlgorithm == Algorithm.ALGORITHM_NAMES[3]) {
+		} else if (currentAlgorithm == ALGORITHMS[3]) {
 		    new Dijkstra(mainGrid, startNode, showSteps);
 		}
 		// Enable all options since board is done being solved

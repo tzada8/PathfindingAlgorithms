@@ -4,10 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
 
-import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import sections.board.GridPanel;
@@ -46,7 +43,7 @@ public class AStar extends Algorithm {
 	// Calculates g, h, and f for start point (where g = 0) and adds Node to open
 	Node current = this.start;
 	current.setGCost(0);
-	current.setHCost(calcHDistance(current, end));
+	current.setHCost(calcHDistance(current));
 	current.setFCost(calcFValue(current.getGCost(), current.getHCost()));
 	openList.add(current);
 
@@ -55,8 +52,8 @@ public class AStar extends Algorithm {
 	    Timer timer = new Timer(10, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		    Node current = getLowestF(end); // Make current the Node with lowest F value
-		    solveUsingAStar(current, end, showSteps);
+		    Node current = getLowestF();
+		    solveUsingAStar(current, showSteps);
 
 		    // Displays specific solution (either MAGENTA path or "no solution" dialog box)
 		    showSolutionOutputWithSteps(openList.isEmpty(), e, current.equals(end));
@@ -66,31 +63,39 @@ public class AStar extends Algorithm {
 	} else { // Using a while loop that doesn't render anything except the solution path
 	    // While End Node hasn't been reached yet and there's still Nodes to view
 	    while (!current.equals(end) && !openList.isEmpty()) {
-		current = getLowestF(end); // Make current the Node with lowest F value
-		solveUsingAStar(current, end, showSteps);
+		current = getLowestF();
+		solveUsingAStar(current, showSteps);
 	    }
 	    // Displays specific solution (either MAGENTA path or "no solution" dialog box)
 	    showSolutionOutputWithoutSteps(openList.isEmpty());
 	}
     }
 
-    private void solveUsingAStar(Node current, Node end, boolean showSteps) {
+    /**
+     * Private helper method that performs A* algorithm. This method will be called
+     * both if the user wants to see the steps unfold or if they just want to see
+     * the solution.
+     * 
+     * @param current   - Current Node to be checked.
+     * @param showSteps - Whether the solution can be seen or just final answer.
+     */
+    private void solveUsingAStar(Node current, boolean showSteps) {
 	visuallyCloseNode(current, showSteps);
 
-	// For every node adjacent to u
+	// For every Node adjacent to the current Node
 	for (Node v : mainGrid.getAdjacencyNodes(current)) {
 	    // If Node not in open or closed Lists, then add to open
 	    if (!openList.contains(v) && !closedList.contains(v)) {
-		openList.add(v);
 		visuallyOpenNode(v, showSteps);
+		openList.add(v);
 	    }
 	    // Do g, h, and f calculations for Node v
-	    double currentG = calcGDistance(v, current); // G
-	    v.setHCost(calcHDistance(v, end));
-	    double currentF = calcFValue(currentG, v.getHCost()); // F
+	    double currentG = calcGDistance(v, current);
+	    v.setHCost(calcHDistance(v));
+	    double currentF = calcFValue(currentG, v.getHCost());
 
 	    // If new F value is less than the Node's existing F value, then update existing
-	    // f and parent
+	    // G, F, and parent
 	    if (currentF < v.getFCost()) {
 		v.setGCost(currentG);
 		v.setFCost(currentF);
@@ -103,37 +108,63 @@ public class AStar extends Algorithm {
 	openList.remove(current);
     }
 
-    // Calculates actual distance from start, g (finds distance between current Node
-    // and start Node including all present obstacles)
-    private double calcGDistance(Node current, Node previous) {
-	return previous.getGCost() + calculateActualDistance(current, previous);
-    }
-
-    // Calculates heuristic distance, h (finds distance between current Node
-    // and end Node assuming that no obstacles exist)
-    private double calcHDistance(Node current, Node end) {
-	return calculateActualDistance(current, end);
-    }
-
-    // Calculates heuristic distance, h (finds distance between current Node
-    // and end Node assuming that no obstacles exist)
-    private double calcFValue(double g, double h) {
-	return g + h;
-    }
-
-    // Find Node with lowest F value
-    private Node getLowestF(Node end) {
-	// Default lowestNodeF to be end Node
-	Node lowestNodeF = end;
+    /**
+     * Goes through all the Nodes in the List, finding the Node with the smallest
+     * f-cost, and returning it.
+     * 
+     * @return - The Node with the smallest f-cost.
+     */
+    private Node getLowestF() {
+	Node lowestFNode = end;
 	double lowestFVal = end.getFCost();
-	// Go through all Nodes
+	// Go through all Nodes checking if the next Node has a smaller distance than
+	// the previous one
 	for (Node n : openList) {
 	    if (n.getFCost() < lowestFVal) {
-		lowestNodeF = n;
+		lowestFNode = n;
 		lowestFVal = n.getFCost();
 	    }
 	}
-	return lowestNodeF;
+	return lowestFNode;
+    }
+
+    /**
+     * Calculates the actual distance, g, between the current Node and the start
+     * Node (including all obstacles). The distance will be whatever the parent's
+     * distance is, plus the distance between the 2 Nodes.
+     * 
+     * @param current  - The Node that we are calculating the distance of.
+     * @param previous - The Node that comes before the current Node.
+     * @return - The total distance between the current and the start Node.
+     */
+    private double calcGDistance(Node current, Node previous) {
+	return previous.getGCost() + calculateDistanceBetweenNodes(current, previous);
+    }
+
+    /**
+     * Calculates the heuristic distance, h, between the current Node and the end
+     * Node (excluding all obstacles). The distance will be the direct distance
+     * between the 2 Nodes, assuming there are no obstacles between them.
+     * 
+     * @param current - The Node that we are calculating the distance of.
+     * @return - The total heuristic distance between the current and the end Node.
+     */
+    private double calcHDistance(Node current) {
+	return calculateDistanceBetweenNodes(current, end);
+    }
+
+    // Calculates heuristic distance, h (finds distance between current Node
+    // and end Node assuming that no obstacles exist)
+    /**
+     * Calculates the F-cost for the Node, being f = g + h. This cost determines
+     * which direction the path will be heading.
+     * 
+     * @param g - G-cost, actual distance between current and start Node.
+     * @param h - H-cost, heuristic distance between current and end Node.
+     * @return - The total F-cost for proceeding in that direction.
+     */
+    private double calcFValue(double g, double h) {
+	return g + h;
     }
 
 }
