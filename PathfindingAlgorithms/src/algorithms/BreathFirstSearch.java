@@ -15,10 +15,10 @@ import sections.board.GridPanel;
 import sections.board.Node;
 
 public class BreathFirstSearch extends Algorithm {
-    private GridPanel mainGrid;
-    private Node start;
-    private Map<Node, Integer> distances; // Node to integers
-    private Map<Node, Node> parents; // Node to Node
+
+    private static final double DEFAULT_VALUE = Double.MAX_VALUE;
+
+    private Map<Node, Double> distances; // Node to integers
 
     /**
      * This constructor takes a board and source vertex as parameters and conducts a
@@ -28,23 +28,16 @@ public class BreathFirstSearch extends Algorithm {
 	// Initializing all fields
 	this.mainGrid = mainGrid;
 	this.start = start;
+	this.end = mainGrid.getEndNode();
 	this.distances = new HashMap<>();
 	this.parents = new HashMap<>();
 
 	// For every Node that isn't a barrier, initialize a default distance and parent
-	for (int r = 0; r < GridPanel.ROWS; r++) {
-	    for (int c = 0; c < GridPanel.COLUMNS; c++) {
-		if (!mainGrid.getNode(r, c).isBarrier()) {
-		    distances.put(mainGrid.getNode(r, c), -1);
-		    parents.put(mainGrid.getNode(r, c), null);
-		}
-	    }
-	}
-	Node end = mainGrid.getEndNode();
+	fillDefaultValues(distances, DEFAULT_VALUE);
 
 	// Keep track of "visited" vertices
 	Queue<Node> q = new LinkedList<>();
-	distances.put(start, 0);
+	distances.put(start, 0.0);
 	q.add(start);
 
 	// Solution will be found in 2 ways depending if user wants to see solution
@@ -62,7 +55,7 @@ public class BreathFirstSearch extends Algorithm {
 			    // If Queue is empty, then we ran out of options, so no solution found
 			    ((Timer) e.getSource()).stop();
 			    throw new NoSuchElementException("Force catch block");
-			} else if (distances.get(end) != -1) {
+			} else if (distances.get(end) != DEFAULT_VALUE) {
 			    // If END Node's distance is not default -1, then we reached it, so draw
 			    // solution
 			    ((Timer) e.getSource()).stop();
@@ -79,7 +72,7 @@ public class BreathFirstSearch extends Algorithm {
 	    // Try solving board, but if it has no solutions, then catch as error
 	    try {
 		// While we haven't reached the END node yet
-		while (distances.get(end) == -1) {
+		while (distances.get(end) == DEFAULT_VALUE) {
 		    solveUsingBFS(q, showSteps);
 		}
 		drawPath(end);
@@ -97,17 +90,13 @@ public class BreathFirstSearch extends Algorithm {
      */
     private void solveUsingBFS(Queue<Node> q, boolean showSteps) {
 	Node u = q.remove();
-	if (!u.isStart() && showSteps) {
-	    u.makeClosed();
-	}
+	visuallyCloseNode(u, showSteps);
 
 	// For every node adjacent to u
 	for (Node v : mainGrid.getAdjacencyNodes(u)) {
 	    // If v is not yet visited, then change its distance and parent accordingly
-	    if (distances.get(v) == -1) {
-		if (!v.isEnd() && showSteps) {
-		    v.makeOpen();
-		}
+	    if (distances.get(v) == DEFAULT_VALUE) {
+		visuallyOpenNode(v, showSteps);
 		distances.put(v, distances.get(u) + 1);
 		parents.put(v, u);
 		q.add(v);
@@ -118,37 +107,4 @@ public class BreathFirstSearch extends Algorithm {
 	}
     }
 
-    private void drawPath(Node end) {
-	// Change all Nodes part of solution accordingly
-	int totalBlocks = 0;
-	Node currentNode = parents.get(end);
-	while (!currentNode.equals(start)) {
-	    currentNode.makePath();
-	    currentNode = parents.get(currentNode);
-	    totalBlocks++;
-	}
-	System.out.println(totalBlocks);
-    }
-
-    /**
-     * This instance method finds the distance between the vertex parameter and the
-     * source node.
-     */
-    public int getDistanceTo(Node v) {
-	return this.distances.get(v);
-    }
-
-    /**
-     * This instance method finds the parent vertex to the given parameter vertex.
-     */
-    public Node getParent(Node v) {
-	return this.parents.get(v);
-    }
-
-    /**
-     * This instance method returns the source node.
-     */
-    public Node getStart() {
-	return this.start;
-    }
 }

@@ -15,28 +15,23 @@ import sections.board.GridPanel;
 import sections.board.Node;
 
 public class Dijkstra extends Algorithm {
-    private GridPanel mainGrid;
-    private Node start;
+
+    // Constants
+    private static final double DEFAULT_VALUE = Double.MAX_VALUE;
+
+    // Fields
     private Map<Node, Double> distances; // Node to doubles
-    private Map<Node, Node> parents; // Node to Node
 
     public Dijkstra(GridPanel mainGrid, Node start, boolean showSteps) {
 	// Initialize all values
 	this.mainGrid = mainGrid;
 	this.start = start;
+	this.end = mainGrid.getEndNode();
 	this.distances = new HashMap<>();
 	this.parents = new HashMap<>();
 
 	// For every Node that isn't a barrier, initialize a default distance and parent
-	for (int r = 0; r < GridPanel.ROWS; r++) {
-	    for (int c = 0; c < GridPanel.COLUMNS; c++) {
-		if (!mainGrid.getNode(r, c).isBarrier()) {
-		    distances.put(mainGrid.getNode(r, c), Double.MAX_VALUE);
-		    parents.put(mainGrid.getNode(r, c), null);
-		}
-	    }
-	}
-	Node end = mainGrid.getEndNode();
+	fillDefaultValues(distances, DEFAULT_VALUE);
 
 	// Keep track of "visited" vertices and their current distance
 	HashMap<Node, Double> testDist = new HashMap<>();
@@ -59,7 +54,7 @@ public class Dijkstra extends Algorithm {
 			    // If Queue is empty, then we ran out of options, so no solution found
 			    ((Timer) e.getSource()).stop();
 			    throw new NoSuchElementException("Force catch block");
-			} else if (distances.get(end) != Double.MAX_VALUE) {
+			} else if (distances.get(end) != DEFAULT_VALUE) {
 			    // If END Node's distance is not default MAX_VALUE, then we reached it, so draw
 			    // solution
 			    ((Timer) e.getSource()).stop();
@@ -76,10 +71,14 @@ public class Dijkstra extends Algorithm {
 	    // Try solving board, but if it has no solutions, then catch as error
 	    try {
 		// While we haven't reached the END node yet
-		while (distances.get(end) == Double.MAX_VALUE) {
+		while (distances.get(end) == DEFAULT_VALUE && !testDist.isEmpty()) {
 		    solveUsingDijkstra(testDist, showSteps, end);
 		}
-		drawPath(end);
+		if (testDist.isEmpty()) {
+		    throw new NoSuchElementException();
+		} else {
+		    drawPath(end);
+		}
 	    } catch (NoSuchElementException e) { // Dialog box if no solution exists
 		JOptionPane.showMessageDialog(null, "The board has no solution.", "No Solutions",
 			JOptionPane.INFORMATION_MESSAGE);
@@ -92,11 +91,9 @@ public class Dijkstra extends Algorithm {
      * steps or does not want to see steps
      */
     private void solveUsingDijkstra(Map<Node, Double> testDist, boolean showSteps, Node end) {
-//	Node u = q.remove();
-
 	// Find Node with smallest distance from known distances
 	Node lowestNodeD = end;
-	double lowestDist = Double.MAX_VALUE;
+	double lowestDist = DEFAULT_VALUE;
 	// Go through all Nodes
 	for (Node n : testDist.keySet()) {
 	    System.out.println(n.getPosition()[0] + ", " + n.getPosition()[1] + " = " + testDist.get(n));
@@ -107,17 +104,13 @@ public class Dijkstra extends Algorithm {
 	}
 	testDist.remove(lowestNodeD);
 
-	if (!lowestNodeD.isStart() && showSteps) {
-	    lowestNodeD.makeClosed();
-	}
+	visuallyCloseNode(lowestNodeD, showSteps);
 
 	// For every node adjacent to u
 	for (Node v : mainGrid.getAdjacencyNodes(lowestNodeD)) {
 	    // If v is not yet visited, then change its distance and parent accordingly
-	    if (distances.get(v) == Double.MAX_VALUE) {
-		if (!v.isEnd() && showSteps) {
-		    v.makeOpen();
-		}
+	    if (distances.get(v) == DEFAULT_VALUE) {
+		visuallyOpenNode(v, showSteps);
 
 		// Calc dist from start for each unvisited Node
 		double currentDistToStart = calculateDistFromStart(v, lowestNodeD);
@@ -128,7 +121,6 @@ public class Dijkstra extends Algorithm {
 		    parents.put(v, lowestNodeD);
 		}
 		testDist.put(v, currentDistToStart);
-//		    q.add(v);
 
 		System.out.println("(" + v.getPosition()[0] + ", " + v.getPosition()[1] + ") = "
 			+ distances.get(mainGrid.getNode(v.getPosition()[0], v.getPosition()[1])));
@@ -136,32 +128,10 @@ public class Dijkstra extends Algorithm {
 	}
     }
 
-    // WILL PROBABLY ADJUST THIS FOR DIAGONAL DISTANCES TOO
-
-    // Calculate the distance between the current Node and the start Node
-    // E.g. if dx = 5, and dy = 10, then will need to move 5 columns over
-    // from start Node and 10 rows down to get to the current Node
-    // (total of 15 block to move)
+    // Calculate the distance between the current Node and the start Node.
+    // Distance will be whatever parent's distance is, plus difference between
+    // 2 Nodes
     private double calculateDistFromStart(Node current, Node parent) {
-	// X difference between Nodes
-	double dx = Math.abs(current.getPosition()[1] - parent.getPosition()[1]);
-	// Y difference between Nodes
-	double dy = Math.abs(current.getPosition()[0] - parent.getPosition()[0]);
-	// Return actual distance from pythagorean's theorem --> a^2 + b^2 = c^2
-	return distances.get(parent) + Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-    }
-
-    private void drawPath(Node end) {
-	// Change all Nodes part of solution accordingly
-	int totalBlocks = 0;
-	Node currentNode = parents.get(end);
-	System.out.println(end.getPosition()[0] + ", " + end.getPosition()[1]);
-	System.out.println(currentNode.getPosition()[0] + ", " + currentNode.getPosition()[1]);
-	while (!currentNode.equals(start)) {
-	    currentNode.makePath();
-	    currentNode = parents.get(currentNode);
-	    totalBlocks++;
-	}
-	System.out.println(totalBlocks);
+	return distances.get(parent) + calculateActualDistance(current, parent);
     }
 }

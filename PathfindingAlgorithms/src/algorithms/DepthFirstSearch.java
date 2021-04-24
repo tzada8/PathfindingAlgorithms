@@ -16,10 +16,7 @@ import javax.swing.Timer;
 import sections.board.GridPanel;
 import sections.board.Node;
 
-public class DepthFirstSearch {
-    private GridPanel mainGrid;
-    private Node start;
-    private Map<Node, Node> parents; // Parent of each vertex
+public class DepthFirstSearch extends Algorithm {
 
     /**
      * This constructor takes a graph and source vertex as parameters and conducts a
@@ -29,10 +26,9 @@ public class DepthFirstSearch {
 	// Initializing all fields
 	this.mainGrid = mainGrid;
 	this.start = start;
+	this.end = mainGrid.getEndNode();
 	this.parents = new HashMap<>();
 	Set<Node> visited = new HashSet<>(); // For visited Nodes
-
-	Node end = mainGrid.getEndNode();
 
 	// Initialize empty Stack listing all Nodes that need to be visited
 	Stack<Node> nodesToVisit = new Stack<Node>();
@@ -87,9 +83,7 @@ public class DepthFirstSearch {
      */
     private void solveUsingDFS(Stack<Node> s, Set<Node> visited, boolean showSteps) {
 	Node u = s.pop();
-	if (!u.isStart() && showSteps) {
-	    u.makeClosed();
-	}
+	visuallyCloseNode(u, showSteps);
 
 	// For every Node adjacent to u
 	for (Node w : mainGrid.getAdjacencyNodes(u)) {
@@ -101,12 +95,12 @@ public class DepthFirstSearch {
 		s.push(u);
 		s.push(w);
 		visited.add(w);
-		if (!w.isEnd() && showSteps) {
-		    w.makeOpen();
-		}
+		visuallyOpenNode(w, showSteps);
 		break;
 	    }
 
+	    // 6 LINES OF CODE BELOW CAN BE DELETED; JUST USED FOR PRINTLN
+	    // STATEMENTS/TESTING
 	    int curR = w.getPosition()[0];
 	    int curC = w.getPosition()[1];
 	    Node parentSpot = parents.get(mainGrid.getNode(curR, curC));
@@ -116,26 +110,4 @@ public class DepthFirstSearch {
 	}
     }
 
-    private void drawPath(Node end) {
-	// Change all Nodes part of solution accordingly
-	Node currentNode = parents.get(end);
-	while (currentNode != start) {
-	    currentNode.makePath();
-	    currentNode = parents.get(currentNode);
-	}
-    }
-
-    /**
-     * This instance method finds the parent vertex to the given parameter vertex.
-     */
-    public Node getParent(Node v) {
-	return this.parents.get(v);
-    }
-
-    /**
-     * This instance method returns the source node.
-     */
-    public Node getStart() {
-	return this.start;
-    }
 }
