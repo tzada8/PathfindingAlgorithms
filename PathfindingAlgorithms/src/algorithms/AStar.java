@@ -11,6 +11,7 @@ import sections.board.GridPanel;
 import sections.board.Node;
 
 /**
+ * 
  * The following AStar class conducts the A* pathfinding algorithm on a given
  * grid, displaying the shortest path from a start point to an end point.
  * 

@@ -13,6 +13,7 @@ import sections.board.GridPanel;
 import sections.board.Node;
 
 /**
+ * 
  * The following DepthFirstSearch class conducts the Depth-First Search (DFS)
  * pathfinding algorithm on a given grid, going depth-first when solving; not
  * beneficial for pathfinding, but useful for determining number of connected

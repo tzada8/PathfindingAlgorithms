@@ -10,6 +10,7 @@ import sections.board.GridPanel;
 import sections.board.Node;
 
 /**
+ * 
  * The following Algorithm class is a generic Algorithm in which all algorithms
  * such as BFS, DFS, Dijkstra, and A* extends from. This class has all the
  * properties, fields, and methods that each of the specific algorithms have in

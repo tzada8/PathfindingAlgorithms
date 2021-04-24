@@ -13,6 +13,7 @@ import sections.board.GridPanel;
 import sections.board.Node;
 
 /**
+ * 
  * The following BreathFirstSearch class conducts the Breath-First Search (BFS)
  * pathfinding algorithm on a given grid, displaying the shortest path from a
  * start point to an end point.

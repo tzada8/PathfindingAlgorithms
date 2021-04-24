@@ -19,6 +19,17 @@ import main.PathfindingMain;
 import sections.board.GridPanel;
 import sections.board.Node;
 
+/**
+ * 
+ * The following SettingsPanel class extends JPanel and acts as a container for
+ * all the settings that can change options of the grid. The options include
+ * choosing an algorithm, choosing an obstacle, a clear button, a reset
+ * pathfinding button, a start button, and a show steps button.
+ * 
+ * @author Troy Zada
+ *
+ */
+
 public class SettingsPanel extends JPanel implements ActionListener {
 
     /**
@@ -39,73 +50,89 @@ public class SettingsPanel extends JPanel implements ActionListener {
     private CustomCheckBox showStepsCheckBox = new CustomCheckBox("Show Steps");
     private GridPanel mainGrid;
 
-    // Creates panel for all settings/form options and applies them to the board
+    /**
+     * This constructor creates the settings panel that allows options to be changed
+     * to try out different algorithms / obstacles.
+     * 
+     * @param mainGrid - All setting options are applied to change the grid.
+     */
     public SettingsPanel(GridPanel mainGrid) {
 	this.setPreferredSize(new Dimension(200, 200));
 	this.setBackground(PathfindingMain.COMPONENT_COLOUR);
 	this.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 	this.mainGrid = mainGrid;
 
-	// Adding button to clear entire board
+	// Button to clear entire board
 	clearBoardButton.addActionListener(this);
 	this.add(clearBoardButton);
 
-	// Adding button to reset pathfinding (REDs, GREENs, and MAGENTAs)
+	// Button to reset pathfinding (REDs, GREENs, and MAGENTAs)
 	resetPathfindingButton.addActionListener(this);
 	this.add(resetPathfindingButton);
 
-	// Adding Start/Stop button to keep running /stop running solution
+	// Start button to run solution
 	startButton.addActionListener(this);
 	this.add(startButton);
 
-	// Adding a CheckBox where the user can choose to see steps or not
+	// CheckBox where the user can choose to see steps or not
 	showStepsCheckBox.addActionListener(this);
 	this.add(showStepsCheckBox);
 
-	// Adding ComboBox to choose between Algorithms
+	// ComboBox to choose between Algorithms
 	algorithmsComboBox = new JComboBox<String>(ALGORITHMS);
 	algorithmsComboBox.addActionListener(this);
 	this.add(algorithmsComboBox);
 
-	// Adding ComboBox to choose between Obstacles
+	// ComboBox to choose between Obstacles
 	obstaclesComboBox = new JComboBox<String>(OBSTACLES);
 	obstaclesComboBox.addActionListener(this);
 	this.add(obstaclesComboBox);
     }
 
-    // Gets the currently selected algorithm
+    /**
+     * Getter method to get the current algorithm.
+     * 
+     * @return - A text representation of the currently chosen algorithm.
+     */
     public String getAlgorithm() {
 	return (String) algorithmsComboBox.getSelectedItem();
     }
 
-    // Gets the currently selected obstacle
+    /**
+     * Getter method to get the current obstacle.
+     * 
+     * @return - A text representation of the currently chosen obstacle.
+     */
     public String getObstacle() {
 	return (String) obstaclesComboBox.getSelectedItem();
     }
 
-//  private CustomButton resetButton = new CustomButton("Reset");
-//  private CustomButton startStopButton = new CustomButton("Start");
-    // Gets
-
-    // Gets a true or false if the show steps checkbox is chosen
+    /**
+     * Getter method to get the current state of the checkbox.
+     * 
+     * @return - Boolean value if checkbox is checked / unchecked.
+     */
     public boolean shouldShowSteps() {
 	return showStepsCheckBox.isSelected();
     }
 
+    /**
+     * When one of the options are clicked/changed, then perform the corresponding
+     * events.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
-
-	// If reset button is clicked, then clear board entirely (only works on
-	// "Freehand")
+	// "Clear Board" button, to entirely clear board (only works on Freehand)
 	if (e.getSource() == clearBoardButton) {
 	    mainGrid.makeFreehand();
 	}
 
+	// "ResetPathfinding" button, to reset any pathfinding Nodes
 	if (e.getSource() == resetPathfindingButton) {
 	    mainGrid.resetPathfinding();
 	}
 
-	// If new obstacle in chosen from ComboBox, then update grid
+	// "Obstacles" combobox, to change the obstacle of the grid
 	if (e.getSource() == obstaclesComboBox) {
 	    String currentObstacle = this.getObstacle();
 	    // Let Clear Board button be clickable only for freehand option
@@ -130,7 +157,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	    }
 	}
 
-	// If switching algorithms, than reset any pathfinding
+	// "Algorithms" combobox, to reset pathfinding if a new algorithm is chosen
 	if (e.getSource() == algorithmsComboBox) {
 	    String currentAlgorithm = this.getAlgorithm();
 	    if (currentAlgorithm == ALGORITHMS[0]) {
@@ -144,18 +171,19 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	    }
 	}
 
-	// When start button is clicked, solve current board depending on what algorithm
-	// was chosen, and if user wants to see steps or not
+	// "Start" button, to solve current board with last chosen algorithm and if user
+	// wants to see steps or not
 	if (e.getSource() == startButton) {
 	    // If grid doesn't have both a start and end point, then give error message box
 	    if (!mainGrid.hasStartAndEndPoint()) {
 		JOptionPane.showMessageDialog(null, "Missing both a Start and End point.", "Error in Board Creation",
 			JOptionPane.ERROR_MESSAGE);
-	    } else { // Else all is good and can solving board
+	    } else {
 		// Disable all options while board is being solved
 //		enableOrDisableOptions(false);
 		mainGrid.resetPathfinding();
 
+		// Get current options, and send it to selected algorithm
 		String currentAlgorithm = this.getAlgorithm();
 		Node startNode = mainGrid.getStartNode();
 		boolean showSteps = this.shouldShowSteps();
@@ -175,9 +203,14 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	}
     }
 
-    // Make all options unclickable/clickable for when algorithm is running/finished
+    /**
+     * Make all options either unclickable or clickable. If algorithm is in the
+     * middle of being solved, then all options will be unclickable. If finished
+     * solving, then options will be clickable.
+     * 
+     * @param type - Boolean to enable / disable all options.
+     */
     private void enableOrDisableOptions(boolean type) {
-	// Make options unclickable / clickable while solution being solved
 	algorithmsComboBox.setEnabled(type);
 	obstaclesComboBox.setEnabled(type);
 	if (this.getObstacle() == OBSTACLES[0]) {
@@ -187,7 +220,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	startButton.setEnabled(type);
 	showStepsCheckBox.setEnabled(type);
 
-	// Make board unclickable / clickable depending on current obstacle
+	// Make board itself be unclickable / clickable depending on current obstacle
 	if (this.getObstacle() == OBSTACLES[0] && type) {
 	    mainGrid.makeClickable();
 	} else {
