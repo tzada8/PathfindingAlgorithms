@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 
 import customswing.CustomBox;
 import customswing.CustomLabel;
-import main.PathfindingMain;
 
 /**
  * 
