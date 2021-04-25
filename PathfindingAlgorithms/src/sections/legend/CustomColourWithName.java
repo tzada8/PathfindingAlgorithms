@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import customswing.CustomBox;
 import customswing.CustomLabel;
+import main.PathfindingMain;
 
 /**
  * 
@@ -57,7 +58,7 @@ public class CustomColourWithName extends JPanel {
 	constraints.gridy = 0;
 	constraints.ipadx = 0;
 	constraints.ipady = 0;
-	this.add(new CustomLabel("= " + name, fontSize), constraints);
+	this.add(new CustomLabel("= " + name, CustomLabel.MAIN_TEXT), constraints);
     }
 
 }

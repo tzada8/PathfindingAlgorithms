@@ -1,10 +1,11 @@
 package sections.settings;
 
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -15,7 +16,7 @@ import algorithms.DepthFirstSearch;
 import algorithms.Dijkstra;
 import customswing.CustomButton;
 import customswing.CustomCheckBox;
-import main.PathfindingMain;
+import main.MainPanel;
 import sections.board.GridPanel;
 import sections.board.Node;
 
@@ -38,8 +39,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
     private static final long serialVersionUID = 1L;
 
     // Constants
-    public static final int WIDTH = 200;
-    public static final int HEIGHT = 200;
+    public static final int HEIGHT = 175;
     private static final String[] ALGORITHMS = { "Breath First Search", "Depth First Search", "A*", "Dijkstra" };
     private static final String[] OBSTACLES = { "Freehand", "Preset 1", "Preset 2", "Preset 3", "Random" };
 
@@ -59,10 +59,14 @@ public class SettingsPanel extends JPanel implements ActionListener {
      * @param mainGrid - All setting options are applied to change the grid.
      */
     public SettingsPanel(GridPanel mainGrid) {
-	this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-	this.setBackground(PathfindingMain.COMPONENT_COLOUR);
-	this.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+	this.setBackground(MainPanel.COMPONENT_COLOUR);
+	this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+	this.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
 	this.mainGrid = mainGrid;
+
+	// Start button to run solution
+	startButton.addActionListener(this);
+	this.add(startButton);
 
 	// Button to clear entire board
 	clearBoardButton.addActionListener(this);
@@ -71,10 +75,6 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	// Button to reset pathfinding (REDs, GREENs, and MAGENTAs)
 	resetPathfindingButton.addActionListener(this);
 	this.add(resetPathfindingButton);
-
-	// Start button to run solution
-	startButton.addActionListener(this);
-	this.add(startButton);
 
 	// CheckBox where the user can choose to see steps or not
 	showStepsCheckBox.addActionListener(this);
