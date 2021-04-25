@@ -9,6 +9,7 @@ import javax.swing.Timer;
 
 import sections.board.GridPanel;
 import sections.board.Node;
+import sections.settings.SettingsPanel;
 
 /**
  * 
@@ -33,7 +34,8 @@ public class AStar extends Algorithm {
      * @param start     - The source Node where BFS will begin.
      * @param showSteps - Whether the solution can be seen or just final answer.
      */
-    public AStar(GridPanel mainGrid, Node start, boolean showSteps) {
+    public AStar(SettingsPanel settings, GridPanel mainGrid, Node start, boolean showSteps) {
+	this.settings = settings;
 	this.mainGrid = mainGrid;
 	this.start = start;
 	this.end = mainGrid.getEndNode();

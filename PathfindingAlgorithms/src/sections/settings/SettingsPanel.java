@@ -182,7 +182,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
 			JOptionPane.ERROR_MESSAGE);
 	    } else {
 		// Disable all options while board is being solved
-//		enableOrDisableOptions(false);
+		enableOrDisableOptions(false);
 		mainGrid.resetPathfinding();
 
 		// Get current options, and send it to selected algorithm
@@ -190,18 +190,15 @@ public class SettingsPanel extends JPanel implements ActionListener {
 		Node startNode = mainGrid.getStartNode();
 		boolean showSteps = this.shouldShowSteps();
 		if (currentAlgorithm == ALGORITHMS[0]) {
-		    new BreathFirstSearch(mainGrid, startNode, showSteps);
+		    new BreathFirstSearch(this, mainGrid, startNode, showSteps);
 		} else if (currentAlgorithm == ALGORITHMS[1]) {
-		    new DepthFirstSearch(mainGrid, startNode, showSteps);
+		    new DepthFirstSearch(this, mainGrid, startNode, showSteps);
 		} else if (currentAlgorithm == ALGORITHMS[2]) {
-		    new AStar(mainGrid, startNode, showSteps);
+		    new AStar(this, mainGrid, startNode, showSteps);
 		} else if (currentAlgorithm == ALGORITHMS[3]) {
-		    new Dijkstra(mainGrid, startNode, showSteps);
+		    new Dijkstra(this, mainGrid, startNode, showSteps);
 		}
-		// Enable all options since board is done being solved
-
 	    }
-	    enableOrDisableOptions(true);
 	}
     }
 
@@ -212,7 +209,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
      * 
      * @param type - Boolean to enable / disable all options.
      */
-    private void enableOrDisableOptions(boolean type) {
+    public void enableOrDisableOptions(boolean type) {
 	algorithmsComboBox.setEnabled(type);
 	obstaclesComboBox.setEnabled(type);
 	if (this.getObstacle() == OBSTACLES[0]) {

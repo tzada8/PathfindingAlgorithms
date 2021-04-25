@@ -8,6 +8,7 @@ import javax.swing.Timer;
 
 import sections.board.GridPanel;
 import sections.board.Node;
+import sections.settings.SettingsPanel;
 
 /**
  * 
@@ -26,6 +27,7 @@ public class Algorithm {
     protected static final double DEFAULT_VALUE = Double.MAX_VALUE;
 
     // Fields
+    protected SettingsPanel settings; // Enable/disable settings options
     protected GridPanel mainGrid;
     protected Node start;
     protected Node end;
@@ -137,11 +139,11 @@ public class Algorithm {
      */
     protected void showSolutionOutputWithSteps(boolean noSolution, ActionEvent e, boolean solutionFound) {
 	if (noSolution) {
-	    stopTimerAndResetCosts(e);
 	    noSolutionsDialogBox();
+	    stopTimerEnableOptionsResetCosts(e);
 	} else if (solutionFound) {
-	    stopTimerAndResetCosts(e);
 	    drawPath(end);
+	    stopTimerEnableOptionsResetCosts(e);
 	}
     }
 
@@ -151,8 +153,17 @@ public class Algorithm {
      * 
      * @param e - Timer allowing Nodes to be displayed one at a time.
      */
-    private void stopTimerAndResetCosts(ActionEvent e) {
+    private void stopTimerEnableOptionsResetCosts(ActionEvent e) {
 	((Timer) e.getSource()).stop();
+	enableOptionsResetCosts();
+    }
+
+    /**
+     * Private helper method to reduce redundancy which reenables options and resets
+     * all g, h, and f costs.
+     */
+    private void enableOptionsResetCosts() {
+	settings.enableOrDisableOptions(true);
 	mainGrid.resetAllCosts();
     }
 
@@ -173,7 +184,7 @@ public class Algorithm {
 	} else {
 	    drawPath(end);
 	}
-	mainGrid.resetAllCosts();
+	enableOptionsResetCosts();
     }
 
     /**
