@@ -155,7 +155,6 @@ public class SettingsPanel extends JPanel implements ActionListener {
 		mainGrid.makePreset3();
 	    } else if (currentObstacle == OBSTACLES[4]) {
 		mainGrid.makeRandom();
-		System.out.println("Loading Random board from API...");
 	    }
 	}
 

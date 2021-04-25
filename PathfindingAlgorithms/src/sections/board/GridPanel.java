@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import sections.board.presets.MakePreset1;
 import sections.board.presets.MakePreset2;
 import sections.board.presets.MakePreset3;
+import sections.board.presets.MakeRandom;
 
 public class GridPanel extends JPanel {
 
@@ -226,5 +227,6 @@ public class GridPanel extends JPanel {
     // Creates the Random board
     public void makeRandom() {
 	this.unclickableAndEmptyBoard();
+	new MakeRandom(map);
     }
 }
