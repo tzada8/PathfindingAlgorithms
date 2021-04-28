@@ -1,6 +1,7 @@
 package sections.settings;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,7 @@ import algorithms.DepthFirstSearch;
 import algorithms.Dijkstra;
 import customswing.CustomButton;
 import customswing.CustomCheckBox;
+import customswing.CustomLabel;
 import main.MainPanel;
 import sections.board.GridPanel;
 import sections.board.Node;
@@ -82,11 +84,21 @@ public class SettingsPanel extends JPanel implements ActionListener {
 
 	// ComboBox to choose between Algorithms
 	algorithmsComboBox = new JComboBox<String>(ALGORITHMS);
+	algorithmsComboBox.setForeground(Color.BLACK);
+	algorithmsComboBox.setBackground(Color.WHITE);
+	algorithmsComboBox.setFocusable(false);
+	algorithmsComboBox.setFont(CustomLabel.SMALL_TEXT);
+	algorithmsComboBox.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	algorithmsComboBox.addActionListener(this);
 	this.add(algorithmsComboBox);
 
 	// ComboBox to choose between Obstacles
 	obstaclesComboBox = new JComboBox<String>(OBSTACLES);
+	obstaclesComboBox.setForeground(Color.BLACK);
+	obstaclesComboBox.setBackground(Color.WHITE);
+	obstaclesComboBox.setFocusable(false);
+	obstaclesComboBox.setFont(CustomLabel.SMALL_TEXT);
+	obstaclesComboBox.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	obstaclesComboBox.addActionListener(this);
 	this.add(obstaclesComboBox);
     }
