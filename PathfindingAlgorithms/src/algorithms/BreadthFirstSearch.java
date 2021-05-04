@@ -23,7 +23,7 @@ import sections.settings.SettingsPanel;
  *
  */
 
-public class BreathFirstSearch extends Algorithm {
+public class BreadthFirstSearch extends Algorithm {
 
     // Each Node maps to a Double value, being the distance from start
     private Map<Node, Double> distances;
@@ -37,7 +37,7 @@ public class BreathFirstSearch extends Algorithm {
      * @param start     - The source Node where BFS will begin.
      * @param showSteps - Whether the solution can be seen or just final answer.
      */
-    public BreathFirstSearch(SettingsPanel settings, GridPanel mainGrid, Node start, boolean showSteps) {
+    public BreadthFirstSearch(SettingsPanel settings, GridPanel mainGrid, Node start, boolean showSteps) {
 	this.settings = settings;
 	this.mainGrid = mainGrid;
 	this.start = start;

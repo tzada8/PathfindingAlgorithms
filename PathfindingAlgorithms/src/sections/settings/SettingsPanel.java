@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import algorithms.AStar;
-import algorithms.BreathFirstSearch;
+import algorithms.BreadthFirstSearch;
 import algorithms.DepthFirstSearch;
 import algorithms.Dijkstra;
 import customswing.CustomButton;
@@ -42,7 +42,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
 
     // Constants
     public static final int HEIGHT = 175;
-    private static final String[] ALGORITHMS = { "Breath First Search", "Depth First Search", "A*", "Dijkstra" };
+    private static final String[] ALGORITHMS = { "Breadth-First Search", "Depth-First Search", "A*", "Dijkstra" };
     private static final String[] OBSTACLES = { "Freehand", "Preset 1", "Preset 2", "Preset 3", "Random" };
 
     // Fields
@@ -201,7 +201,7 @@ public class SettingsPanel extends JPanel implements ActionListener {
 		Node startNode = mainGrid.getStartNode();
 		boolean showSteps = this.shouldShowSteps();
 		if (currentAlgorithm == ALGORITHMS[0]) {
-		    new BreathFirstSearch(this, mainGrid, startNode, showSteps);
+		    new BreadthFirstSearch(this, mainGrid, startNode, showSteps);
 		} else if (currentAlgorithm == ALGORITHMS[1]) {
 		    new DepthFirstSearch(this, mainGrid, startNode, showSteps);
 		} else if (currentAlgorithm == ALGORITHMS[2]) {
