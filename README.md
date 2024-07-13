@@ -1,26 +1,46 @@
-# Pathfinding Algorithms
+<a id="readme-top"></a>
 
-Determining the shortest distance between two points is a crucial aspect in day to day life. This application does exactly that. It determines the shortest distance between two points in any given obstacle using different approaches.
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+    <a href="https://github.com/tzada8/pathfinding-algorithms">
+        <img src="PathfindingAlgorithms/images/pathfinding_icon.png" alt="Pathfinding Algorithms" width="100" height="100">
+    </a>
+    <h3 align="center">Pathfinding Algorithms: Visually compare various shortest path algorithms</h3>
+    <p align="center">
+        Pathfinding Algorithms provides users with the ability to visually compare four different shortest path algorithms, allowing the benefits and drawbacks of each algorithm to easily be identified.
+    </p>
+</div>
 
-With this Pathfinding Algorithms application, users can draw unique obstacles or choose one of the preset ones, and the shortest path between the start point and endpoint will be determined.
+<!-- TABLE OF CONTENTS -->
+<details>
+    <summary>Table of Contents</summary>
+    <ol>
+        <li>
+            <a href="#about-the-project">About The Project</a>
+        </li>
+    </ol>
+</details>
 
-The user also has the option to watch the solution unfold or to choose between algorithms such that they may see the differences between how each algorithm works.
 
-### Tech Stack:
-Frontend - Java Swing (GUI)
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-Backend - Java (Algorithms, Obstacles, and Features)
+<div align="center">
+    <img src="PathfindingAlgorithms/images/pathfinding-algorithms.png" alt="Pathfinding Algorithms Board" width="500" height="400">
+</div>
+<br/>
 
-### Application's Functionality:
-A settings component of the entire application allows the user to start the pathfinding, reset the board, see the steps of the solution, choose between different algorithms, and choose between different obstacles.
+Pathfinding Algorithms helps users understand the purpose behind algorithms and how they operate to drastically improve their overall learnings. For instance, the A* algorithm can determine the shortest distance the fastest but requires the end tile to be known beforehand, while other algorithms, can determine the shortest distance without require any comprehension of the end tile.
 
-If a different obstacle is chosen, then the board resets, and the new obstacle is drawn instead. If a different algorithm is chosen, then the application remembers this algorithm for when the pathfinding begins.
+Users can manually draw obstacles themselves or choose from one of the preset options. Once a particular algorithm and obstacle is selected, the user can specify if they want to see the visual solution or to just see the final solution.
 
-The application has several different algorithms to choose from including:
+Visually displaying the solution will individually render the tiles to portray how the algorithm determines the shortest path within the given set of obstacles. Red and green tiles will appear depicting which tiles the algorithm needed to check before reaching the end tile. If no solution exists, a popup message will inform the user that there is no possible path between the start and end tiles. 
 
-- Breadth-First Search: Checks the board by viewing the tiles closest to the start tile, then spreading out
-- Depth-First Search: Fully attempts one path until a dead end is reached, then attempts another
-- A*: Calculates a G, H and F cost for the current tile, being the distances between the start/end tile and the current tile
-- Dijkstra: Checks tiles that are closest to the start tile
+The application has several different algorithms:
+- Breadth-First Search: Views tiles closest to the start tile, spreading out evenly on all sides
+- Depth-First Search: Fully attempts one path until a dead end is reached before moving onto another path
+- A*: Calculates a G, H, and F cost for the current tile, being the distances between the start/end tile to the current tile to determine the direction
+- Dijkstra: Views tiles closest to the start tile
 
-Once an algorithm and obstacle are chosen, the user can then choose to see the steps or just view the solution. Seeing the steps will render red and green tiles to depict how the algorithm runs and which tiles it checks.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
